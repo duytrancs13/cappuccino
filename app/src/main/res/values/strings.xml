@@ -1,5 +1,4 @@
 <resources>
-    <string name="app_name">NavigationDrawer and ViewPager</string>
     <string name="navigation_drawer_open">Open</string>
     <string name="navigation_drawer_close">Close</string>
 
@@ -18,7 +17,6 @@
         <item>Dummy Item 12</item>
         <item>Dummy Item 13</item>
         <item>Dummy Item 14</item>
-
 
 
     </string-array>

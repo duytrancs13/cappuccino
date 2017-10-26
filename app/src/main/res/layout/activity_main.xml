@@ -3,51 +3,70 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:weightSum="5">
 
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="?attr/colorPrimary"
-        android:minHeight="?attr/actionBarSize"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark"
-        app:titleTextColor="@android:color/white" />
+        android:layout_height="0dp"
+        android:layout_weight="3"
+        android:background="@drawable/logo_main">
+    </LinearLayout>
 
-    <android.support.v4.widget.DrawerLayout
-        android:id="@+id/drawerLayout"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="0dp"
+        android:layout_weight="2"
+        >
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+       <LinearLayout
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:weightSum="1"
+           android:gravity="center"
+           >
+           <LinearLayout
+               android:layout_width="0dp"
+               android:layout_height="wrap_content"
+               android:layout_weight="0.7"
+               android:orientation="vertical"
+               android:gravity="center">
 
-            <android.support.design.widget.TabLayout
-                android:id="@+id/tab_layout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/toolbar"
-                android:background="#125688"
-                android:minHeight="?attr/actionBarSize"
-                android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
+               <TextView
+                   android:id="@+id/tvNameLogo"
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:textColor="@color/black"
+                   android:textSize="35dp"
+                   android:layout_marginTop="20dp"
+                   android:layout_marginBottom="20dp"
+                   />
 
-            <android.support.v4.view.ViewPager
-                android:id="@+id/view_pager"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-        </LinearLayout>
+               <Button
+                   android:id="@+id/btnLoginMain"
+                   android:layout_width="match_parent"
+                   android:layout_height="wrap_content"
+                   android:background="@drawable/button_login"
+                   android:text="ĐĂNG NHẬP"
+                   android:textColor="@color/white"
+                   />
+
+               <TextView
+                   android:id="@+id/tvForgotPw"
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:layout_marginTop="20dp"
+                   android:textColor="@color/colorPrimary"
+                   />
+
+           </LinearLayout>
 
 
-        <android.support.design.widget.NavigationView
-            android:id="@+id/nav_view"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_gravity="start"
-            android:fitsSystemWindows="true"
-            app:menu="@menu/drawer_menu" />
+       </LinearLayout>
 
-    </android.support.v4.widget.DrawerLayout>
+
+
+    </LinearLayout>
+
+
 </LinearLayout>
