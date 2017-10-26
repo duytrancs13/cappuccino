@@ -17,6 +17,20 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
+
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
@@ -83,14 +97,14 @@ public class LoginActivity extends AppCompatActivity {
         progressDialog.setMessage("Đang kết nối...");
         progressDialog.show();
 
-        String email = editEmailLogin.getText().toString();
-        String password = editPwLogin.getText().toString();
+        final String email = editEmailLogin.getText().toString();
+        final String password = editPwLogin.getText().toString();
 
         new android.os.Handler().postDelayed(
                 new Runnable() {
                     public void run() {
                         // On complete call either onLoginSuccess or onLoginFailed
-                        onLoginSuccess();
+                        onLoginSuccess(email,password);
                         // onLoginFailed();
                         progressDialog.dismiss();
                     }
@@ -98,10 +112,40 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
-    private void onLoginSuccess() {
+    private void onLoginSuccess(String email, String password) {
         btnLogin.setEnabled(true);
-        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-        startActivity(intent);
+        attemptLogin(email,password);
+        /*Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+        startActivity(intent);*/
+    }
+
+    private void attemptLogin(final String email, final String password){
+        String url = "https://cappuccino-hello.herokuapp.com/api/login";
+        RequestQueue queue = Volley.newRequestQueue(getBaseContext());
+        StringRequest jsonObjectRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                toast(response);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                toast(error.toString());
+            }
+        }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String,String> params = new HashMap<>();
+                params.put("email",email);
+                params.put("password",password);
+                return params;
+            }
+        };
+        queue.add(jsonObjectRequest);
+
+
+
+
     }
 
 
