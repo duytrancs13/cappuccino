@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/bgrEdittext"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:orientation="vertical"
+        android:layout_margin="5dp">
+
+
+        <ImageView
+            android:id="@+id/imageMenu"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="fitXY"
+            android:adjustViewBounds="true"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginTop="15dp">
+
+            <TextView
+                android:id="@+id/tvNameMenu"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="TÊN MÓN"
+                android:textColor="?attr/colorPrimary"
+                android:textSize="26dp"
+                android:maxLines="1"
+                android:ellipsize="end"
+                />
+
+            <TextView
+                android:id="@+id/tvDescriptionMenu"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:text="Ten mon"
+                android:textSize="16dp"
+                />
+
+
+
+
+
+            <LinearLayout
+                android:weightSum="2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:layout_marginBottom="15dp"
+                >
+
+                <LinearLayout
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    >
+
+                    <ImageView
+                        android:layout_height="wrap_content"
+                        android:layout_width="wrap_content"
+                        android:src="@drawable/ic_shop"
+                        android:tint="@color/colorPrimary"
+                        android:layout_marginTop="5px"
+                        />
+                    <TextView
+                        android:id="@+id/tvQualityMenu"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="1"
+                        android:textSize="16dp"
+                        android:layout_marginLeft="4px"
+                        android:textColor="@color/colorPrimary"
+                        />
+
+                </LinearLayout>
+
+                <TextView
+                    android:layout_weight="1"
+                    android:id="@+id/tvPriceMenu"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="35.000 VND"
+                    android:textSize="16dp"
+                    android:gravity="right"
+
+                    />
+            </LinearLayout>
+
+            <!--<View
+                android:layout_width="match_parent"
+                android:layout_height="2px"
+                android:background="@color/primary"
+                />-->
+
+            <!--<RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:layout_marginBottom="15dp"
+                >
+
+                <Button
+                    android:id="@+id/btnSubMenu"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:background="@drawable/buttonplusminus"
+                    android:layout_alignParentLeft="true"
+                    android:visibility="gone"
+                    />
+
+                <Button
+                    android:id="@+id/btnQuatityMenu"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:background="@drawable/buttonquality"
+                    android:layout_centerHorizontal="true"
+                    android:textColor="#757575"
+                    android:clickable = "false"
+                    android:visibility="gone"
+                    />
+
+
+                <Button
+                    android:id="@+id/btnPlusMenu"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:background="@drawable/buttonplusminus"
+                    android:layout_alignParentRight="true"
+                    />
+
+
+            </RelativeLayout>-->
+
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+</LinearLayout>

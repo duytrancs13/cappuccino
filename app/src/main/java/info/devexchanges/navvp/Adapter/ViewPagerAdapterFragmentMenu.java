@@ -4,7 +4,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-import info.devexchanges.navvp.Fragment.Fragment3;
+import info.devexchanges.navvp.Fragment.FragmentFavoriteOrMenuOfCategory;
 import info.devexchanges.navvp.Fragment.Fragment4;
 import info.devexchanges.navvp.Fragment.Fragment5;
 
@@ -18,7 +18,7 @@ public class ViewPagerAdapterFragmentMenu extends FragmentPagerAdapter {
     @Override
     public Fragment getItem(int position) {
         if (position ==0) {
-            return new Fragment3();
+            return new FragmentFavoriteOrMenuOfCategory();
         } else if (position == 1) {
             return new Fragment4();
         }else if (position == 2)

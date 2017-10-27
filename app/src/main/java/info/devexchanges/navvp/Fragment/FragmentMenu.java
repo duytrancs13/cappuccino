@@ -17,7 +17,7 @@ import info.devexchanges.navvp.R;
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
-public class Fragment1 extends Fragment {
+public class FragmentMenu extends Fragment {
     private TabLayout tab_layout_fragment;
     private ViewPager view_pager_fragment;
     private String[] pageTitle = {"Chọn nhiều", "Theo loại", "Tìm kiếm"};
