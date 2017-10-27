@@ -5,11 +5,11 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
 import info.devexchanges.navvp.Fragment.Fragment1;
-import info.devexchanges.navvp.Fragment.Fragment2;
+import info.devexchanges.navvp.Fragment.FragmentReceipt;
 
-public class ViewPagerAdapter extends FragmentPagerAdapter {
+public class ViewPagerAdapterMenuTabs extends FragmentPagerAdapter {
 
-    public ViewPagerAdapter(FragmentManager fm) {
+    public ViewPagerAdapterMenuTabs(FragmentManager fm) {
         super(fm);
     }
 
@@ -18,7 +18,7 @@ public class ViewPagerAdapter extends FragmentPagerAdapter {
         if (position ==0) {
             return new Fragment1();
         } else if (position == 1) {
-            return new Fragment2();
+            return new FragmentReceipt();
         }
         return null;
     }

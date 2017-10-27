@@ -1,7 +1,6 @@
 package info.devexchanges.navvp;
 
 import android.content.Context;
-import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
@@ -10,7 +9,7 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
-import info.devexchanges.navvp.Adapter.ViewPagerAdapter;
+import info.devexchanges.navvp.Adapter.ViewPagerAdapterMenuTabs;
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
@@ -55,7 +54,7 @@ public class MenuTabsActivity extends AppCompatActivity {
         viewPager = (ViewPager)findViewById(R.id.view_pager);
 
         //set viewpager adapter
-        ViewPagerAdapter pagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
+        ViewPagerAdapterMenuTabs pagerAdapter = new ViewPagerAdapterMenuTabs(getSupportFragmentManager());
         viewPager.setAdapter(pagerAdapter);
 
         //change Tab selection when swipe ViewPager
