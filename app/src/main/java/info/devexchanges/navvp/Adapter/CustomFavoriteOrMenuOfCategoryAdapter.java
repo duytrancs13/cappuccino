@@ -83,7 +83,7 @@ public class CustomFavoriteOrMenuOfCategoryAdapter extends BaseAdapter {
         }
 
         final Menu menu = (Menu) menuList.get(position);
-        Typeface mFont = Typeface.createFromAsset(context.getAssets(),"Roboto-Regular.ttf");
+        Typeface mFont = Typeface.createFromAsset(context.getAssets(),"Roboto-Bold.ttf");
 
         Picasso.with(context).load(menu.getUrlImage()).into(viewHolder.imageMenu);
 
