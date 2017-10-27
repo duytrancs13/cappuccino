@@ -22,7 +22,6 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
@@ -34,7 +33,7 @@ import java.util.Map;
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity  {
 
     private Toolbar toolbar;
     private TextView tvForgotPw;
@@ -84,10 +83,10 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void login() {
-        if(!validate()){
+        /*if(!validate()){
             onLoginFailed();
             return ;
-        }
+        }*/
 
         btnLogin.setEnabled(false);
 
@@ -114,9 +113,9 @@ public class LoginActivity extends AppCompatActivity {
 
     private void onLoginSuccess(String email, String password) {
         btnLogin.setEnabled(true);
-        attemptLogin(email,password);
-        /*Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-        startActivity(intent);*/
+        //attemptLogin(email,password);
+        Intent intent = new Intent(LoginActivity.this, TableActivity.class);
+        startActivity(intent);
     }
 
     private void attemptLogin(final String email, final String password){
