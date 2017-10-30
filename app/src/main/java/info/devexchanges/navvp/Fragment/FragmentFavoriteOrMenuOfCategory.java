@@ -4,10 +4,22 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridView;
+import android.widget.Toast;
+
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
+import com.google.gson.Gson;
+
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,17 +51,52 @@ public class FragmentFavoriteOrMenuOfCategory extends Fragment {
         gvMenu = (GridView) view.findViewById(R.id.gvMenu);
 
         listMenu = new ArrayList<Menu>();
+        String token = getActivity().getIntent().getStringExtra("token");
 
-//        Menu(String id, String name, int price, String urlImage, String description, int favorite)
-        listMenu.add(new Menu("1", "ca phe sua", 29000, "https://tea-1.lozi.vn/v1/images/resized/ca-phe-sua-2854-1390148936?w=320&type=s", "ngon bo re", 1));
-        listMenu.add(new Menu("2", "ca phe sua", 29000, "https://tea-1.lozi.vn/v1/images/resized/ca-phe-sua-2854-1390148936?w=320&type=s", "ngon bo re", 2));
+        String urlFavorite ="https://cappuccino-hello.herokuapp.com/api/menu/favorite?token="+token;
 
-        customFavoriteOrMenuOfCategoryAdapter = new CustomFavoriteOrMenuOfCategoryAdapter(getActivity(), listMenu);
+        getMenu(urlFavorite);
 
-        gvMenu.setAdapter(customFavoriteOrMenuOfCategoryAdapter);
+
         return view;
     }
     protected void attachBaseContext(Context newBase) {
         super.onAttach(CalligraphyContextWrapper.wrap(newBase));
+    }
+    public void toast(String message){
+        Toast.makeText(getContext(),message,Toast.LENGTH_SHORT).show();
+    }
+
+    private void getMenu(String url){
+        RequestQueue queue = Volley.newRequestQueue(getContext());
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                Gson gson = new Gson();
+                listMenu = gson.fromJson(response.toString(),ListMenu.class).getResponse();
+
+                customFavoriteOrMenuOfCategoryAdapter = new CustomFavoriteOrMenuOfCategoryAdapter(getActivity(), listMenu);
+
+                gvMenu.setAdapter(customFavoriteOrMenuOfCategoryAdapter);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        });
+
+        queue.add(jsonObjectRequest);
+    }
+    private class ListMenu{
+        private List<Menu> response;
+
+        public List<Menu> getResponse() {
+            return response;
+        }
+
+        public void setResponse(List<Menu> response) {
+            this.response = response;
+        }
     }
 }

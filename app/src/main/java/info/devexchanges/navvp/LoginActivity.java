@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -25,6 +24,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
@@ -52,6 +52,8 @@ public class LoginActivity extends AppCompatActivity  {
                         .setFontAttrId(R.attr.fontPath)
                         .build()
         );
+
+
 
 
 
@@ -83,10 +85,10 @@ public class LoginActivity extends AppCompatActivity  {
     }
 
     private void login() {
-        /*if(!validate()){
+        if(!validate()){
             onLoginFailed();
             return ;
-        }*/
+        }
 
         btnLogin.setEnabled(false);
 
@@ -102,30 +104,46 @@ public class LoginActivity extends AppCompatActivity  {
         new android.os.Handler().postDelayed(
                 new Runnable() {
                     public void run() {
-                        // On complete call either onLoginSuccess or onLoginFailed
-                        onLoginSuccess(email,password);
-                        // onLoginFailed();
+                        attemptLogin(email,password);
                         progressDialog.dismiss();
                     }
                 }, 3000);
 
     }
 
-    private void onLoginSuccess(String email, String password) {
+    /*private void onLoginSuccess() {
         btnLogin.setEnabled(true);
-        //attemptLogin(email,password);
         Intent intent = new Intent(LoginActivity.this, TableActivity.class);
         startActivity(intent);
-    }
+    }*/
 
     private void attemptLogin(final String email, final String password){
         String url = "https://cappuccino-hello.herokuapp.com/api/login";
+
         RequestQueue queue = Volley.newRequestQueue(getBaseContext());
         StringRequest jsonObjectRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+
             @Override
             public void onResponse(String response) {
-                toast(response);
+                try {
+                    JSONObject jsonObject = new JSONObject(response);
+                    int flag = jsonObject.getInt("flag");
+                    if(flag == 1){
+                        String token = jsonObject.getJSONObject("response").getString("token");
+                        btnLogin.setEnabled(true);
+                        Intent intent = new Intent(LoginActivity.this, TableActivity.class);
+                        intent.putExtra("token",token);
+                        startActivity(intent);
+                    }else{
+                        onLoginFailed();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
+
+
+
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
@@ -141,9 +159,6 @@ public class LoginActivity extends AppCompatActivity  {
             }
         };
         queue.add(jsonObjectRequest);
-
-
-
 
     }
 

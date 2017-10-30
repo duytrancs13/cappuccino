@@ -7,6 +7,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import info.devexchanges.navvp.Fragment.FragmentFavoriteOrMenuOfCategory;
 import info.devexchanges.navvp.Fragment.FragmentCategory;
 import info.devexchanges.navvp.Fragment.Fragment5;
+import info.devexchanges.navvp.Fragment.RootFragment;
 
 
 public class ViewPagerAdapterFragmentMenu extends FragmentPagerAdapter {
@@ -20,7 +21,7 @@ public class ViewPagerAdapterFragmentMenu extends FragmentPagerAdapter {
         if (position ==0) {
             return new FragmentFavoriteOrMenuOfCategory();
         } else if (position == 1) {
-            return new FragmentCategory();
+            return new RootFragment();
         }else if (position == 2)
             return new Fragment5();
         return null;

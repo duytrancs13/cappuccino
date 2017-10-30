@@ -48,12 +48,16 @@ public class TableActivity extends AppCompatActivity implements NavigationView.O
         assert navigationView != null;
         navigationView.setNavigationItemSelectedListener(this);
 
+
+
         chuaOrder = (Button) findViewById(R.id.chuaOrder);
 
         chuaOrder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(TableActivity.this, MenuTabsActivity.class);
+                String token = getIntent().getStringExtra("token");
+                intent.putExtra("token",token);
                 startActivity(intent);
             }
         });
