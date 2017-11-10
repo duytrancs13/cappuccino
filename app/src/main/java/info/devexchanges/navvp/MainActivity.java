@@ -54,6 +54,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         //tvForgotPw
         tvForgotPw = (TextView) findViewById(R.id.tvForgotPw);
         tvForgotPw.setText(Html.fromHtml("<u>Quên mật khẩu</u>"));
+        tvForgotPw.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+            Intent intent = new Intent(MainActivity.this,ForgotPWActivity.class);
+            startActivity(intent);
+            }
+        });
     }
 
     @Override

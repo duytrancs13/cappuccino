@@ -10,8 +10,11 @@
 
     <color name="black">#000000</color>
     <color name="white">#ffffff</color>
+    <color name="red">#e34500</color>
 
     <color name="bgrEdittext">#eaeaea</color>
+    <color name="bgrIconEdittext">#666666</color>
+
 
     <color name="iron">#CCCCCC</color>
 

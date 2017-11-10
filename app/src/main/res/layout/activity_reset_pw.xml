@@ -37,7 +37,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="4"
-            android:text="ĐĂNG NHẬP"
+            android:text="KHÔI PHỤC MẬT KHẨU"
             android:gravity="center"
             android:textStyle="bold"
             android:textSize="18dp"
@@ -65,48 +65,13 @@
                 android:orientation="vertical"
                 android:gravity="center"
                 >
+
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="50dp">
 
                     <EditText
-                        android:id="@+id/editEmailLogin"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:inputType="textEmailAddress"
-                        android:hint="EMAIL"
-                        android:textSize="14dp"
-                        android:background="@color/bgrEdittext"
-                        android:drawableLeft="@drawable/ic_email"
-                        android:drawablePadding="10dp"
-                        android:paddingLeft="10dp"
-                        android:paddingRight="40dp"
-                        />
-                    
-                    <ImageView
-                        android:id="@+id/clearLogin"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/ic_clear"
-                        android:layout_alignParentRight="true"
-                        android:layout_centerInParent="true"
-                        android:paddingRight="10dp"
-                        android:visibility="gone"
-                        />
-
-                </RelativeLayout>
-
-
-                <!-- Password Label -->
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:layout_marginTop="30dp"
-                    android:layout_marginBottom="30dp"
-                    >
-
-                    <EditText
-                        android:id="@+id/editPwLogin"
+                        android:id="@+id/editResetPW"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:inputType="textPassword"
@@ -120,7 +85,7 @@
                         />
 
                     <ImageView
-                        android:id="@+id/visibilityLoginPW"
+                        android:id="@+id/visibilityResetPW"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:src="@drawable/ic_visibility_on"
@@ -133,28 +98,85 @@
                 </RelativeLayout>
 
 
+
+                <!--<EditText
+                    android:id="@+id/editResetPW"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:inputType="textPassword"
+                    android:hint="MẬT KHẨU MỚI"
+                    android:textSize="12dp"
+                    android:gravity="center"
+                    android:background="@color/bgrEdittext"
+
+                    />-->
+
+                <!-- Password Label -->
+                <!--<EditText
+                    android:id="@+id/editConfirmResetPW"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:inputType="textPassword"
+                    android:hint="XÁC NHẬN MẬT KHẨU"
+                    android:textSize="12dp"
+                    android:gravity="center"
+                    android:background="@color/bgrEdittext"
+                    android:layout_marginTop="30dp"
+                    android:layout_marginBottom="30dp"
+                    />-->
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="30dp"
+                    android:layout_marginBottom="30dp"
+                    >
+
+                    <EditText
+                        android:id="@+id/editConfirmResetPW"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:inputType="textPassword"
+                        android:hint="MẬT KHẨU"
+                        android:textSize="14dp"
+                        android:background="@color/bgrEdittext"
+                        android:drawableLeft="@drawable/ic_keypw"
+                        android:drawablePadding="10dp"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="40dp"
+                        />
+
+                    <ImageView
+                        android:id="@+id/visibilityConfirmResetPW"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_visibility_on"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerInParent="true"
+                        android:paddingRight="10dp"
+                        android:visibility="gone"
+                        />
+
+                </RelativeLayout>
+
                 <Button
-                    android:id="@+id/btnLogin"
+                    android:id="@+id/btnConfirm"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/button_login"
-                    android:text="Đăng nhập"
+                    android:text="Xác NHẬN"
                     android:textColor="@color/white"
                     android:layout_marginBottom="30dp"
                     />
 
                 <TextView
-                    android:id="@+id/tvForgotPw"
+                    android:id="@+id/tvLogin"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/colorPrimary"
                     android:layout_gravity="center"
                     />
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="200dp"
-                    android:src="@drawable/bgr_login"
-                    />
+
 
 
 
