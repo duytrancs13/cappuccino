@@ -1,4 +1,4 @@
-package info.devexchanges.navvp;
+package info.devexchanges.navvp.View.Table;
 
 import android.content.Context;
 import android.content.Intent;
@@ -14,6 +14,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import info.devexchanges.navvp.MenuTabsActivity;
+import info.devexchanges.navvp.R;
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
@@ -48,6 +50,7 @@ public class TableActivity extends AppCompatActivity implements NavigationView.O
         assert navigationView != null;
         navigationView.setNavigationItemSelectedListener(this);
 
+        toast(getIntent().getStringExtra("token"));
 
 
         chuaOrder = (Button) findViewById(R.id.chuaOrder);

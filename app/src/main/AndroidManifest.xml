@@ -9,7 +9,7 @@
         android:label=""
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+        <activity android:name=".View.Main.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -19,17 +19,21 @@
         <activity
             android:name=".DesActivity"
             android:label="DestinationActivity" />
-        <activity android:name=".LoginActivity" />
-        <activity android:name=".TableActivity" />
+        <activity android:name=".View.Login.LoginActivity" />
+        <activity android:name=".View.Table.TableActivity" />
         <activity android:name=".MenuTabsActivity" />
-        <activity android:name=".ForgotPWActivity" />
+        <activity android:name=".View.ForgotPassword.ForgotPasswordActivity" />
         <activity android:name=".ResetPWActivity">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-                <data android:scheme="https" android:host="roronoa-zoro.herokuapp.com" android:path="/confirm" />
 
+                <data
+                    android:host="roronoa-zoro.herokuapp.com"
+                    android:path="/confirm"
+                    android:scheme="https" />
             </intent-filter>
         </activity>
     </application>

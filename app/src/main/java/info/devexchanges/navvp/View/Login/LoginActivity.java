@@ -1,7 +1,6 @@
-package info.devexchanges.navvp;
+package info.devexchanges.navvp.View.Login;
 
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
@@ -10,38 +9,25 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.Html;
-import android.text.InputType;
 import android.text.TextWatcher;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.android.volley.AuthFailureError;
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
 import com.tapadoo.alerter.Alerter;
 
-import org.json.JSONException;
-import org.json.JSONObject;
+import info.devexchanges.navvp.General.SetFont;
+import info.devexchanges.navvp.Presenter.Login.Login;
+import info.devexchanges.navvp.R;
+import info.devexchanges.navvp.View.Table.TableActivity;
+import info.devexchanges.navvp.View.ForgotPassword.ForgotPasswordActivity;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
-import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
-
-public class LoginActivity extends AppCompatActivity  {
+public class LoginActivity extends AppCompatActivity implements View.OnClickListener, InterfaceLogin {
 
     private Toolbar toolbar;
     private TextView tvForgotPw;
@@ -51,21 +37,16 @@ public class LoginActivity extends AppCompatActivity  {
 
     private EditText editEmailLogin, editPwLogin;
     private Button btnLogin;
+
+    private Login login;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        CalligraphyConfig.initDefault(
-                new CalligraphyConfig.Builder()
-                        .setDefaultFontPath("Roboto-Regular.ttf")
-                        .setFontAttrId(R.attr.fontPath)
-                        .build()
-        );
-
-
-
-
+        SetFont setFont = new SetFont("Lobster.otf");
+        setFont.getFont();
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -79,13 +60,7 @@ public class LoginActivity extends AppCompatActivity  {
         //tvForgotPw
         tvForgotPw = (TextView) findViewById(R.id.tvForgotPw);
         tvForgotPw.setText(Html.fromHtml("<u>Quên mật khẩu</u>"));
-        tvForgotPw.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(LoginActivity.this, ForgotPWActivity.class);
-                startActivity(intent);
-            }
-        });
+        tvForgotPw.setOnClickListener(this);
 
 
         editEmailLogin = (EditText) findViewById(R.id.editEmailLogin);
@@ -157,94 +132,51 @@ public class LoginActivity extends AppCompatActivity  {
 
 
         btnLogin = (Button) findViewById(R.id.btnLogin);
-        btnLogin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                login();
-            }
-        });
+        btnLogin.setOnClickListener(this);
+
+        login = new Login(this,this.getBaseContext());
 
     }
 
-    private void login() {
-        if(!validate()){
-            return;
-        }
-
-        btnLogin.setEnabled(false);
-
-        final ProgressDialog progressDialog = new ProgressDialog(LoginActivity.this,
-                R.style.AppTheme_Dark_Dialog);
-        progressDialog.setIndeterminate(true);
-        progressDialog.setMessage("Đang kết nối...");
-        progressDialog.show();
-
-        final String email = editEmailLogin.getText().toString();
-        final String password = editPwLogin.getText().toString();
-
-        new android.os.Handler().postDelayed(
-                new Runnable() {
-                    public void run() {
-                        attemptLogin(email,password);
-                        progressDialog.dismiss();
-                    }
-                }, 2000);
-
+    @Override
+    public void alertErrorEmptyEmail() {
+        editEmailLogin.setError("Vui lòng nhập Email");
     }
 
-
-    private void attemptLogin(final String email, final String password){
-        String url = "https://cappuccino-hello.herokuapp.com/api/login";
-
-        RequestQueue queue = Volley.newRequestQueue(getBaseContext());
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
-
-            @Override
-            public void onResponse(String response) {
-                try {
-                    JSONObject jsonObject = new JSONObject(response);
-                    int flag = jsonObject.getInt("flag");
-                    if(flag == 1){
-                        editEmailLogin.setText("");
-                        clearLogin.setVisibility(View.GONE);
-
-                        editPwLogin.setText("");
-                        visibilityLoginPW.setVisibility(View.GONE);
-
-                        String token = jsonObject.getJSONObject("response").getString("token");
-                        btnLogin.setEnabled(true);
-                        Intent intent = new Intent(LoginActivity.this, TableActivity.class);
-                        intent.putExtra("token",token);
-                        startActivity(intent);
-                    }else{
-                        alertFailed();
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-
-
-
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                toast(error.toString());
-            }
-        }){
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String,String> params = new HashMap<>();
-                params.put("email",email);
-                params.put("password",password);
-                return params;
-            }
-        };
-        queue.add(stringRequest);
-
+    @Override
+    public void alertErrorFormatEmail() {
+        editEmailLogin.setError("Sai định dạng Email");
     }
 
-    private void alertFailed(){
+    @Override
+    public void alertSuccessEmail() {
+        editEmailLogin.setError(null);
+    }
+
+    @Override
+    public void alertErrorEmptyPassword() {
+        editPwLogin.setError("Vui lòng nhập mật khẩu");
+    }
+
+    @Override
+    public void alertErrorMinPassword() {
+        editPwLogin.setError("Ít nhất 5 kí tự");
+    }
+
+    @Override
+    public void alertSuccessPassword() {
+        editPwLogin.setError(null);
+    }
+
+    @Override
+    public void loginSuccessful(String token){
+        Intent intent = new Intent(LoginActivity.this, TableActivity.class);
+        intent.putExtra("token", token);
+        startActivity(intent);
+    }
+
+    @Override
+    public void alertFailed(){
         Alerter.create(this)
                 .setTitle("Lỗi")
                 .setText("Email không chưa đăng kí")
@@ -252,43 +184,21 @@ public class LoginActivity extends AppCompatActivity  {
                 .show();
     }
 
+    @Override
+    public void showProgress() {
+        final ProgressDialog progressDialog = new ProgressDialog(LoginActivity.this,
+                R.style.AppTheme_Dark_Dialog);
+        progressDialog.setIndeterminate(true);
+        progressDialog.setMessage("Đang kết nối...");
+        progressDialog.show();
 
 
-
-    private boolean validate(){
-        boolean valid = true;
-
-        String email = editEmailLogin.getText().toString();
-        String password = editPwLogin.getText().toString();
-
-        if(email.isEmpty()){
-            editEmailLogin.setError("Vui lòng nhập Email");
-            valid = false;
-            return valid;
-        }else if(!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()){
-            editEmailLogin.setError("Sai định dạng Email");
-            valid = false;
-            return valid;
-        }else{
-            editEmailLogin.setError(null);
-        }
-
-        if(password.isEmpty() ){
-            editPwLogin.setError("Vui lòng nhập mật khẩu");
-            valid = false;
-            return valid;
-        }else if(password.length() < 6){
-            editPwLogin.setError("Ít nhất 5 kí tự");
-            valid = false;
-        }else{
-            editPwLogin.setError(null);
-        }
-
-        return valid;
-    }
-
-    protected void attachBaseContext(Context newBase) {
-        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
+        new android.os.Handler().postDelayed(
+                new Runnable() {
+                    public void run() {
+                        progressDialog.dismiss();
+                    }
+                }, 2000);
     }
 
     @Override
@@ -304,9 +214,25 @@ public class LoginActivity extends AppCompatActivity  {
         Toast.makeText(getBaseContext(),message,Toast.LENGTH_SHORT).show();
     }
 
-
     @Override
     public void onBackPressed() {
         finish();
+    }
+
+    @Override
+    public void onClick(View view) {
+        int r = view.getId();
+        switch (r){
+            case R.id.btnLogin:
+                String email = editEmailLogin.getText().toString();
+                String password = editPwLogin.getText().toString();
+                login.login(email,password);
+                break;
+
+            case R.id.tvForgotPw:
+                Intent intent = new Intent(LoginActivity.this, ForgotPasswordActivity.class);
+                startActivity(intent);
+                break;
+        }
     }
 }
