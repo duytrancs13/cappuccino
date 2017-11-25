@@ -24,6 +24,7 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
@@ -154,98 +155,151 @@ public class TableActivity extends AppCompatActivity implements NavigationView.O
                 }
                 */
 
-
-
-
-
-
                 popup = new PopupMenu(v.getContext(), table);
 
                 if( table.getBackground().getConstantState() == getResources().getDrawable(R.drawable.ic_table_free).getConstantState() ){
-                    popup.getMenuInflater().inflate(R.menu.poupup_menu_free, popup.getMenu());
-                    popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                        public boolean onMenuItemClick(MenuItem item) {
-                            switch (item.getItemId()){
-                                case R.id.order:
-                                    intent = new Intent(TableActivity.this, MenuTabsActivity.class);
-                                    startActivity(intent);
 
+                    alertOptionTableFree(v,table);
 
-                                    table.setBackgroundResource(R.drawable.ic_table_waiting);
-                                    countUp = new CountUp(1000) {
-                                        @Override
-                                        public void onTick(long millisUntil) {
-                                            TextView textTimer = (TextView) findViewById(R.id.timer);
-                                            textTimer.setVisibility(View.VISIBLE);
-                                            textTimer.setTextColor(getResources().getColor(R.color.colorPrimary));
-                                            textTimer.setText(formatMilliSecondsToTime(millisUntil));
-                                        }
-                                    };
-                                    countUp.start();
+                }else if(table.getBackground().getConstantState() == getResources().getDrawable(R.drawable.ic_table_deliver).getConstantState()) {
+                    alertOptionTableDeliver(v,table);
 
-                                    break;
-
-                                case R.id.convervation:
-                                    new CountDownTimer(3000, 1000) {
-                                        TextView textTimer = (TextView) findViewById(R.id.timer);
-                                        public void onTick(long millisUntilFinished) {
-                                            table.setBackgroundResource(R.drawable.ic_table_conversation);
-                                            table.setEnabled(false);
-
-                                            textTimer.setVisibility(View.VISIBLE);
-                                            textTimer.setTextColor(getResources().getColor(R.color.red));
-                                            textTimer.setText(formatMilliSecondsToTime(millisUntilFinished));
-                                        }
-                                        public void onFinish() {
-                                            table.setBackgroundResource(R.drawable.ic_table_free);
-                                            textTimer.setVisibility(View.INVISIBLE);
-                                            table.setEnabled(true);
-                                        }
-                                    }.start();
-                                    break;
-                            }
-
-                            return true;
-                        }
-                    });
-
-                    popup.show();
                 }else if(table.getBackground().getConstantState() == getResources().getDrawable(R.drawable.ic_table_waiting).getConstantState() ){
-                    popup.getMenuInflater().inflate(R.menu.poupup_menu_waiting, popup.getMenu());
 
-                    popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                        public boolean onMenuItemClick(MenuItem item) {
-                            switch (item.getItemId()){
-                                case R.id.order:
-                                    intent = new Intent(TableActivity.this, MenuTabsActivity.class);
-                                    startActivity(intent);
-                                    break;
+                    alertOptionTableWaiting(v,table);
 
-                                case R.id.receipt:
-                                    table.setBackgroundResource(R.drawable.ic_table_free);
-                                    //popup.getMenuInflater().inflate(R.menu.poupup_menu_free, popup.getMenu());
-                                    countUp.stop();
-                                    TextView textTimer = (TextView) findViewById(R.id.timer);
-                                    textTimer.setVisibility(View.INVISIBLE);
-
-
-                                    intent = new Intent(TableActivity.this,MenuTabsActivity.class);
-                                    intent.putExtra("statusReceipt",1);
-                                    startActivity(intent);
-
-                                    break;
-                            }
-
-                            return true;
-                        }
-                    });
-
-                    popup.show();
                 }
             }
         });
 
 
+    }
+
+
+    void alertOptionTableFree(View v,final Button table){
+        final CharSequence[] items = {"Đặt món", "Đặt chỗ"};
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
+        builder.setIcon(R.drawable.ic_option);
+
+        builder.setTitle("Tùy chọn");
+
+        builder.setItems(items, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int position) {
+                if(position==0){
+                    intent = new Intent(TableActivity.this, MenuTabsActivity.class);
+                    startActivity(intent);
+
+                    table.setBackgroundResource(R.drawable.ic_table_waiting);
+                    countUp = new CountUp(1000) {
+                        @Override
+                        public void onTick(long millisUntil) {
+                            TextView textTimer = (TextView) findViewById(R.id.timer);
+                            textTimer.setVisibility(View.VISIBLE);
+                            textTimer.setTextColor(getResources().getColor(R.color.colorPrimary));
+                            textTimer.setText(formatMilliSecondsToTime(millisUntil));
+                        }
+                    };
+                    countUp.start();
+                }else if(position == 1){
+                    
+                    new CountDownTimer(3000, 1000) {
+                        TextView textTimer = (TextView) findViewById(R.id.timer);
+                        public void onTick(long millisUntilFinished) {
+                            table.setBackgroundResource(R.drawable.ic_table_conversation);
+                            table.setEnabled(false);
+
+                            textTimer.setVisibility(View.VISIBLE);
+                            textTimer.setTextColor(getResources().getColor(R.color.red));
+                            textTimer.setText(formatMilliSecondsToTime(millisUntilFinished));
+                        }
+                        public void onFinish() {
+                            table.setBackgroundResource(R.drawable.ic_table_free);
+                            textTimer.setVisibility(View.INVISIBLE);
+                            table.setEnabled(true);
+                        }
+                    }.start();
+                }
+            }
+        });
+        AlertDialog alert = builder.create();
+        alert.show();
+
+    }
+
+    void alertOptionTableDeliver(View v, final Button table){
+        final CharSequence[] items = {"Đặt thêm món","Thanh toán"};
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
+        builder.setIcon(R.drawable.ic_option);
+        builder.setTitle("Tùy chọn");
+        builder.setItems(items, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int position) {
+                if(position == 0){
+                    intent = new Intent(TableActivity.this, MenuTabsActivity.class);
+                    startActivity(intent);
+
+                    table.setBackgroundResource(R.drawable.ic_table_waiting);
+                    countUp = new CountUp(1000) {
+                        @Override
+                        public void onTick(long millisUntil) {
+                            TextView textTimer = (TextView) findViewById(R.id.timer);
+                            textTimer.setVisibility(View.VISIBLE);
+                            textTimer.setTextColor(getResources().getColor(R.color.colorPrimary));
+                            textTimer.setText(formatMilliSecondsToTime(millisUntil));
+                        }
+                    };
+                    countUp.start();
+                }else if(position == 1){
+                    table.setBackgroundResource(R.drawable.ic_table_free);
+                    //popup.getMenuInflater().inflate(R.menu.poupup_menu_free, popup.getMenu());
+                    countUp.stop();
+                    TextView textTimer = (TextView) findViewById(R.id.timer);
+                    textTimer.setVisibility(View.INVISIBLE);
+
+
+                    intent = new Intent(TableActivity.this,MenuTabsActivity.class);
+                    intent.putExtra("statusReceipt",1);
+                    startActivity(intent);
+                }
+            }
+        });
+        AlertDialog alert = builder.create();
+        alert.show();
+    }
+
+    void alertOptionTableWaiting(View v, final Button table){
+        final CharSequence[] items = {"Đặt món", "Giao món","Thanh toán"};
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
+        builder.setIcon(R.drawable.ic_option);
+        builder.setTitle("Tùy chọn");
+        builder.setItems(items, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int position) {
+                if(position == 0){
+                    intent = new Intent(TableActivity.this, MenuTabsActivity.class);
+                    startActivity(intent);
+                }else if(position == 1){
+                    table.setBackgroundResource(R.drawable.ic_table_deliver);
+                    countUp.stop();
+                    TextView textTimer = (TextView) findViewById(R.id.timer);
+                    textTimer.setVisibility(View.INVISIBLE);
+                }else if(position == 2){
+                    table.setBackgroundResource(R.drawable.ic_table_free);
+                    //popup.getMenuInflater().inflate(R.menu.poupup_menu_free, popup.getMenu());
+                    countUp.stop();
+                    TextView textTimer = (TextView) findViewById(R.id.timer);
+                    textTimer.setVisibility(View.INVISIBLE);
+
+
+                    intent = new Intent(TableActivity.this,MenuTabsActivity.class);
+                    intent.putExtra("statusReceipt",1);
+                    startActivity(intent);
+                }
+            }
+        });
+        AlertDialog alert = builder.create();
+        alert.show();
     }
 
     public static class OnDragTouchListener implements View.OnTouchListener {
@@ -405,6 +459,8 @@ public class TableActivity extends AppCompatActivity implements NavigationView.O
             isDragging = false;
         }
     }
+
+
 
 
 

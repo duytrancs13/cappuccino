@@ -11,7 +11,6 @@
     <color name="black">#000000</color>
     <color name="white">#ffffff</color>
     <color name="red">#e34500</color>
-    <color name="green">#c4fff9</color>
 
 
     <color name="bgrEdittext">#eaeaea</color>
@@ -20,6 +19,7 @@
 
     <color name="tableFree">#80ff00</color>
     <color name="tableWaiting">#ffff00</color>
+    <color name="tableDeliver">#7f7f7f</color>
 
 
     <color name="iron">#CCCCCC</color>
