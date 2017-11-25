@@ -136,10 +136,114 @@ public class TableActivity extends AppCompatActivity implements NavigationView.O
         linearLayout.addView(timer);
 
 
+
+
+
         linearLayout.setOnTouchListener(new OnDragTouchListener(linearLayout));
 
+        table.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(final View v) {
+                /*if(table.getReceiptId().equals("")){
+                    String urlUpdateTable ="https://cappuccino-hello.herokuapp.com/api/table/"+table.getId()+"/receipt/";
+                    updateTable(urlUpdateTable);
+                }else{
+                    Intent intent = new Intent(MainActivity.this, ReceiptActivity.class);
+                    intent.putExtra("getReceiptId",table.getReceiptId());
+                    startActivity(intent);
+                }
+                */
 
 
+
+
+
+
+                popup = new PopupMenu(v.getContext(), table);
+
+                if( table.getBackground().getConstantState() == getResources().getDrawable(R.drawable.ic_table_free).getConstantState() ){
+                    popup.getMenuInflater().inflate(R.menu.poupup_menu_free, popup.getMenu());
+                    popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                        public boolean onMenuItemClick(MenuItem item) {
+                            switch (item.getItemId()){
+                                case R.id.order:
+                                    intent = new Intent(TableActivity.this, MenuTabsActivity.class);
+                                    startActivity(intent);
+
+
+                                    table.setBackgroundResource(R.drawable.ic_table_waiting);
+                                    countUp = new CountUp(1000) {
+                                        @Override
+                                        public void onTick(long millisUntil) {
+                                            TextView textTimer = (TextView) findViewById(R.id.timer);
+                                            textTimer.setVisibility(View.VISIBLE);
+                                            textTimer.setTextColor(getResources().getColor(R.color.colorPrimary));
+                                            textTimer.setText(formatMilliSecondsToTime(millisUntil));
+                                        }
+                                    };
+                                    countUp.start();
+
+                                    break;
+
+                                case R.id.convervation:
+                                    new CountDownTimer(3000, 1000) {
+                                        TextView textTimer = (TextView) findViewById(R.id.timer);
+                                        public void onTick(long millisUntilFinished) {
+                                            table.setBackgroundResource(R.drawable.ic_table_conversation);
+                                            table.setEnabled(false);
+
+                                            textTimer.setVisibility(View.VISIBLE);
+                                            textTimer.setTextColor(getResources().getColor(R.color.red));
+                                            textTimer.setText(formatMilliSecondsToTime(millisUntilFinished));
+                                        }
+                                        public void onFinish() {
+                                            table.setBackgroundResource(R.drawable.ic_table_free);
+                                            textTimer.setVisibility(View.INVISIBLE);
+                                            table.setEnabled(true);
+                                        }
+                                    }.start();
+                                    break;
+                            }
+
+                            return true;
+                        }
+                    });
+
+                    popup.show();
+                }else if(table.getBackground().getConstantState() == getResources().getDrawable(R.drawable.ic_table_waiting).getConstantState() ){
+                    popup.getMenuInflater().inflate(R.menu.poupup_menu_waiting, popup.getMenu());
+
+                    popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                        public boolean onMenuItemClick(MenuItem item) {
+                            switch (item.getItemId()){
+                                case R.id.order:
+                                    intent = new Intent(TableActivity.this, MenuTabsActivity.class);
+                                    startActivity(intent);
+                                    break;
+
+                                case R.id.receipt:
+                                    table.setBackgroundResource(R.drawable.ic_table_free);
+                                    //popup.getMenuInflater().inflate(R.menu.poupup_menu_free, popup.getMenu());
+                                    countUp.stop();
+                                    TextView textTimer = (TextView) findViewById(R.id.timer);
+                                    textTimer.setVisibility(View.INVISIBLE);
+
+
+                                    intent = new Intent(TableActivity.this,MenuTabsActivity.class);
+                                    intent.putExtra("statusReceipt",1);
+                                    startActivity(intent);
+
+                                    break;
+                            }
+
+                            return true;
+                        }
+                    });
+
+                    popup.show();
+                }
+            }
+        });
 
 
     }
@@ -303,6 +407,31 @@ public class TableActivity extends AppCompatActivity implements NavigationView.O
     }
 
 
+
+
+
+
+    private String formatMilliSecondsToTime(long milliseconds) {
+
+        int seconds = (int) (milliseconds / 1000) % 60;
+        int minutes = (int) ((milliseconds / (1000 * 60)) % 60);
+        int hours = (int) ((milliseconds / (1000 * 60 * 60)) % 24);
+        return twoDigitString(hours) + ":" + twoDigitString(minutes) + ":"
+                + twoDigitString(seconds);
+    }
+
+    private String twoDigitString(long number) {
+
+        if (number == 0) {
+            return "00";
+        }
+
+        if (number / 10 == 0) {
+            return "0" + number;
+        }
+
+        return String.valueOf(number);
+    }
 
     @Override
     protected void attachBaseContext(Context newBase) {
