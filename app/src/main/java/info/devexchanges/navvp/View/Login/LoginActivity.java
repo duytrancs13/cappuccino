@@ -1,9 +1,12 @@
 package info.devexchanges.navvp.View.Login;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
+import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -22,32 +25,42 @@ import android.widget.Toast;
 import com.tapadoo.alerter.Alerter;
 
 import info.devexchanges.navvp.General.SetFont;
-import info.devexchanges.navvp.Presenter.Login.Login;
+import info.devexchanges.navvp.Presenter.Login.LoginPresenterImpl;
 import info.devexchanges.navvp.R;
+import info.devexchanges.navvp.View.Main.MainActivity;
 import info.devexchanges.navvp.View.Table.TableActivity;
 import info.devexchanges.navvp.View.ForgotPassword.ForgotPasswordActivity;
 
-public class LoginActivity extends AppCompatActivity implements View.OnClickListener, InterfaceLogin {
+public class LoginActivity extends AppCompatActivity implements View.OnClickListener, LoginView {
+
+    public static final String MyPREFERENCES = "capuccino" ;
+
+    private SharedPreferences sharedpreferences;
 
     private Toolbar toolbar;
+
     private TextView tvForgotPw;
     private ImageView clearLogin,visibilityLoginPW;
-
 
 
     private EditText editEmailLogin, editPwLogin;
     private Button btnLogin;
 
-    private Login login;
+    private LoginPresenterImpl loginPresenterImpl;
+
+    private ProgressDialog dialog ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+
+        //set font chữ
         SetFont setFont = new SetFont("Lobster.otf");
         setFont.getFont();
 
+        // set Toolbar
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -57,16 +70,22 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         getSupportActionBar().setHomeAsUpIndicator(upArrow);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        //tvForgotPw
+        // go to page FORGOT PASSWORD
         tvForgotPw = (TextView) findViewById(R.id.tvForgotPw);
         tvForgotPw.setText(Html.fromHtml("<u>Quên mật khẩu</u>"));
         tvForgotPw.setOnClickListener(this);
 
 
+        // Mapping
+        dialog = new ProgressDialog(LoginActivity.this,R.style.AppTheme_Dark_Dialog);
+
         editEmailLogin = (EditText) findViewById(R.id.editEmailLogin);
         editPwLogin = (EditText) findViewById(R.id.editPwLogin);
         clearLogin = (ImageView) findViewById(R.id.clearLogin);
+        visibilityLoginPW = (ImageView) findViewById(R.id.visibilityLoginPW);
 
+
+        // handle event clear all text in editText Email
         editEmailLogin.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -93,7 +112,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             }
         });
 
-        visibilityLoginPW = (ImageView) findViewById(R.id.visibilityLoginPW);
+
+
+        //handle event hide or show text in editText Password
         editPwLogin.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -131,10 +152,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
 
 
+        // handle event button LOGIN
         btnLogin = (Button) findViewById(R.id.btnLogin);
         btnLogin.setOnClickListener(this);
 
-        login = new Login(this,this.getBaseContext());
+        // initialize LoginPresenterImpl()
+        loginPresenterImpl = new LoginPresenterImpl(this,this.getBaseContext());
 
     }
 
@@ -170,41 +193,58 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     @Override
     public void loginSuccessful(String token){
+        dialog.dismiss();
+
+        editEmailLogin.setText("");
+        clearLogin.setVisibility(View.GONE);
+
+        editPwLogin.setText("");
+        visibilityLoginPW.setVisibility(View.GONE);
+
+        sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+
+        SharedPreferences.Editor editor = sharedpreferences.edit();
+
+        editor.putString("token", token);
+        editor.commit();
+
         Intent intent = new Intent(LoginActivity.this, TableActivity.class);
-        intent.putExtra("token", token);
         startActivity(intent);
     }
 
     @Override
-    public void alertFailed(){
+    public void loginFailed(){
+        dialog.dismiss();
+
         Alerter.create(this)
                 .setTitle("Lỗi")
-                .setText("Email không chưa đăng kí")
+                .setText("Email chưa đăng kí")
+                .setBackgroundColorRes(R.color.red) // or setBackgroundColorInt(Color.CYAN)
+                .show();
+    }
+
+    @Override
+    public void loginErrorServer() {
+        dialog.dismiss();
+
+        Alerter.create(this)
+                .setTitle("Lỗi server")
+                .setText("Vui lòng thử lại!!!")
                 .setBackgroundColorRes(R.color.red) // or setBackgroundColorInt(Color.CYAN)
                 .show();
     }
 
     @Override
     public void showProgress() {
-        final ProgressDialog progressDialog = new ProgressDialog(LoginActivity.this,
-                R.style.AppTheme_Dark_Dialog);
-        progressDialog.setIndeterminate(true);
-        progressDialog.setMessage("Đang kết nối...");
-        progressDialog.show();
-
-
-        new android.os.Handler().postDelayed(
-                new Runnable() {
-                    public void run() {
-                        progressDialog.dismiss();
-                    }
-                }, 2000);
+        new Progress().execute();
     }
 
+    // Back page
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
-            finish();
+            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+            startActivity(intent);
         }
 
         return super.onOptionsItemSelected(item);
@@ -216,7 +256,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     @Override
     public void onBackPressed() {
-        finish();
+        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+        startActivity(intent);
     }
 
     @Override
@@ -226,7 +267,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             case R.id.btnLogin:
                 String email = editEmailLogin.getText().toString();
                 String password = editPwLogin.getText().toString();
-                login.login(email,password);
+                loginPresenterImpl.login(email,password);
                 break;
 
             case R.id.tvForgotPw:
@@ -235,4 +276,30 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 break;
         }
     }
+
+    private class Progress extends AsyncTask<Void, Void, Void>{
+
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            dialog.setMessage("Đang kết nối...");
+            dialog.setIndeterminate(true);
+            dialog.setCancelable(false);
+            dialog.show();
+
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            String email = editEmailLogin.getText().toString();
+            String password = editPwLogin.getText().toString();
+            loginPresenterImpl.attemptLogin(email,password);
+            return null;
+        }
+    }
+
+
 }
+
+

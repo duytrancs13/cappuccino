@@ -1,4 +1,4 @@
-package info.devexchanges.navvp.Fragment;
+package info.devexchanges.navvp.View.Fragment;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -12,12 +12,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import info.devexchanges.navvp.Adapter.ViewPagerAdapterFragmentMenu;
+import info.devexchanges.navvp.General.SetFont;
+import info.devexchanges.navvp.View.Adapter.ViewPagerFragmentChooseMenuAdapter;
 import info.devexchanges.navvp.R;
-import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
-public class FragmentMenu extends Fragment {
+public class FragmentChooseMenu extends Fragment {
     private TabLayout tab_layout_fragment;
     private ViewPager view_pager_fragment;
     private String[] pageTitle = {"Chọn nhiều", "Theo loại", "Tìm kiếm"};
@@ -26,14 +26,10 @@ public class FragmentMenu extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.fragment_menu, container, false);
+        View view = inflater.inflate(R.layout.fragment_choose_menu, container, false);
 
-        CalligraphyConfig.initDefault(
-                new CalligraphyConfig.Builder()
-                        .setDefaultFontPath("Roboto-Regular.ttf")
-                        .setFontAttrId(R.attr.fontPath)
-                        .build()
-        );
+        SetFont setFont = new SetFont("Roboto-Regular.ttf");
+        setFont.getFont();
 
         tab_layout_fragment = (TabLayout) view.findViewById(R.id.tab_layout_fragment);
         view_pager_fragment = (ViewPager)view.findViewById(R.id.view_pager_fragment);
@@ -43,7 +39,7 @@ public class FragmentMenu extends Fragment {
         }
         tab_layout_fragment.setTabGravity(TabLayout.GRAVITY_FILL);
 
-        ViewPagerAdapterFragmentMenu pagerAdapter = new ViewPagerAdapterFragmentMenu(getFragmentManager());
+        ViewPagerFragmentChooseMenuAdapter pagerAdapter = new ViewPagerFragmentChooseMenuAdapter(getFragmentManager());
         view_pager_fragment.setAdapter(pagerAdapter);
 
         view_pager_fragment.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tab_layout_fragment));

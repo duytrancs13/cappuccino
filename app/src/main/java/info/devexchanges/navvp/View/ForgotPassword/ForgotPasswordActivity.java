@@ -1,9 +1,9 @@
 package info.devexchanges.navvp.View.ForgotPassword;
 
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
+import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -20,11 +20,12 @@ import com.tapadoo.alerter.Alerter;
 
 
 import info.devexchanges.navvp.General.SetFont;
-import info.devexchanges.navvp.Presenter.ForgotPassword.ForgotPassword;
+import info.devexchanges.navvp.Presenter.ForgotPassword.ForgotPasswordPresenterImpl;
 
 import info.devexchanges.navvp.R;
+import info.devexchanges.navvp.View.Login.LoginActivity;
 
-public class ForgotPasswordActivity extends AppCompatActivity implements InterfaceForgotPassword, View.OnClickListener{
+public class ForgotPasswordActivity extends AppCompatActivity implements ForgotPasswordView, View.OnClickListener{
 
     private Toolbar toolbar;
 
@@ -35,17 +36,20 @@ public class ForgotPasswordActivity extends AppCompatActivity implements Interfa
     private ImageView clearFogotPW;
 
 
-    ForgotPassword forgotPassword;
+    private ForgotPasswordPresenterImpl forgotPasswordPresenterImpl;
 
+    ProgressDialog dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_forgot_password);
 
+        //Set font
         SetFont setFont = new SetFont("Roboto-Regular.ttf");
         setFont.getFont();
 
+        //Set toolbar
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -55,11 +59,16 @@ public class ForgotPasswordActivity extends AppCompatActivity implements Interfa
         getSupportActionBar().setHomeAsUpIndicator(upArrow);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+
+        //Match
+        dialog = new ProgressDialog(ForgotPasswordActivity.this,R.style.AppTheme_Dark_Dialog);
+
         editEmailForgotPW = (EditText) findViewById(R.id.editEmailForgotPW);
         clearFogotPW = (ImageView) findViewById(R.id.clearFogotPW);
 
 
 
+        // Handle event clear text in editText Email
         editEmailForgotPW.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -86,10 +95,13 @@ public class ForgotPasswordActivity extends AppCompatActivity implements Interfa
             }
         });
 
+        // handle event FORGOT PASSWORD
         btnEmailForgotPW = (Button) findViewById(R.id.btnEmailForgotPW);
         btnEmailForgotPW.setOnClickListener(this);
 
-        forgotPassword = new ForgotPassword(this,this.getBaseContext());
+
+        //Init ForgotPasswordPresenterImpl()
+        forgotPasswordPresenterImpl = new ForgotPasswordPresenterImpl(this,this.getBaseContext());
 
 
 
@@ -126,40 +138,43 @@ public class ForgotPasswordActivity extends AppCompatActivity implements Interfa
 
     @Override
     public void showProgress() {
-        final ProgressDialog progressDialog = new ProgressDialog(ForgotPasswordActivity.this,
-                R.style.AppTheme_Dark_Dialog);
-        progressDialog.setIndeterminate(true);
-        progressDialog.setMessage("Đang kết nối...");
-        progressDialog.show();
-
-
-        new android.os.Handler().postDelayed(
-                new Runnable() {
-                    public void run() {
-                        progressDialog.dismiss();
-                    }
-                }, 2000);
+        new Progress().execute();
     }
 
     @Override
-    public void alertSuccessful(){
+    public void forgotPasswordSuccessful(){
+
+        dialog.dismiss();
         Alerter.create(this)
                 .setTitle("Thành công")
                 .setText("Vui lòng xác nhận Email")
-                .setBackgroundColorRes(R.color.colorPrimary) // or setBackgroundColorInt(Color.CYAN)
+                .setBackgroundColorRes(R.color.colorPrimary)
                 .show();
 
         editEmailForgotPW.setText("");
         clearFogotPW.setVisibility(View.GONE);
 
+
+
     }
 
     @Override
-    public void alertFailed(){
+    public void forgotPasswordFailed(){
+        dialog.dismiss();
         Alerter.create(this)
                 .setTitle("Lỗi")
                 .setText("Email không chưa đăng kí")
-                .setBackgroundColorRes(R.color.red) // or setBackgroundColorInt(Color.CYAN)
+                .setBackgroundColorRes(R.color.red)
+                .show();
+    }
+
+    @Override
+    public void forgotPasswordErrorServer() {
+        dialog.dismiss();
+        Alerter.create(this)
+                .setTitle("Lỗi server")
+                .setText("Vui lòng thử lại!!!")
+                .setBackgroundColorRes(R.color.red)
                 .show();
     }
 
@@ -169,8 +184,30 @@ public class ForgotPasswordActivity extends AppCompatActivity implements Interfa
         switch (r){
             case R.id.btnEmailForgotPW:
                 String email = editEmailForgotPW.getText().toString();
-                forgotPassword.forgot(email);
+                forgotPasswordPresenterImpl.forgot(email);
                 break;
         }
     }
+
+    private class Progress extends AsyncTask<Void, Void, Void> {
+
+
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            dialog.setMessage("Đang kết nối...");
+            dialog.setIndeterminate(true);
+            dialog.setCancelable(false);
+            dialog.show();
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            String email = editEmailForgotPW.getText().toString();
+            forgotPasswordPresenterImpl.attemptForgot(email);
+            return null;
+        }
+    }
+
 }

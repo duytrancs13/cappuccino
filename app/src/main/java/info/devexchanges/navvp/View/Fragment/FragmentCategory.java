@@ -1,4 +1,4 @@
-package info.devexchanges.navvp.Fragment;
+package info.devexchanges.navvp.View.Fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -13,9 +13,10 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
-import info.devexchanges.navvp.Adapter.CustomCategoryAdapter;
+import info.devexchanges.navvp.View.Adapter.CustomCategoryAdapter;
 import info.devexchanges.navvp.Model.Category;
 import info.devexchanges.navvp.R;
+import info.devexchanges.navvp.View.Fragment.Menu.FragmentMenu;
 
 public class FragmentCategory extends Fragment {
     private ListView lvCategory;
@@ -47,7 +48,7 @@ public class FragmentCategory extends Fragment {
         lvCategory.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                FragmentFavoriteOrMenuOfCategory fragmentFavoriteOrMenuOfCategory = new FragmentFavoriteOrMenuOfCategory();
+                FragmentMenu fragmentFavoriteOrMenuOfCategory = new FragmentMenu();
                 getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.frame_root,fragmentFavoriteOrMenuOfCategory).commit();
             }
         });

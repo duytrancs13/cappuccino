@@ -1,6 +1,7 @@
 package info.devexchanges.navvp.Presenter.Login;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.util.Log;
 
 import com.android.volley.AuthFailureError;
@@ -16,20 +17,24 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
+import android.content.SharedPreferences;
+
+import info.devexchanges.navvp.View.Login.LoginView;
+
+import static android.content.Context.MODE_PRIVATE;
 
 /**
  * Created by sung on 10/11/2017.
  */
 
-public class Login implements InterfaceLogin {
+public class LoginPresenterImpl implements LoginPresenter {
 
-    info.devexchanges.navvp.View.Login.InterfaceLogin viewLoginActivity;
-    Context context;
+    private LoginView viewLoginActivity;
+    private Context context;
 
-    public Login(info.devexchanges.navvp.View.Login.InterfaceLogin viewLoginActivity, Context context) {
+    public LoginPresenterImpl(LoginView viewLoginActivity, Context context) {
         this.viewLoginActivity=viewLoginActivity;
         this.context=context.getApplicationContext();
-        ;
     }
 
     @Override
@@ -67,7 +72,7 @@ public class Login implements InterfaceLogin {
             return;
         }
         viewLoginActivity.showProgress();
-        attemptLogin(email,password);
+
 
     }
 
@@ -85,9 +90,8 @@ public class Login implements InterfaceLogin {
                     if(flag == 1){
                         String token = jsonObject.getJSONObject("response").getString("token");
                         viewLoginActivity.loginSuccessful(token);
-
-                    }else{
-                        viewLoginActivity.alertFailed();
+                    }else if(flag == 0){
+                        viewLoginActivity.loginFailed();
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -99,6 +103,7 @@ public class Login implements InterfaceLogin {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+                viewLoginActivity.loginErrorServer();
             }
         }){
             @Override
@@ -112,57 +117,6 @@ public class Login implements InterfaceLogin {
         queue.add(stringRequest);
 
     }
-    /*private void attemptLogin(final String email, final String password){
-        String url = "https://cappuccino-hello.herokuapp.com/api/login";
-
-        RequestQueue queue = Volley.newRequestQueue(getBaseContext());
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
-
-            @Override
-            public void onResponse(String response) {
-                try {
-                    JSONObject jsonObject = new JSONObject(response);
-                    int flag = jsonObject.getInt("flag");
-                    if(flag == 1){
-                        editEmailLogin.setText("");
-                        clearLogin.setVisibility(View.GONE);
-
-                        editPwLogin.setText("");
-                        visibilityLoginPW.setVisibility(View.GONE);
-
-                        String token = jsonObject.getJSONObject("response").getString("token");
-                        btnLogin.setEnabled(true);
-                        Intent intent = new Intent(LoginActivity.this, TableActivity.class);
-                        intent.putExtra("token",token);
-                        startActivity(intent);
-                    }else{
-                        alertFailed();
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-
-
-
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                toast(error.toString());
-            }
-        }){
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String,String> params = new HashMap<>();
-                params.put("email",email);
-                params.put("password",password);
-                return params;
-            }
-        };
-        queue.add(stringRequest);
-
-    }*/
-
 
 
 

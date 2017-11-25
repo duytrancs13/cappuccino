@@ -4,7 +4,7 @@ package info.devexchanges.navvp.View.Login;
  * Created by sung on 10/11/2017.
  */
 
-public interface InterfaceLogin {
+public interface LoginView {
 
     void alertErrorEmptyEmail();
     void alertErrorFormatEmail();
@@ -17,7 +17,8 @@ public interface InterfaceLogin {
     void showProgress();
 
     void loginSuccessful(String token);
-    void alertFailed();
+    void loginFailed();
+    void loginErrorServer();
 
 
 }

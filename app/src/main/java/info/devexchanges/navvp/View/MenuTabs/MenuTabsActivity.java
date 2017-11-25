@@ -1,16 +1,18 @@
-package info.devexchanges.navvp;
+package info.devexchanges.navvp.View.MenuTabs;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.support.design.widget.TabLayout;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
-import info.devexchanges.navvp.Adapter.ViewPagerAdapterMenuTabs;
-import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
+import info.devexchanges.navvp.View.Adapter.ViewPagerMenuTabsAdapter;
+import info.devexchanges.navvp.General.SetFont;
+import info.devexchanges.navvp.R;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public class MenuTabsActivity extends AppCompatActivity {
@@ -25,19 +27,14 @@ public class MenuTabsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu_tabs);
 
-        CalligraphyConfig.initDefault(
-                new CalligraphyConfig.Builder()
-                        .setDefaultFontPath("Roboto-Regular.ttf")
-                        .setFontAttrId(R.attr.fontPath)
-                        .build()
-        );
+        SetFont setFont = new SetFont("Roboto-Regular.ttf");
+        setFont.getFont();
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         // Set ActionBar
         final Drawable upArrow = getResources().getDrawable(R.drawable.ic_back);
-//        upArrow.setColorFilter(getResources().getColor(R.color.white), PorterDuff.Mode.SRC_ATOP);
         getSupportActionBar().setHomeAsUpIndicator(upArrow);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -54,7 +51,7 @@ public class MenuTabsActivity extends AppCompatActivity {
         viewPager = (ViewPager)findViewById(R.id.view_pager);
 
         //set viewpager adapter
-        ViewPagerAdapterMenuTabs pagerAdapter = new ViewPagerAdapterMenuTabs(getSupportFragmentManager());
+        ViewPagerMenuTabsAdapter pagerAdapter = new ViewPagerMenuTabsAdapter(getSupportFragmentManager());
         viewPager.setAdapter(pagerAdapter);
 
         //change Tab selection when swipe ViewPager
@@ -77,6 +74,14 @@ public class MenuTabsActivity extends AppCompatActivity {
 
             }
         });
+
+        int statusReceipt = getIntent().getIntExtra("statusReceipt",0);
+        if(statusReceipt == 1){
+            viewPager.setCurrentItem(1);
+        }else{
+            viewPager.setCurrentItem(0);
+        }
+
 
 
     }

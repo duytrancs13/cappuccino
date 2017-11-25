@@ -1,25 +1,24 @@
-package info.devexchanges.navvp.Adapter;
+package info.devexchanges.navvp.View.Adapter;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-import info.devexchanges.navvp.Fragment.FragmentFavoriteOrMenuOfCategory;
-import info.devexchanges.navvp.Fragment.FragmentCategory;
-import info.devexchanges.navvp.Fragment.Fragment5;
-import info.devexchanges.navvp.Fragment.RootFragment;
+import info.devexchanges.navvp.View.Fragment.Menu.FragmentMenu;
+import info.devexchanges.navvp.View.Fragment.Fragment5;
+import info.devexchanges.navvp.View.Fragment.RootFragment;
 
 
-public class ViewPagerAdapterFragmentMenu extends FragmentPagerAdapter {
+public class ViewPagerFragmentChooseMenuAdapter extends FragmentPagerAdapter {
 
-    public ViewPagerAdapterFragmentMenu(FragmentManager fm) {
+    public ViewPagerFragmentChooseMenuAdapter(FragmentManager fm) {
         super(fm);
     }
 
     @Override
     public Fragment getItem(int position) {
         if (position ==0) {
-            return new FragmentFavoriteOrMenuOfCategory();
+            return new FragmentMenu();
         } else if (position == 1) {
             return new RootFragment();
         }else if (position == 2)

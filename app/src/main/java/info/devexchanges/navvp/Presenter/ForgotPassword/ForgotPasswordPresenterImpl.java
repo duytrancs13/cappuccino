@@ -18,12 +18,12 @@ import info.devexchanges.navvp.View.ForgotPassword.*;
  * Created by sung on 10/11/2017.
  */
 
-public class ForgotPassword implements InterfaceForgotPassword{
+public class ForgotPasswordPresenterImpl implements ForgotPasswordPresenter {
 
-    ForgotPasswordActivity forgotPasswordActivity;
-    Context context;
+    private ForgotPasswordActivity forgotPasswordActivity;
+    private Context context;
 
-    public ForgotPassword(ForgotPasswordActivity forgotPasswordActivity, Context context) {
+    public ForgotPasswordPresenterImpl(ForgotPasswordActivity forgotPasswordActivity, Context context) {
         this.forgotPasswordActivity = forgotPasswordActivity;
         this.context = context;
     }
@@ -49,7 +49,7 @@ public class ForgotPassword implements InterfaceForgotPassword{
             return;
         }
         forgotPasswordActivity.showProgress();
-        attemptForgot(email);
+
     }
 
     @Override
@@ -64,9 +64,9 @@ public class ForgotPassword implements InterfaceForgotPassword{
                     JSONObject jsonObject = new JSONObject(response);
                     int flag = jsonObject.getInt("flag");
                     if(flag == 1){
-                        forgotPasswordActivity.alertSuccessful();
+                        forgotPasswordActivity.forgotPasswordSuccessful();
                     }else if(flag == 0){
-                        forgotPasswordActivity.alertFailed();
+                        forgotPasswordActivity.forgotPasswordFailed();
                     }
 
                 } catch (JSONException e) {
@@ -76,7 +76,7 @@ public class ForgotPassword implements InterfaceForgotPassword{
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-
+                forgotPasswordActivity.forgotPasswordErrorServer();
             }
         });
         queue.add(stringRequest);

@@ -1,4 +1,4 @@
-package info.devexchanges.navvp.Adapter;
+package info.devexchanges.navvp.View.Adapter;
 
 import android.content.Context;
 import android.graphics.Typeface;
@@ -58,7 +58,7 @@ public class CustomCategoryAdapter extends BaseAdapter {
 
         if(convertView == null){
 
-            convertView = layoutInflater.inflate(R.layout.layout_listview_categories,null);
+            convertView = layoutInflater.inflate(R.layout.layout_listview_category,null);
 
             viewHolder = new ViewHolder();
 

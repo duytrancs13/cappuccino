@@ -1,4 +1,4 @@
-package info.devexchanges.navvp.Fragment;
+package info.devexchanges.navvp.View.Fragment;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;

@@ -21,24 +21,15 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
 
-            <Button
-                android:id="@+id/chuaOrder"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Chưa order"/>
+        <RelativeLayout
+            android:id="@+id/root"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent">
 
-            <Button
-                android:id="@+id/daorder"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Đã order"/>
+        </RelativeLayout>
 
-        </LinearLayout>
+
 
 
 

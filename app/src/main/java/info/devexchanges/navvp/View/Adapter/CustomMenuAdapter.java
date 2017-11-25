@@ -1,4 +1,4 @@
-package info.devexchanges.navvp.Adapter;
+package info.devexchanges.navvp.View.Adapter;
 
 import android.content.Context;
 import android.graphics.Typeface;
@@ -22,7 +22,7 @@ import info.devexchanges.navvp.R;
  * Created by sung on 30/08/2017.
  */
 
-public class CustomFavoriteOrMenuOfCategoryAdapter extends BaseAdapter {
+public class CustomMenuAdapter extends BaseAdapter {
 
     private Context context;
 
@@ -32,7 +32,7 @@ public class CustomFavoriteOrMenuOfCategoryAdapter extends BaseAdapter {
 
 
 
-    public CustomFavoriteOrMenuOfCategoryAdapter(Context context, List<Menu> menuList) {
+    public CustomMenuAdapter(Context context, List<Menu> menuList) {
         this.context = context;
         this.menuList = menuList;
         this.layoutInflater = LayoutInflater.from(context);
@@ -62,7 +62,7 @@ public class CustomFavoriteOrMenuOfCategoryAdapter extends BaseAdapter {
 
             viewHolder = new ViewHolder();
 
-            view = layoutInflater.inflate(R.layout.layout_gridview_faveorit_or_menu_category,null);
+            view = layoutInflater.inflate(R.layout.layout_gridview_menu,null);
 
             viewHolder.imageMenu = (ImageView) view.findViewById(R.id.imageMenu);
 

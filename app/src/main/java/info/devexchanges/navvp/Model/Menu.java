@@ -1,5 +1,7 @@
 package info.devexchanges.navvp.Model;
 
+import java.util.List;
+
 /**
  * Created by sung on 18/08/2017.
  */
@@ -12,6 +14,7 @@ public class Menu {
     private String urlImage;
     private String description;
     private int favorite;
+
 
     public Menu(String id, String name, int price, String urlImage, String description, int favorite) {
         this.id = id;
@@ -68,5 +71,17 @@ public class Menu {
 
     public void setFavorite(int favorite) {
         this.favorite = favorite;
+    }
+
+    public class ListMenu{
+        private List<Menu> response;
+
+        public List<Menu> getResponse() {
+            return response;
+        }
+
+        public void setResponse(List<Menu> response) {
+            this.response = response;
+        }
     }
 }

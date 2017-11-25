@@ -20,4 +20,9 @@
 
 
     </string-array>
+
+    <item name="timer" type="id">timer</item>
+    <item name="nameTable" type="id">nameTable</item>
+    <item name="table" type="id">table</item>
+    <item name="spinner" type="id">spinner</item>
 </resources>

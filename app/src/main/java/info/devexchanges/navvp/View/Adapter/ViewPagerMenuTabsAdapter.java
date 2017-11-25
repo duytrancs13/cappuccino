@@ -1,22 +1,22 @@
-package info.devexchanges.navvp.Adapter;
+package info.devexchanges.navvp.View.Adapter;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-import info.devexchanges.navvp.Fragment.FragmentMenu;
-import info.devexchanges.navvp.Fragment.FragmentReceipt;
+import info.devexchanges.navvp.View.Fragment.FragmentChooseMenu;
+import info.devexchanges.navvp.View.Fragment.FragmentReceipt;
 
-public class ViewPagerAdapterMenuTabs extends FragmentPagerAdapter {
+public class ViewPagerMenuTabsAdapter extends FragmentPagerAdapter {
 
-    public ViewPagerAdapterMenuTabs(FragmentManager fm) {
+    public ViewPagerMenuTabsAdapter(FragmentManager fm) {
         super(fm);
     }
 
     @Override
     public Fragment getItem(int position) {
         if (position ==0) {
-            return new FragmentMenu();
+            return new FragmentChooseMenu();
         } else if (position == 1) {
             return new FragmentReceipt();
         }
