@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="info.devexchanges.navvp">
+    package="io.awesome.app">
 
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
-        android:label=""
+        android:icon="@drawable/icon_logo"
+        android:label="Capuccino"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".View.Main.MainActivity">
@@ -36,6 +37,10 @@
                     android:scheme="https" />
             </intent-filter>
         </activity>
+        <activity android:name=".View.Table.TimerActivity" />
+        <activity android:name=".View.ScaleDetectorTestActivity" />
+        <activity android:name=".View.MoveOrderActivity" />
+        <activity android:name=".View.MoveOrder.MoveOrderActivity"></activity>
     </application>
 
 </manifest>

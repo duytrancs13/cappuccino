@@ -6,25 +6,33 @@
     android:orientation="vertical"
     android:weightSum="5">
 
+    <!--Chia theo height gồm 5 phần-->
+
+
+    <!--3/5-->
+    <!--Việc chèn ảnh thì dùng thẻ <ImageView> nhưng do ảnh nhỏ nên dùng background-->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="3"
-        android:background="@drawable/logo_main">
-    </LinearLayout>
+        android:background="@drawable/logo_main"/>
 
+    <!--2/5-->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="2"
         >
 
+        <!--Chia theo width 1-->
        <LinearLayout
            android:layout_width="match_parent"
            android:layout_height="wrap_content"
            android:weightSum="1"
            android:gravity="center"
            >
+
+            <!--Chia 0.7/1 nằm ở giữa-->
            <LinearLayout
                android:layout_width="0dp"
                android:layout_height="wrap_content"
@@ -32,6 +40,8 @@
                android:orientation="vertical"
                android:gravity="center">
 
+               <!--Textview tên của logo-->
+               <!--Sở dĩ không setTextView ở đây là vì muốn setFont ở code java-->
                <TextView
                    android:id="@+id/tvNameLogo"
                    android:layout_width="wrap_content"
@@ -51,6 +61,8 @@
                    android:textColor="@color/white"
                    />
 
+
+               <!--Textview quên mật khẩu -->
                <TextView
                    android:id="@+id/tvForgotPw"
                    android:layout_width="wrap_content"

@@ -25,4 +25,7 @@
     <item name="nameTable" type="id">nameTable</item>
     <item name="table" type="id">table</item>
     <item name="spinner" type="id">spinner</item>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
