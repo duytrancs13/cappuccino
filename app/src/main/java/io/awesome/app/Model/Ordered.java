@@ -13,13 +13,15 @@ public class Ordered implements Serializable {
     private int price;
     private String urlImage;
     private int quantity;
+    private String note;
 
-    public Ordered(String itemId, String name, int price, String urlImage, int quantity) {
+    public Ordered(String itemId, String name, int price, String urlImage, int quantity, String note) {
         this.itemId = itemId;
         this.name = name;
         this.price = price;
         this.urlImage = urlImage;
         this.quantity = quantity;
+        this.note = note;
     }
 
     public String getItemId() {
@@ -60,5 +62,13 @@ public class Ordered implements Serializable {
 
     public void setQuantity(int quantity) {
         this.quantity = quantity;
+    }
+
+    public String getNote() {
+        return note;
+    }
+
+    public void setNote(String note) {
+        this.note = note;
     }
 }

@@ -63,11 +63,11 @@ public class FragmentMoveFromTable extends Fragment {
             }
         });*/
 
-        lvMoveFromTable = (ListView) view.findViewById(R.id.lvMoveFromTable);
+        /*lvMoveFromTable = (ListView) view.findViewById(R.id.lvMoveFromTable);
         moveOrderedI = (MoveOrderedI) getActivity();
 
         listOrdered = new ArrayList<Ordered>();
-        /*Ordered(String itemId, String name, int price, String urlImage, int quantity)*/
+        *//*Ordered(String itemId, String name, int price, String urlImage, int quantity)*//*
         listOrdered.add(new Ordered("","Cafe sua",29000,"https://raw.githubusercontent.com/hiepvv/Image/master/ibc.png",2));
         listOrdered.add(new Ordered("","Sinh to dau",29000,"https://raw.githubusercontent.com/hiepvv/Image/master/ibc.png",3));
         listOrdered.add(new Ordered("","Cappuciano",29000,"https://raw.githubusercontent.com/hiepvv/Image/master/ibc.png",1));
@@ -89,10 +89,10 @@ public class FragmentMoveFromTable extends Fragment {
 
         lvMoveFromTable.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                xacNhanXoa(i,listOrdered.get(i));
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+                confirmDelete(position,listOrdered.get(position));
             }
-        });
+        });*/
 
         /*arrayName = new ArrayList<String>();
         arrayName.add("duy");
@@ -112,7 +112,7 @@ public class FragmentMoveFromTable extends Fragment {
         lvMoveFromTable.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                xacNhanXoa(arrayName.get(i));
+                confirmDelete(arrayName.get(i));
             }
         });*/
         return view;
@@ -121,10 +121,10 @@ public class FragmentMoveFromTable extends Fragment {
         Toast.makeText(getContext(),message,Toast.LENGTH_SHORT).show();
     }
 
-    private void xacNhanXoa(final int position,final Ordered ordered){
+    private void confirmDelete(final int position,final Ordered ordered){
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        builder.setMessage("Ban co muon xoa " + ordered.getName()+" khong?");
-        builder.setPositiveButton("Co", new DialogInterface.OnClickListener() {
+        builder.setMessage("Ban co muốn xóa " + ordered.getName()+" không?");
+        builder.setPositiveButton("Có", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 /*arrayName.remove(ten);
@@ -136,7 +136,7 @@ public class FragmentMoveFromTable extends Fragment {
                 moveOrderedI.moveOrdered(ordered);
             }
         });
-        builder.setNegativeButton("Khong", new DialogInterface.OnClickListener() {
+        builder.setNegativeButton("Không", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
 

@@ -17,9 +17,7 @@
     <color name="bgrIconEdittext">#666666</color>
 
 
-    <color name="tableFree">#80ff00</color>
-    <color name="tableWaiting">#ffff00</color>
-    <color name="tableDeliver">#7f7f7f</color>
+    <color name="green">#80ff00</color>
 
 
     <color name="iron">#CCCCCC</color>

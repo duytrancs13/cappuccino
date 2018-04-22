@@ -72,7 +72,7 @@ public class MoveOrderActivity extends AppCompatActivity implements MoveOrderedI
     public void moveOrdered(Ordered ordered) {
         FragmentMoveToTable fragmentMoveToTable =
                 (FragmentMoveToTable) getSupportFragmentManager().findFragmentById(R.id.frag_2);
-        fragmentMoveToTable.setMessage(ordered);
+        fragmentMoveToTable.recevieData(ordered);
     }
 
 

@@ -21,14 +21,15 @@ public class ViewPagerFragmentChooseMenuAdapter extends FragmentPagerAdapter {
             return new FragmentMenu(0,"");
         } else if (position == 1) {
             return new RootFragment();
-        }else if (position == 2)
-            return new Fragment5();
+        }
+        /*else if (position == 2)
+            return new Fragment5();*/
         return null;
     }
 
     @Override
     public int getCount() {
-        return 3;
+        return 2;
     }
     @Override
     public int getItemPosition(Object object) {

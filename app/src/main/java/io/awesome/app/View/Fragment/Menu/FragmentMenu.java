@@ -1,5 +1,6 @@
 package io.awesome.app.View.Fragment.Menu;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
@@ -8,25 +9,30 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.List;
 
 import io.awesome.app.General.SetFont;
-import io.awesome.app.Model.Ordered;
 import io.awesome.app.Presenter.Menu.MenuPresenterImpl;
 import io.awesome.app.View.Adapter.CustomMenuAdapter;
 import io.awesome.app.Model.Menu;
 import io.awesome.app.R;
 
+
+
 import static android.content.Context.MODE_PRIVATE;
 
+@SuppressLint("ValidFragment")
 public class FragmentMenu extends Fragment implements FragmentMenuView {
 
     private int statusMenu;
@@ -47,11 +53,11 @@ public class FragmentMenu extends Fragment implements FragmentMenuView {
 
     public static final String MyPREFERENCES = "capuccino" ;
 
-    private String receiptId;
-
     private String token;
 
     private Button btnPlusMenu;
+
+    private AlertDialog.Builder alert;
 
 
 
@@ -67,7 +73,7 @@ public class FragmentMenu extends Fragment implements FragmentMenuView {
 
         SharedPreferences prefs = this.getActivity().getSharedPreferences(MyPREFERENCES, MODE_PRIVATE);
         token = prefs.getString("token", null);
-        receiptId = getActivity().getIntent().getStringExtra("receiptId");
+
 
         //Mapping
         dialog = new ProgressDialog(this.getContext(),R.style.AppTheme_Dark_Dialog);
@@ -76,14 +82,18 @@ public class FragmentMenu extends Fragment implements FragmentMenuView {
 
         btnPlusMenu = (Button) view.findViewById(R.id.btnPlusMenu);
 
+        alert = new AlertDialog.Builder(getContext());
+        alert.setTitle("Thêm ghi chú");
+
 
         if(statusMenu == 0){
-            menuPresenterImpl.loadMenuOfFavorite(receiptId, token);
+            menuPresenterImpl.loadMenuOfFavorite(token);
         }else if(statusMenu == 1){
-            menuPresenterImpl.loadMenuOfCategory(receiptId, this.idCategory,token);
+            menuPresenterImpl.loadMenuOfCategory(this.idCategory,token);
         }
 
-        //menuPresenterImpl.getQualityMenu(receiptId,token);
+
+
 
 
 
@@ -97,9 +107,9 @@ public class FragmentMenu extends Fragment implements FragmentMenuView {
 
 
     @Override
-    public void showMenu(final List<Menu> listMenu) {
-        customMenuAdapter = new CustomMenuAdapter(getActivity(), listMenu,menuPresenterImpl, receiptId, token);
+    public void showMenu(List<Menu> listMenu) {
 
+        customMenuAdapter = new CustomMenuAdapter(getActivity(), listMenu, menuPresenterImpl, token);
 
         gvMenu.setAdapter(customMenuAdapter);
         /*gvMenu.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -115,21 +125,19 @@ public class FragmentMenu extends Fragment implements FragmentMenuView {
         dialog.dismiss();
     }
 
+
+
     @Override
-    public void showPopupNodeAdd() {
-        AlertDialog.Builder alert = new AlertDialog.Builder(getContext());
-
-        alert.setTitle("Thêm ghi chú");
-        alert.setMessage("Nội dung");
-
-// Set an EditText view to get user input
+    public void setTextPopupNodeAdd(final String textNote, final String menuId) {
+        /*alert.setMessage(textNote);*/
         final EditText input = new EditText(getContext());
+
         alert.setView(input);
+        input.setText(textNote);
 
         alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
-
-                // Do something with value!
+            menuPresenterImpl.addNoteForReceipt(input.getText().toString(),menuId, token);
             }
         });
 
@@ -138,7 +146,10 @@ public class FragmentMenu extends Fragment implements FragmentMenuView {
                 // Canceled.
             }
         });
+    }
 
+    @Override
+    public void showPopupNodeAdd() {
         alert.show();
     }
 

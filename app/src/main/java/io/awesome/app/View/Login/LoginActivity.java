@@ -11,6 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -18,10 +19,12 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.tapadoo.alerter.Alerter;
 
 import io.awesome.app.General.SetFont;
 import io.awesome.app.Presenter.Login.LoginPresenterImpl;
+import io.awesome.app.Presenter.Table.TablePresenterImpl;
 import io.awesome.app.R;
 import io.awesome.app.View.CustomEditText.CustomEditTextEmailTextWatcher;
 import io.awesome.app.View.CustomEditText.CustomEditTextPWTextWatcher;
@@ -29,6 +32,7 @@ import io.awesome.app.View.Main.MainActivity;
 import io.awesome.app.View.ScaleDetectorTestActivity;
 import io.awesome.app.View.Table.TableActivity;
 import io.awesome.app.View.ForgotPassword.ForgotPasswordActivity;
+import io.awesome.app.View.Table.TableView;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener, LoginView {
 
@@ -47,6 +51,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private LoginPresenterImpl loginPresenterImpl;
 
     private ProgressDialog dialog ;
+
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -149,17 +156,15 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         visibilityLoginPW.setVisibility(View.GONE);
 
         sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
-
         SharedPreferences.Editor editor = sharedpreferences.edit();
 
         editor.putString("token", token);
+
         editor.commit();
 
         Intent intent = new Intent(LoginActivity.this, TableActivity.class);
         startActivity(intent);
     }
-
-
 
     public void toast(String message){
         Toast.makeText(getBaseContext(),message,Toast.LENGTH_SHORT).show();

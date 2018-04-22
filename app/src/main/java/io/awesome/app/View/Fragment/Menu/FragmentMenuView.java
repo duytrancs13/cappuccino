@@ -12,5 +12,7 @@ import io.awesome.app.View.InterfaceView.Progress_IV;
 
 public interface FragmentMenuView extends Progress_IV {
     void showMenu(List<Menu> listMenu);
+    void setTextPopupNodeAdd(String textNote, String menuId);
     void showPopupNodeAdd();
+
 }

@@ -5,7 +5,7 @@ package io.awesome.app.Presenter.Receipt;
  */
 
 public interface ReceiptPresenter {
-    void getMenuReceipt(String receiptId ,String token);
-    void updateReceipt(String receiptId, String token);
+    void getMenuReceipt(String token);
+    void updateReceipt(String token);
     void addReceipt(String receiptId, String token, String key, String value);
 }

@@ -11,13 +11,20 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import io.awesome.app.General.SetFont;
+import io.awesome.app.Model.Category;
+import io.awesome.app.Model.Menu;
+import io.awesome.app.Model.Table;
+import io.awesome.app.Presenter.Pusher.PusherCategory;
+import io.awesome.app.Presenter.Pusher.PusherMenu;
+import io.awesome.app.Presenter.Pusher.PusherTable;
 import io.awesome.app.R;
 import io.awesome.app.View.ForgotPassword.ForgotPasswordActivity;
 import io.awesome.app.View.Login.LoginActivity;
 import io.awesome.app.View.Table.TableActivity;
-
-import static android.content.Context.MODE_PRIVATE;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
 
@@ -31,6 +38,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public static final String MyPREFERENCES = "capuccino" ;
 
 
+//    private PusherTableTablePresenterImpl pusherPresenter;
+
+    public static List<Table> listTable = new ArrayList<Table>();
+
+    public static List<Menu> listMenu = new ArrayList<Menu>();
+
+    public static List<Category> listCategory = new ArrayList<Category>();
+
+    public static String receiptId = "";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,11 +58,23 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         SharedPreferences prefs = getSharedPreferences(MyPREFERENCES, MODE_PRIVATE);
         String token = prefs.getString("token", "");
 
+
+
+        PusherTable.subcribe();
+        PusherMenu.subcribe();
+        PusherCategory.subcribe();
+
         // Nếu token còn tồn tại thì chuyển người dùng thẳng đến màn hình đặt bàn không thì thôi
         if( !token.equals("") ) {
             Intent intent = new Intent(MainActivity.this, TableActivity.class);
             startActivity(intent);
         }
+
+
+
+
+
+
 
         // Set font chữ
         // Set kiểu này là set font cho toàn bộ màn hình

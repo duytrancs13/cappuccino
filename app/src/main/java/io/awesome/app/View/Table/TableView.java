@@ -1,8 +1,6 @@
 package io.awesome.app.View.Table;
 
-import java.util.List;
-
-import io.awesome.app.Model.Table;
+import android.view.ViewGroup;
 
 /**
  * Created by sung on 12/11/2017.
@@ -10,6 +8,6 @@ import io.awesome.app.Model.Table;
 
 public interface TableView {
     public void alertLogout();
-    public void showTable(List<Table> listTable);
-    public void goToPageMenu(String receiptId, String tableId);
+    public void showTable();
+    public void gotoMenu(String receipt ,int statusMenu);
 }

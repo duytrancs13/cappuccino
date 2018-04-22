@@ -9,16 +9,14 @@ import java.util.List;
 public class Category {
     private String id;
     private String name;
-    private int createAt;
     private String urlImage;
-    private List<String> listMenuOfCategory;
+    private boolean visible;
 
-    public Category(String id, String name, int createAt, String urlImage, List<String> listMenuOfCategory) {
+    public Category(String id, String name, String urlImage, boolean visible) {
         this.id = id;
         this.name = name;
-        this.createAt = createAt;
         this.urlImage = urlImage;
-        this.listMenuOfCategory = listMenuOfCategory;
+        this.visible = visible;
     }
 
     public String getId() {
@@ -37,14 +35,6 @@ public class Category {
         this.name = name;
     }
 
-    public int getCreateAt() {
-        return createAt;
-    }
-
-    public void setCreateAt(int createAt) {
-        this.createAt = createAt;
-    }
-
     public String getUrlImage() {
         return urlImage;
     }
@@ -53,23 +43,11 @@ public class Category {
         this.urlImage = urlImage;
     }
 
-    public List<String> getListMenuOfCategory() {
-        return listMenuOfCategory;
+    public boolean isVisible() {
+        return visible;
     }
 
-    public void setListMenuOfCategory(List<String> listMenuOfCategory) {
-        this.listMenuOfCategory = listMenuOfCategory;
-    }
-
-    public class ListCategory{
-        private List<Category> response;
-
-        public List<Category> getListCategory() {
-            return response;
-        }
-
-        public void setListCategory(List<Category> listCategory) {
-            this.response = listCategory;
-        }
+    public void setVisible(boolean visible) {
+        this.visible = visible;
     }
 }

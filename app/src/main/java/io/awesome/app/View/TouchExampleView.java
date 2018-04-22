@@ -114,10 +114,6 @@ public class TouchExampleView extends View {
                 break;
             }
 
-
-
-
-
         }
 
         return true;

@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,6 +27,8 @@ import io.awesome.app.R;
 import io.awesome.app.View.Table.TableActivity;
 
 import static android.content.Context.MODE_PRIVATE;
+import static io.awesome.app.View.MenuTabs.MenuTabsActivity.listOrdered;
+import static io.awesome.app.View.Main.MainActivity.receiptId;
 
 public class FragmentReceipt extends Fragment implements FragmentReceiptView {
 
@@ -34,12 +37,18 @@ public class FragmentReceipt extends Fragment implements FragmentReceiptView {
 
     public static final String MyPREFERENCES = "capuccino" ;
     private String token;
-    private String receiptId;
+
     private SharedPreferences prefs;
 
-    private String tableId;
-
     private Button btnReceipt;
+
+    private TextView tvTotalMoney;
+
+    private Intent intent ;
+
+    private int totalMoney=0;
+
+
 
 
 
@@ -52,27 +61,31 @@ public class FragmentReceipt extends Fragment implements FragmentReceiptView {
         prefs = this.getActivity().getSharedPreferences(MyPREFERENCES, MODE_PRIVATE);
         token = prefs.getString("token", null);
 
-        receiptId = getActivity().getIntent().getStringExtra("receiptId");
-        tableId = getActivity().getIntent().getStringExtra("tableId");
+        intent = new Intent(getActivity(), TableActivity.class);
 
 
         receiptPresenter = new ReceiptPresenterImpl(this.getContext(), this);
-        receiptPresenter.getMenuReceipt(receiptId,token);
+
+        if(!listOrdered.equals(null)){
+            receiptPresenter.getMenuReceipt(token);
+        }else{
+            return view;
+        }
 
 
+        tvTotalMoney = (TextView) view.findViewById(R.id.tvTotalMoney);
 
+        tvTotalMoney.setText(NumberFormat.getNumberInstance(Locale.GERMAN).format(totalMoney)+" đ");
+
+        totalMoney = 0;
 
         btnReceipt = (Button) view.findViewById(R.id.btnReceipt);
         btnReceipt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getActivity(), TableActivity.class);
-                receiptPresenter.updateReceipt(tableId,token);
-                startActivity(intent);
+            receiptPresenter.updateReceipt(token);
             }
         });
-
-
 
         return view;
     }
@@ -84,6 +97,11 @@ public class FragmentReceipt extends Fragment implements FragmentReceiptView {
             View v = getView(itemOrdered);
             llReceipt.addView(v);
         }
+    }
+
+    @Override
+    public void gotoTable() {
+        startActivity(intent);
     }
 
     public void toast(String msg) {
@@ -99,6 +117,7 @@ public class FragmentReceipt extends Fragment implements FragmentReceiptView {
         TextView tvMoneyReceipt;
         Button btnMinusReceipt;
         Button btnPlusReceipt;
+
     }
 
     public View getView(final Ordered ordered) {
@@ -151,6 +170,8 @@ public class FragmentReceipt extends Fragment implements FragmentReceiptView {
 
         String money = NumberFormat.getNumberInstance(Locale.GERMAN).format(caculMoney);
 
+        totalMoney+= caculMoney;
+
         viewHolder.tvMoneyReceipt.setText(""+money+" đ");
 
         viewHolder.btnPlusReceipt.setOnClickListener(new View.OnClickListener() {
@@ -161,17 +182,6 @@ public class FragmentReceipt extends Fragment implements FragmentReceiptView {
                 viewHolder.btnQualityReceipt.setText((qualityCurrent + 1) + "");
             }
         });
-
-
-
-
-
-
-
-
-
-
-
         return view;
     }
 

@@ -1,6 +1,7 @@
 package io.awesome.app.Presenter.Login;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -89,7 +90,7 @@ public class LoginPresenterImpl implements LoginPresenter {
     // Hoặc lỗi server hiển thị thông báo
     @Override
     public void login(final String email, final String password) {
-        String url = "https://cappuccino-hello.herokuapp.com/api/login";
+        String url = "https://cafeteria-service.herokuapp.com/api/v1/users/login";
         RequestQueue queue = Volley.newRequestQueue(context);
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
 
@@ -97,25 +98,17 @@ public class LoginPresenterImpl implements LoginPresenter {
             public void onResponse(String response) {
                 try {
                     JSONObject jsonObject = new JSONObject(response);
-                    int flag = jsonObject.getInt("flag");
-                    if(flag == 1){
-                        String token = jsonObject.getJSONObject("response").getString("token");
-                        viewLoginActivity.loginSuccessful(token);
-                    }else if(flag == 0){
-                        viewLoginActivity.alertMessage("Lỗi tài khoản", "Email chưa đăng kí !!!", 500);
-                    }
+                    String token = jsonObject.getString("token");
+                    viewLoginActivity.loginSuccessful(token);
+                    // Gia khong thanh cong
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
             }
-
-
-
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 viewLoginActivity.alertMessage("Lỗi server", "Vui lòng thử lại !!!", 500);
-
             }
         }){
             @Override

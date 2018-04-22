@@ -10,4 +10,5 @@ import io.awesome.app.Model.Ordered;
 
 public interface FragmentReceiptView {
     void loadMenuReceipt(List<Ordered> listOrdered);
+    void gotoTable();
 }

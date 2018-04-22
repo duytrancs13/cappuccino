@@ -12,17 +12,15 @@ public class Menu {
     private String name;
     private int price;
     private String urlImage;
-    private String description;
+    private String categoryId;
     private boolean visible;
-    private int quantity;
 
-
-    public Menu(String _id, String name, int price, String urlImage, String description, boolean visible) {
+    public Menu(String _id, String name, int price, String urlImage, String categoryId, boolean visible) {
         this._id = _id;
         this.name = name;
         this.price = price;
         this.urlImage = urlImage;
-        this.description = description;
+        this.categoryId = categoryId;
         this.visible = visible;
     }
 
@@ -58,12 +56,12 @@ public class Menu {
         this.urlImage = urlImage;
     }
 
-    public String getDescription() {
-        return description;
+    public String getCategoryId() {
+        return categoryId;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setCategoryId(String categoryId) {
+        this.categoryId = categoryId;
     }
 
     public boolean isVisible() {
@@ -72,25 +70,5 @@ public class Menu {
 
     public void setVisible(boolean visible) {
         this.visible = visible;
-    }
-
-    public int getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
-    }
-
-    public class ListMenu{
-        private List<Menu> response;
-
-        public List<Menu> getResponse() {
-            return response;
-        }
-
-        public void setResponse(List<Menu> response) {
-            this.response = response;
-        }
     }
 }

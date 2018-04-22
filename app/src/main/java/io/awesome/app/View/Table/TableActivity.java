@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.CountDownTimer;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -13,6 +14,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.MenuItem;
@@ -23,6 +25,13 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import com.pusher.client.Pusher;
+import com.pusher.client.PusherOptions;
+import com.pusher.client.channel.Channel;
+import com.pusher.client.channel.SubscriptionEventListener;
 
 import java.util.List;
 
@@ -35,15 +44,20 @@ import io.awesome.app.View.MoveOrder.MoveOrderActivity;
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
+import static io.awesome.app.View.Main.MainActivity.listTable;
+import static io.awesome.app.View.Main.MainActivity.receiptId;
+
 public class TableActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,TableView {
+
+
 
 
     private DrawerLayout drawer;
     public static final String MyPREFERENCES = "capuccino" ;
     private SharedPreferences sharedPreferences;
 
-
     private ViewGroup root;
+
     private LinearLayout linearLayout;
 
     private PopupMenu popup;
@@ -87,37 +101,44 @@ public class TableActivity extends AppCompatActivity implements NavigationView.O
         assert navigationView != null;
         navigationView.setNavigationItemSelectedListener(this);
 
+        root = (ViewGroup) findViewById(R.id.root);
+
 
 
         // Lấy biến token ra để sử dụng
         sharedPreferences = getSharedPreferences(MyPREFERENCES, MODE_PRIVATE);
         token = sharedPreferences.getString("token", null);
 
+        intent = new Intent(this, MenuTabsActivity.class);
 
-        root = (ViewGroup) findViewById(R.id.root);
 
         tablePresenter = new TablePresenterImpl(getBaseContext(),this);
 
+
         // Nhờ TablePresenter để gọi đến API để load dữ liệu của bàn. Cần có token
         tablePresenter.loadTable(token);
+
     }
+
+
 
     // Dùng list table để hiển thị ra
     // Gồm có 3 trạng thái của bàn: "Rỗng", "đã đặt món", "đã giao món".
     @Override
-    public void showTable(List<Table> listTable) {
+    public void showTable() {
 
-        for(int i=0 ; i<listTable.size() ; i++){
+
+        for(int i = 0; i < listTable.size() ; i++){
 
             // Đối tượng của 1 bàn itemTable
-            final Table itemTable = listTable.get(i);
+            Table itemTable = listTable.get(i);
+            final String receiptBusy = itemTable.getReceiptId();
 
             linearLayout = new LinearLayout(this);
             linearLayout.setOrientation(LinearLayout.VERTICAL);
             linearLayout.setGravity(Gravity.CENTER);
 
             RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(DrawerLayout.LayoutParams.WRAP_CONTENT, DrawerLayout.LayoutParams.WRAP_CONTENT);
-
 
             //Hiển thị vị trí của bàn.
             int positionX = itemTable.getX()*150;
@@ -128,16 +149,36 @@ public class TableActivity extends AppCompatActivity implements NavigationView.O
             linearLayout.setLayoutParams(layoutParams);
             root.addView(linearLayout);
 
+
+
             // Kiểm tra trạng thái của từng bàn
-            final Button table = new Button(this);
-            table.setId(i);
+            Button table = new Button(this);
+            final int position = i;
 
             // Bàn màu xanh là bàn ở trạng thái rỗng
-            if(itemTable.getReceiptId().equals(""))
-                table.setBackgroundResource(R.drawable.ic_table_free);
-            // Bàn màu vàng là bàn ở trạng thái đợi
-            else
-                table.setBackgroundResource(R.drawable.ic_table_waiting);
+            if(itemTable.getStatus().equals("idle")){
+                final String idTable= itemTable.getId();
+                table.setBackgroundResource(R.drawable.ic_table_idle);
+
+                table.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        /*popupTableFree(view,table,itemTable,timer);*/
+                        popupTableFree(view,idTable, position);
+                    }
+                });
+            }
+            // Bàn màu vàng là bàn ở trạng thái bận
+            else if(itemTable.getStatus().equals("busy")){
+                table.setBackgroundResource(R.drawable.ic_table_busy);
+                table.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        /*popupTableWaiting(view,table,itemTable.getReceiptId(),itemTable.getId(),timer);*/
+                        popupTableBusy(view, receiptBusy);
+                    }
+                });
+            }
 
             linearLayout.addView(table);
 
@@ -151,9 +192,11 @@ public class TableActivity extends AppCompatActivity implements NavigationView.O
             nameTable.setLayoutParams(layoutNameTable);
             linearLayout.addView(nameTable);
 
+            // Di chuyển bàn
+            //tablePresenter.dragTable(linearLayout);
 
             // Hiển thị thời gian nhưng bị VISIBLE.
-            final TextView timer = new TextView(this);
+            /*final TextView timer = new TextView(this);
             timer.setId(i);
             timer.setVisibility(View.VISIBLE);
             timer.setText("00:00:00");
@@ -161,14 +204,13 @@ public class TableActivity extends AppCompatActivity implements NavigationView.O
             layoutTimer.addRule(RelativeLayout.BELOW,nameTable.getId());
 
             timer.setLayoutParams(layoutTimer);
-            linearLayout.addView(timer);
+            linearLayout.addView(timer);*/
 
             // Di chuyển bàn
             //tablePresenter.dragTable(linearLayout);
 
-
             // Bắt sự kiện trạng thái của từng bàn.
-            table.setOnClickListener(new View.OnClickListener() {
+            /*table.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(final View v) {
 
@@ -176,10 +218,10 @@ public class TableActivity extends AppCompatActivity implements NavigationView.O
 
                     // Nếu bàn ở trạng thái "rỗng"
                     if( table.getBackground().getConstantState() ==
-                            getResources().getDrawable(R.drawable.ic_table_free).getConstantState() ){
+                            getResources().getDrawable(R.drawable.ic_table_idle).getConstantState() ){
 
                         // Hiển thị popup của bàn ở trạng thái rỗng
-                        popupTableFree(v,table,itemTable,timer);
+                        //popupTableFree(v,table,itemTable,timer);
                     }
                     // Bắt sự kiện khi bàn ở trạng thái "đợi".
                     else if(table.getBackground().getConstantState() ==
@@ -197,7 +239,7 @@ public class TableActivity extends AppCompatActivity implements NavigationView.O
 
                     }
                 }
-            });
+            });*/
         }
 
     }
@@ -239,7 +281,8 @@ public class TableActivity extends AppCompatActivity implements NavigationView.O
     }
 
     // Hàm xử lí sự kiện khi gọi bàn ở trạng thái rỗng.
-    void popupTableFree(View v,final Button btnTable, final Table table, final TextView timer){
+    /*void popupTableFree(View v,final Button btnTable, final Table table, final TextView timer)*/
+    void popupTableFree(View v, final String idTable, final int position){
         final CharSequence[] items = {"Đặt món", "Đặt chỗ"};
 
         AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
@@ -248,7 +291,7 @@ public class TableActivity extends AppCompatActivity implements NavigationView.O
         builder.setTitle("Tùy chọn");
 
         builder.setItems(items, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int position) {
+            public void onClick(DialogInterface dialog, int item) {
 
                 // Khi chọn vào item "đặt món".
 
@@ -256,18 +299,13 @@ public class TableActivity extends AppCompatActivity implements NavigationView.O
                     // 1.cập nhật thanh toán
                     // 2. Chuyển trạng thái bàn 1 bàn từ rỗng sang trạng thái đợi
                     // 3. Đếm thời gian tăng lên
-                if(position==0){
+                if(item==0){
                     // Cập nhật receipt của bàn đó và đi đến màn hình menu
-                    tablePresenter.updateReceiptIdOfTable(table.getId(),token);
-                    //goToPageMenu("5a1d9718f11bc00004f15bde");
-
-
-                    // Bàn được chuyển sang trạng thái "đợi".
-                    btnTable.setBackgroundResource(R.drawable.ic_table_waiting);
+                    tablePresenter.createReceipt(idTable,token, position);
 
 
                     // Thời gian bắt đầu được đếm lên
-                    countUp = new CountUp(1000) {
+                    /*countUp = new CountUp(1000) {
                         @Override
                         public void onTick(long millisUntil) {
                             timer.setVisibility(View.VISIBLE);
@@ -275,18 +313,19 @@ public class TableActivity extends AppCompatActivity implements NavigationView.O
                             timer.setText(formatMilliSecondsToTime(millisUntil));
                         }
                     };
-                    countUp.start();
+                    countUp.start();*/
                 }
 
                 // Khi chọn vào item "đặt chỗ".
-                else if(position == 1){
-                    intent = new Intent(TableActivity.this, TimerActivity.class);
+                else if(item == 1){
+                    toast("dat cho");
+                    /*intent = new Intent(TableActivity.this, TimerActivity.class);
                     startActivity(intent);
 
-                    /*new CountDownTimer(3000, 1000) {
+                    new CountDownTimer(3000, 1000) {
                         TextView textTimer = (TextView) findViewById(R.id.timer);
                         public void onTick(long millisUntilFinished) {
-                            table.setBackgroundResource(R.drawable.ic_table_conversation);
+                            table.setBackgroundResource(R.drawable.ic_table_busy);
                             table.setEnabled(false);
 
                             textTimer.setVisibility(View.VISIBLE);
@@ -294,7 +333,7 @@ public class TableActivity extends AppCompatActivity implements NavigationView.O
                             textTimer.setText(formatMilliSecondsToTime(millisUntilFinished));
                         }
                         public void onFinish() {
-                            table.setBackgroundResource(R.drawable.ic_table_free);
+                            table.setBackgroundResource(R.drawable.ic_table_idle);
                             textTimer.setVisibility(View.INVISIBLE);
                             table.setEnabled(true);
                         }
@@ -307,9 +346,8 @@ public class TableActivity extends AppCompatActivity implements NavigationView.O
 
     }
 
-
-    // Hàm xử lí sự kiện khi gọi bàn ở trạng thái đợi.
-    void popupTableWaiting(View v, final Button table, final String receiptId,final String tableId, final TextView timer){
+    // Hàm xử lí sự kiện khi gọi bàn ở trạng thái bận.
+    void popupTableBusy(View v,final String receiptBusy){
         final CharSequence[] items = {"Đặt thêm món","Tách - gộp bàn", "Giao món","Thanh toán"};
 
         AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
@@ -322,31 +360,35 @@ public class TableActivity extends AppCompatActivity implements NavigationView.O
                 if(position == 0){
 
                     // Đi đến màn hình menu.
-                    goToPageMenu(receiptId, tableId);
+                    gotoMenu(receiptBusy,1);
 
-                // Khi chọn vào item "Giao món"
+                // Khi chọn vào item "Tách - gộp bàn"
                 }else if(position == 1){
-                    intent = new Intent(TableActivity.this, MoveOrderActivity.class);
-                    startActivity(intent);
+                   /* intent = new Intent(TableActivity.this, MoveOrderActivity.class);
+                    startActivity(intent);*/
+                    toast("Tách - gộp bàn");
+
+                    // Khi chọn vào item "Giao món"
                 }else if(position == 2){
-                    table.setBackgroundResource(R.drawable.ic_table_deliver);
+                    /*table.setBackgroundResource(R.drawable.ic_table_deliver);
                     countUp.stop();
                     timer.setVisibility(View.VISIBLE);
-                    timer.setText("00:00:00");
+                    timer.setText("00:00:00");*/
+                    toast("Giao mon");
 
 
                 // Khi chọn vào item "Thanh toán"
                 }else if(position == 3){
-                    /*table.setBackgroundResource(R.drawable.ic_table_free);
-                    countUp.stop();
-                    TextView textTimer = (TextView) findViewById(R.id.timer);
-                    textTimer.setVisibility(View.INVISIBLE);*/
+//                    btnTable.setBackgroundResource(R.drawable.ic_table_idle);
+//                    countUp.stop();
+//                    TextView textTimer = (TextView) findViewById(R.id.timer);
+//                    textTimer.setVisibility(View.INVISIBLE);
 
-                    intent = new Intent(TableActivity.this,MenuTabsActivity.class);
-                    intent.putExtra("statusReceipt",1);
-                    intent.putExtra("receiptId",receiptId);
-                    intent.putExtra("tableId",tableId);
-                    startActivity(intent);
+//                    receiptId = receiptBusy;
+//                    intent.putExtra("statusReceipt",1);
+//                    startActivity(intent);
+
+                    gotoMenu(receiptBusy, 2);
                 }
             }
         });
@@ -354,9 +396,8 @@ public class TableActivity extends AppCompatActivity implements NavigationView.O
         alert.show();
     }
 
-
     // Hàm xử lí sự kiện khi gọi bàn ở trạng thái đã đạt món.
-    void popupTableDeliver(View v, final Button table){
+    /*void popupTableDeliver(View v, final Button table){
         final CharSequence[] items = {"Đặt thêm món","Thanh toán"};
 
         AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
@@ -380,7 +421,7 @@ public class TableActivity extends AppCompatActivity implements NavigationView.O
                     };
                     countUp.start();
                 }else if(position == 1){
-                    table.setBackgroundResource(R.drawable.ic_table_free);
+                    table.setBackgroundResource(R.drawable.ic_table_idle);
                     //popup.getMenuInflater().inflate(R.menu.poupup_menu_free, popup.getMenu());
                     countUp.stop();
                     TextView textTimer = (TextView) findViewById(R.id.timer);
@@ -396,43 +437,17 @@ public class TableActivity extends AppCompatActivity implements NavigationView.O
         AlertDialog alert = builder.create();
         alert.show();
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+*/
 
     // Đến màn hình Menu cần mang theo 2 thông số là receipt và idTable. Sử dụng intent putExtra
+
+
     @Override
-    public void goToPageMenu(String receiptId, String tableId) {
-        intent = new Intent(this,MenuTabsActivity.class);
-        intent.putExtra("receiptId",receiptId);
-        intent.putExtra("tableId",tableId);
-
+    public void gotoMenu(String receipt, int statusMenu) {
+        receiptId = receipt;
+        intent.putExtra("statusReceipt",statusMenu);
         startActivity(intent);
-
     }
-
 
 
     private String formatMilliSecondsToTime(long milliseconds) {

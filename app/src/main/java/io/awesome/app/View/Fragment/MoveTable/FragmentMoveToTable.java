@@ -45,19 +45,19 @@ public class FragmentMoveToTable extends Fragment{
         arrayAdapter = new ArrayAdapter(view.getContext(),android.R.layout.simple_expandable_list_item_1, arrayName);
         lvMoveToTable.setAdapter(arrayAdapter);*/
 
-        lvMoveToTable = (ListView) view.findViewById(R.id.lvMoveToTable);
+        /*lvMoveToTable = (ListView) view.findViewById(R.id.lvMoveToTable);
         listOrdered = new ArrayList<Ordered>();
-        /*Ordered(String itemId, String name, int price, String urlImage, int quantity)*/
+        *//*Ordered(String itemId, String name, int price, String urlImage, int quantity)*//*
         listOrdered.add(new Ordered("","Cafe sua",29000,"https://raw.githubusercontent.com/hiepvv/Image/master/ibc.png",2));
         customMoveToTableAdapter = new CustomMoveToTableAdapter(view.getContext(), listOrdered);
 
-        lvMoveToTable.setAdapter(customMoveToTableAdapter);
+        lvMoveToTable.setAdapter(customMoveToTableAdapter);*/
 
         return view;
     }
 
 
-    public void setMessage(Ordered ordered) {
+    public void recevieData(Ordered ordered) {
         listOrdered.add(ordered);
         customMoveToTableAdapter.notifyDataSetChanged();
     }

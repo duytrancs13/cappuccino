@@ -19,7 +19,7 @@ import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 public class FragmentChooseMenu extends Fragment {
     private TabLayout tab_layout_fragment;
     private ViewPager view_pager_fragment;
-    private String[] pageTitle = {"Chọn nhiều", "Theo loại", "Tìm kiếm"};
+    private String[] pageTitle = {"Chọn nhiều", "Theo loại"};
     private ViewPagerFragmentChooseMenuAdapter pagerAdapter;
 
     @Nullable
@@ -35,7 +35,7 @@ public class FragmentChooseMenu extends Fragment {
         view_pager_fragment = (ViewPager)view.findViewById(R.id.view_pager_fragment);
 
 
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < 2; i++) {
             tab_layout_fragment.addTab(tab_layout_fragment.newTab().setText(pageTitle[i]));
         }
         tab_layout_fragment.setTabGravity(TabLayout.GRAVITY_FILL);

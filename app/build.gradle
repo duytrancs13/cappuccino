@@ -31,4 +31,5 @@ dependencies {
     compile 'com.google.code.gson:gson:2.8.1'
     compile 'com.tapadoo.android:alerter:2.0.1'
     compile 'com.android.support:support-v4:23.4.0'
+    compile 'com.pusher:pusher-java-client:1.4.0'
 }

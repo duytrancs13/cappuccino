@@ -1,5 +1,6 @@
 package io.awesome.app.View.Adapter;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.graphics.Typeface;
 import android.util.Log;
@@ -10,6 +11,7 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
@@ -21,6 +23,9 @@ import io.awesome.app.Model.Menu;
 import io.awesome.app.Model.Ordered;
 import io.awesome.app.Presenter.Menu.MenuPresenterImpl;
 import io.awesome.app.R;
+
+import static io.awesome.app.View.MenuTabs.MenuTabsActivity.listOrdered;
+import static io.awesome.app.View.Main.MainActivity.receiptId;
 
 /**
  * Created by sung on 30/08/2017.
@@ -36,19 +41,18 @@ public class CustomMenuAdapter extends BaseAdapter {
 
     private MenuPresenterImpl menuPresenterImpl;
 
-    private String receiptId;
-
     private String token;
 
 
-    public CustomMenuAdapter(Context context, List<Menu> menuList,MenuPresenterImpl menuPresenterImpl,String receiptId, String token) {
+    public CustomMenuAdapter(Context context, List<Menu> menuList,MenuPresenterImpl menuPresenterImpl,String token ) {
         this.context = context;
         this.menuList = menuList;
         this.menuPresenterImpl = menuPresenterImpl;
-        this.receiptId = receiptId;
-        this.token = token;
         this.layoutInflater = LayoutInflater.from(context);
+        this.token = token;
     }
+
+
 
 
     @Override
@@ -82,8 +86,6 @@ public class CustomMenuAdapter extends BaseAdapter {
 
             viewHolder.tvNameMenu = (TextView) view.findViewById(R.id.tvNameMenu);
 
-            viewHolder.tvDescriptionMenu = (TextView) view.findViewById(R.id.tvDescriptionMenu);
-
             viewHolder.noteAdd = (ImageView) view.findViewById(R.id.noteAdd);
 
             viewHolder.tvPriceMenu = (TextView) view.findViewById(R.id.tvPriceMenu);
@@ -94,14 +96,11 @@ public class CustomMenuAdapter extends BaseAdapter {
 
             viewHolder.btnPlusMenu = (Button) view.findViewById(R.id.btnPlusMenu);
 
-
-
             view.setTag(viewHolder);
 
         }else{
 
             viewHolder =(ViewHolder) view.getTag();
-
         }
 
         final Menu menu = (Menu) menuList.get(position);
@@ -112,57 +111,211 @@ public class CustomMenuAdapter extends BaseAdapter {
         viewHolder.tvNameMenu.setText(menu.getName());
         viewHolder.tvNameMenu.setTypeface(mFont);
 
-        viewHolder.tvDescriptionMenu.setText(menu.getDescription());
+
 
         String price = NumberFormat.getNumberInstance(Locale.GERMAN).format(menu.getPrice());
 
         viewHolder.tvPriceMenu.setText(""+price+" đ");
 
 
-        viewHolder.btnQuatityMenu.setText(menu.getQuantity()+"");
+        for(final Ordered itemOrdered : listOrdered){
+            if(itemOrdered.getItemId().equals(menu.get_id())){
+                viewHolder.noteAdd.setVisibility(View.VISIBLE);
+                viewHolder.btnQuatityMenu.setText(itemOrdered.getQuantity()+"");
+                viewHolder.btnQuatityMenu.setVisibility(View.VISIBLE);
+                viewHolder.btnSubMenu.setVisibility(View.VISIBLE);
+
+                viewHolder.noteAdd.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        String textNote="";
+                        for(Ordered newOrdered : listOrdered){
+                            if(newOrdered.getItemId().equals(menu.get_id())){
+                                textNote = newOrdered.getNote();
+                                menuPresenterImpl.setTextPopupNoteAdd(textNote, menu.get_id());
+                                menuPresenterImpl.showPopupNoteAdd();
+                                break;
+                            }
+                        }
+                    }
+                });
+                viewHolder.btnPlusMenu.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        menuPresenterImpl.qualityForReceipt(itemOrdered.getItemId(),token,"1");
+                        int qualityCurrent = Integer.parseInt(viewHolder.btnQuatityMenu.getText().toString());
+                        viewHolder.btnQuatityMenu.setText((qualityCurrent + 1) + "");
+                        viewHolder.btnQuatityMenu.setVisibility(View.VISIBLE);
+                        viewHolder.noteAdd.setVisibility(View.VISIBLE);
+                        viewHolder.btnSubMenu.setVisibility(View.VISIBLE);
+                    }
+                });
+
+                viewHolder.btnSubMenu.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        menuPresenterImpl.qualityForReceipt(itemOrdered.getItemId(),token, "-1");
+                        int qualityCurrent = Integer.parseInt(viewHolder.btnQuatityMenu.getText().toString());
+                        if(qualityCurrent == 1){
+                            viewHolder.btnQuatityMenu.setText((qualityCurrent - 1) + "");
+                            menuPresenterImpl.addNoteForReceipt("",itemOrdered.getItemId(), token);
+                            viewHolder.noteAdd.setVisibility(View.INVISIBLE);
+                            viewHolder.btnQuatityMenu.setVisibility(View.INVISIBLE);
+                            viewHolder.btnSubMenu.setVisibility(View.INVISIBLE);
+                        }else{
+                            viewHolder.btnQuatityMenu.setText((qualityCurrent - 1) + "");
+                        }
+                    }
+                });
+
+                break;
+            }else{
+                viewHolder.noteAdd.setVisibility(View.INVISIBLE);
+                viewHolder.btnSubMenu.setVisibility(View.INVISIBLE);
+                viewHolder.btnQuatityMenu.setVisibility(View.INVISIBLE);
+                viewHolder.btnQuatityMenu.setText("0");
+
+                viewHolder.btnPlusMenu.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        menuPresenterImpl.qualityForReceipt(menu.get_id(),token, "1");
+                        int qualityCurrent = Integer.parseInt(viewHolder.btnQuatityMenu.getText().toString());
+                        viewHolder.btnQuatityMenu.setText((qualityCurrent + 1) + "");
+                        viewHolder.noteAdd.setVisibility(View.VISIBLE);
+                        viewHolder.btnSubMenu.setVisibility(View.VISIBLE);
+                        viewHolder.btnQuatityMenu.setVisibility(View.VISIBLE);
+                    }
+                });
+
+                viewHolder.btnSubMenu.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        menuPresenterImpl.qualityForReceipt(menu.get_id(),token, "-1");
+                        int qualityCurrent = Integer.parseInt(viewHolder.btnQuatityMenu.getText().toString());
+                        if(qualityCurrent == 1){
+                            menuPresenterImpl.addNoteForReceipt(" ",menu.get_id(), token);
+                            viewHolder.btnQuatityMenu.setText((qualityCurrent - 1) + "");
+                            viewHolder.btnQuatityMenu.setVisibility(View.INVISIBLE);
+                            viewHolder.noteAdd.setVisibility(View.INVISIBLE);
+                            viewHolder.btnSubMenu.setVisibility(View.INVISIBLE);
+                        }else{
+                            viewHolder.btnQuatityMenu.setText((qualityCurrent - 1) + "");
+                        }
+                    }
+                });
 
 
-        viewHolder.noteAdd.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                menuPresenterImpl.loadPopupNoteAdd();
+
+
+                viewHolder.noteAdd.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        String textNote="";
+                        for(Ordered newOrdered : listOrdered){
+                            if(newOrdered.getItemId().equals(menu.get_id())){
+                                textNote = newOrdered.getNote();
+                                menuPresenterImpl.setTextPopupNoteAdd(textNote, menu.get_id());
+                                menuPresenterImpl.showPopupNoteAdd();
+                                break;
+                            }
+                        }
+                    }
+                });
             }
-        });
-
-
-        viewHolder.btnPlusMenu.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(viewHolder.btnQuatityMenu.getText().toString().equals("")){
-                    menuPresenterImpl.addReceipt(receiptId, token, "menuItemId", menu.get_id());
-                    viewHolder.btnQuatityMenu.setText(1+"");
-                }else {
+        }
+        if(listOrdered.size() == 0){
+            /*viewHolder.noteAdd.setVisibility(View.INVISIBLE);
+            viewHolder.btnQuatityMenu.setText("0");
+            viewHolder.btnPlusMenu.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    viewHolder.noteAdd.setVisibility(View.VISIBLE);
+                    menuPresenterImpl.qualityForReceipt(menu.get_id(),token, "1");
                     int qualityCurrent = Integer.parseInt(viewHolder.btnQuatityMenu.getText().toString());
-                    menuPresenterImpl.addReceipt(receiptId, token, "menuItemId", menu.get_id());
                     viewHolder.btnQuatityMenu.setText((qualityCurrent + 1) + "");
                 }
-            }
-        });
+            });
+
+            viewHolder.noteAdd.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    String textNote="";
+                    for(Ordered newOrdered : listOrdered){
+                        if(newOrdered.getItemId().equals(menu.get_id())){
+                            textNote = newOrdered.getNote();
+                            menuPresenterImpl.setTextPopupNoteAdd(textNote, menu.get_id());
+                            menuPresenterImpl.showPopupNoteAdd();
+                            break;
+                        }
+                    }
+                }
+            });*/
+            viewHolder.noteAdd.setVisibility(View.INVISIBLE);
+            viewHolder.btnSubMenu.setVisibility(View.INVISIBLE);
+            viewHolder.btnQuatityMenu.setVisibility(View.INVISIBLE);
+            viewHolder.btnQuatityMenu.setText("0");
+
+            viewHolder.btnPlusMenu.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    menuPresenterImpl.qualityForReceipt(menu.get_id(),token, "1");
+                    int qualityCurrent = Integer.parseInt(viewHolder.btnQuatityMenu.getText().toString());
+                    viewHolder.btnQuatityMenu.setText((qualityCurrent + 1) + "");
+                    viewHolder.noteAdd.setVisibility(View.VISIBLE);
+                    viewHolder.btnSubMenu.setVisibility(View.VISIBLE);
+                    viewHolder.btnQuatityMenu.setVisibility(View.VISIBLE);
+                }
+            });
+
+            viewHolder.btnSubMenu.setOnClickListener(new View.OnClickListener() {
+
+                @Override
+                public void onClick(View view) {
+                    menuPresenterImpl.qualityForReceipt(menu.get_id(),token, "-1");
+                    int qualityCurrent = Integer.parseInt(viewHolder.btnQuatityMenu.getText().toString());
+                    if(qualityCurrent == 1){
+                        viewHolder.btnQuatityMenu.setText((qualityCurrent - 1) + "");
+                        menuPresenterImpl.addNoteForReceipt(" ",menu.get_id(), token);
+                        viewHolder.btnQuatityMenu.setVisibility(View.INVISIBLE);
+                        viewHolder.noteAdd.setVisibility(View.INVISIBLE);
+                        viewHolder.btnSubMenu.setVisibility(View.INVISIBLE);
+                    }else{
+                        viewHolder.btnQuatityMenu.setText((qualityCurrent - 1) + "");
+                    }
+                }
+            });
 
 
-        viewHolder.btnSubMenu.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                int qualityCurrent = Integer.parseInt(viewHolder.btnQuatityMenu.getText().toString());
-                viewHolder.btnQuatityMenu.setText((qualityCurrent-1)+"");
-            }
-        });
 
 
+            viewHolder.noteAdd.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    String textNote=" ";
+                    for(Ordered newOrdered : listOrdered){
+                        if(newOrdered.getItemId().equals(menu.get_id())){
+                            textNote = newOrdered.getNote();
+                            menuPresenterImpl.setTextPopupNoteAdd(textNote, menu.get_id());
+                            menuPresenterImpl.showPopupNoteAdd();
+                            break;
+                        }
+                    }
+                }
+            });
+        }
 
 
         return view;
     }
 
-    private class ViewHolder{
+
+    public void toast(String message){
+        Toast.makeText(context,message,Toast.LENGTH_SHORT).show();
+    }
+
+    public class ViewHolder{
         ImageView imageMenu;
         TextView tvNameMenu;
-        TextView tvDescriptionMenu;
         ImageView noteAdd;
         TextView tvPriceMenu;
         Button btnSubMenu;

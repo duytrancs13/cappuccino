@@ -8,17 +8,17 @@ public class Table {
     private String name;
     private int x;
     private int y;
-    private int width;
-    private int height;
+    private boolean visible;
+    private String status;
     private String receiptId;
 
-    public Table(String id, String name, int x, int y, int width, int height, String receiptId) {
+    public Table(String id, String name, int x, int y, boolean visible, String status, String receiptId) {
         this.id = id;
         this.name = name;
         this.x = x;
         this.y = y;
-        this.width = width;
-        this.height = height;
+        this.visible = visible;
+        this.status = status;
         this.receiptId = receiptId;
     }
 
@@ -54,23 +54,21 @@ public class Table {
         this.y = y;
     }
 
-    public int getWidth() {
-        return width;
+    public boolean isVisible() {
+        return visible;
     }
 
-    public void setWidth(int width) {
-        this.width = width;
+    public void setVisible(boolean visible) {
+        this.visible = visible;
     }
 
-    public int getHeight() {
-        return height;
+    public String getStatus() {
+        return status;
     }
 
-    public void setHeight(int height) {
-        this.height = height;
+    public void setStatus(String status) {
+        this.status = status;
     }
-
-
 
     public String getReceiptId() {
         return receiptId;
@@ -79,25 +77,4 @@ public class Table {
     public void setReceiptId(String receiptId) {
         this.receiptId = receiptId;
     }
-
-
-    public class ListTable{
-        private List<Table> response;
-
-        public List<Table> getResponse() {
-            return response;
-        }
-
-        public void setResponse(List<Table> response) {
-            this.response = response;
-        }
-    }
-
-
-
-
-
-
-
-
 }
