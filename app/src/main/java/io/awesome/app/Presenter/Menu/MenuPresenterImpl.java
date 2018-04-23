@@ -35,7 +35,7 @@ import io.awesome.app.View.Fragment.Menu.FragmentMenu;
 
 import static io.awesome.app.View.Main.MainActivity.listMenu;
 import static io.awesome.app.View.Main.MainActivity.receiptId;
-import static io.awesome.app.View.MenuTabs.MenuTabsActivity.listOrdered;
+import static io.awesome.app.View.Table.TableActivity.listOrdered;
 
 /**
  * Created by sung on 11/11/2017.

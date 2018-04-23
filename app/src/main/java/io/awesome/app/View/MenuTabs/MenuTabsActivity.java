@@ -28,6 +28,7 @@ import io.awesome.app.R;
 
 import io.awesome.app.View.Table.TableActivity;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
+import static io.awesome.app.View.Table.TableActivity.listOrdered;
 
 
 
@@ -46,8 +47,6 @@ public class MenuTabsActivity extends AppCompatActivity implements MenuTabsView 
     private SharedPreferences sharedPreferences;
     private MenuTabsPresenterImp menuTabsPresenterImp;
     private String token;
-
-    public static List<Ordered> listOrdered = new ArrayList<Ordered>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -177,7 +176,7 @@ public class MenuTabsActivity extends AppCompatActivity implements MenuTabsView 
     @Override
     public void goToMenu(int statusReceipt) {
         if(statusReceipt == 0){
-            listOrdered = new ArrayList<Ordered>();
+             listOrdered = new ArrayList<Ordered>();
             viewPager.setCurrentItem(0);
         }else if(statusReceipt == 1){
             viewPager.setCurrentItem(0);

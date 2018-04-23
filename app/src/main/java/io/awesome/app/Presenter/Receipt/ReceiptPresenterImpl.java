@@ -27,7 +27,7 @@ import io.awesome.app.Model.Receipt;
 import io.awesome.app.View.Fragment.Receipt.FragmentReceipt;
 
 import static io.awesome.app.View.Main.MainActivity.receiptId;
-import static io.awesome.app.View.MenuTabs.MenuTabsActivity.listOrdered;
+import static io.awesome.app.View.Table.TableActivity.listOrdered;
 
 /**
  * Created by sung on 26/11/2017.

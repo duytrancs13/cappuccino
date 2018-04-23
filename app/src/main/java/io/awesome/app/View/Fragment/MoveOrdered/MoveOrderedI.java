@@ -1,4 +1,4 @@
-package io.awesome.app.View.Fragment.MoveTable;
+package io.awesome.app.View.Fragment.MoveOrdered;
 
 import io.awesome.app.Model.Ordered;
 

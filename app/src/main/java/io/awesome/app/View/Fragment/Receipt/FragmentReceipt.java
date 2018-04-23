@@ -28,8 +28,8 @@ import io.awesome.app.R;
 import io.awesome.app.View.Table.TableActivity;
 
 import static android.content.Context.MODE_PRIVATE;
-import static io.awesome.app.View.MenuTabs.MenuTabsActivity.listOrdered;
 import static io.awesome.app.View.Main.MainActivity.receiptId;
+import static io.awesome.app.View.Table.TableActivity.listOrdered;
 
 public class FragmentReceipt extends Fragment implements FragmentReceiptView {
 

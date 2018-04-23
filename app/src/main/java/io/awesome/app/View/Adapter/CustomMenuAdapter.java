@@ -24,8 +24,8 @@ import io.awesome.app.Model.Ordered;
 import io.awesome.app.Presenter.Menu.MenuPresenterImpl;
 import io.awesome.app.R;
 
-import static io.awesome.app.View.MenuTabs.MenuTabsActivity.listOrdered;
 import static io.awesome.app.View.Main.MainActivity.receiptId;
+import static io.awesome.app.View.Table.TableActivity.listOrdered;
 
 /**
  * Created by sung on 30/08/2017.

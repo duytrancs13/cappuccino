@@ -33,8 +33,10 @@ import com.pusher.client.PusherOptions;
 import com.pusher.client.channel.Channel;
 import com.pusher.client.channel.SubscriptionEventListener;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import io.awesome.app.Model.Ordered;
 import io.awesome.app.Model.Table;
 import io.awesome.app.Presenter.Table.TablePresenterImpl;
 import io.awesome.app.View.Login.LoginActivity;
@@ -69,6 +71,8 @@ public class TableActivity extends AppCompatActivity implements NavigationView.O
     private TablePresenterImpl tablePresenter;
 
     private String token;
+
+    public static List<Ordered> listOrdered = new ArrayList<Ordered>();
 
 
 
@@ -364,6 +368,7 @@ public class TableActivity extends AppCompatActivity implements NavigationView.O
 
                 // Khi chọn vào item "Tách - gộp bàn"
                 }else if(position == 1){
+                    receiptId = receiptBusy;
                     intent = new Intent(TableActivity.this, MoveOrderActivity.class);
                     startActivity(intent);
                     /*toast("Tách - gộp bàn");*/

@@ -1,4 +1,4 @@
-package io.awesome.app.View.Fragment.MoveTable;
+package io.awesome.app.View.Fragment.MoveOrdered;
 
 
 import android.os.Bundle;
@@ -6,15 +6,12 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import java.util.ArrayList;
 
 import io.awesome.app.Model.Ordered;
 import io.awesome.app.R;
-import io.awesome.app.View.Adapter.CustomMoveFromTableAdapter;
 import io.awesome.app.View.Adapter.CustomMoveToTableAdapter;
 
 /**
@@ -34,7 +31,7 @@ public class FragmentMoveToTable extends Fragment{
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_fragment_move_to_table, container, false);
+        View view = inflater.inflate(R.layout.fragment_move_to_table, container, false);
 
         /*lvMoveToTable = (ListView) view.findViewById(R.id.lvMoveToTable);
         arrayName = new ArrayList<String>();

@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
@@ -65,7 +66,7 @@ public class CustomMoveFromTableAdapter extends BaseAdapter {
 
             viewHolder.tvNameMoveFromTable = (TextView) convertView.findViewById(R.id.tvNameMoveFromTable);
 
-            /*viewHolder.btnQualityMoveFromTable = (Button) convertView.findViewById(R.id.btnQualityMoveFromTable);*/
+            viewHolder.quatityMoveFromTable = (TextView) convertView.findViewById(R.id.quatityMoveFromTable);
 
             viewHolder.tvMoneyMoveFromTable = (TextView) convertView.findViewById(R.id.tvMoneyMoveFromTable);
 
@@ -82,7 +83,7 @@ public class CustomMoveFromTableAdapter extends BaseAdapter {
         viewHolder.tvNameMoveFromTable.setText(ordered.getName());
         viewHolder.tvNameMoveFromTable.setTypeface(mFont);
 
-        /*viewHolder.btnQualityMoveFromTable.setText(""+ordered.getQuantity());*/
+        viewHolder.quatityMoveFromTable.setText(""+ordered.getQuantity());
 
         int caculMoney = ordered.getPrice()*ordered.getQuantity();
 
@@ -96,7 +97,7 @@ public class CustomMoveFromTableAdapter extends BaseAdapter {
     static class ViewHolder extends FragmentActivity {
         ImageView imageMoveFromTable;
         TextView tvNameMoveFromTable;
-        /*Button btnQualityMoveFromTable;*/
+        TextView quatityMoveFromTable;
         TextView tvMoneyMoveFromTable;
     }
 }
