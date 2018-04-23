@@ -107,11 +107,12 @@
                     android:id="@+id/btnSubMenu"
                     android:layout_width="25dp"
                     android:layout_height="25dp"
-                    android:background="@drawable/buttonplusminus"
+                    android:background="@drawable/buttonminus"
                     android:drawableLeft="@drawable/ic_minus"
                     android:shadowColor="@color/white"
                     android:layout_alignParentLeft="true"
                     android:visibility="visible"
+                    android:shadowRadius="@color/red"
                     />
 
                 <Button
@@ -130,7 +131,7 @@
                     android:id="@+id/btnPlusMenu"
                     android:layout_width="25dp"
                     android:layout_height="25dp"
-                    android:background="@drawable/buttonplusminus"
+                    android:background="@drawable/buttonplus"
                     android:drawableLeft="@drawable/ic_plus"
                     android:layout_alignParentRight="true"
                     />
@@ -148,7 +149,7 @@
                     android:id="@+id/btnMinusReceipt"
                     android:layout_width="24dp"
                     android:layout_height="24dp"
-                    android:background="@drawable/buttonplusminus"
+                    android:background="@drawabuttonminusinus"
                     android:drawableLeft="@drawable/ic_minus"
                     android:shadowColor="@color/white"
                     />
@@ -168,7 +169,7 @@
                     android:layout_width="25dp"
                     android:layout_height="25dp"
                     android:drawableLeft="@drawable/ic_plus"
-                    android:background="@drawable/buttonplusminus"
+                    android:background="@drawabuttonminusinus"
                     />
             </LinearLayout>-->
 

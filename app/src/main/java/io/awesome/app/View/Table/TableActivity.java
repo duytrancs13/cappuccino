@@ -364,9 +364,9 @@ public class TableActivity extends AppCompatActivity implements NavigationView.O
 
                 // Khi chọn vào item "Tách - gộp bàn"
                 }else if(position == 1){
-                   /* intent = new Intent(TableActivity.this, MoveOrderActivity.class);
-                    startActivity(intent);*/
-                    toast("Tách - gộp bàn");
+                    intent = new Intent(TableActivity.this, MoveOrderActivity.class);
+                    startActivity(intent);
+                    /*toast("Tách - gộp bàn");*/
 
                     // Khi chọn vào item "Giao món"
                 }else if(position == 2){

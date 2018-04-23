@@ -41,8 +41,8 @@ public class FragmentMoveFromTable extends Fragment {
     private ListView lvMoveFromTable;
     private List<Ordered> listOrdered;
     private MoveOrderedI moveOrderedI;
-
-    /*private ArrayList<String> arrayName;
+    /*private ListView lvMoveFromTable;
+    private ArrayList<String> arrayName;
     private MoveOrderedI moveOrderedI;
     private ArrayAdapter arrayAdapter;*/
 
@@ -63,24 +63,14 @@ public class FragmentMoveFromTable extends Fragment {
             }
         });*/
 
-        /*lvMoveFromTable = (ListView) view.findViewById(R.id.lvMoveFromTable);
+        lvMoveFromTable = (ListView) view.findViewById(R.id.lvMoveFromTable);
         moveOrderedI = (MoveOrderedI) getActivity();
 
         listOrdered = new ArrayList<Ordered>();
-        *//*Ordered(String itemId, String name, int price, String urlImage, int quantity)*//*
-        listOrdered.add(new Ordered("","Cafe sua",29000,"https://raw.githubusercontent.com/hiepvv/Image/master/ibc.png",2));
-        listOrdered.add(new Ordered("","Sinh to dau",29000,"https://raw.githubusercontent.com/hiepvv/Image/master/ibc.png",3));
-        listOrdered.add(new Ordered("","Cappuciano",29000,"https://raw.githubusercontent.com/hiepvv/Image/master/ibc.png",1));
-        listOrdered.add(new Ordered("","Cafe sua",29000,"https://raw.githubusercontent.com/hiepvv/Image/master/ibc.png",2));
-        listOrdered.add(new Ordered("","Sinh to dau",29000,"https://raw.githubusercontent.com/hiepvv/Image/master/ibc.png",3));
-        listOrdered.add(new Ordered("","Cappuciano",29000,"https://raw.githubusercontent.com/hiepvv/Image/master/ibc.png",1));
-
-        listOrdered.add(new Ordered("1","Cafe sua",29000,"https://raw.githubusercontent.com/hiepvv/Image/master/ibc.png",2));
-        listOrdered.add(new Ordered("2","Sinh to dau",29000,"https://raw.githubusercontent.com/hiepvv/Image/master/ibc.png",3));
-        listOrdered.add(new Ordered("3","Cappuciano",29000,"https://raw.githubusercontent.com/hiepvv/Image/master/ibc.png",1));
-        listOrdered.add(new Ordered("4","Cafe sua",29000,"https://raw.githubusercontent.com/hiepvv/Image/master/ibc.png",2));
-        listOrdered.add(new Ordered("5","Sinh to dau",29000,"https://raw.githubusercontent.com/hiepvv/Image/master/ibc.png",3));
-        listOrdered.add(new Ordered("6","Cappuciano",29000,"https://raw.githubusercontent.com/hiepvv/Image/master/ibc.png",1));
+        /*Ordered(String itemId, String name, int price, String urlImage, int quantity, String note)*/
+        listOrdered.add(new Ordered("","ca phe", 10000,"abc",1,""));
+        listOrdered.add(new Ordered("","ca phe sua", 10000,"abc",1,""));
+        listOrdered.add(new Ordered("","sinh to", 10000,"abc",1,""));
 
         customMoveFromTableAdapter = new CustomMoveFromTableAdapter(view.getContext(), listOrdered);
 
@@ -92,7 +82,7 @@ public class FragmentMoveFromTable extends Fragment {
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
                 confirmDelete(position,listOrdered.get(position));
             }
-        });*/
+        });
 
         /*arrayName = new ArrayList<String>();
         arrayName.add("duy");
@@ -144,6 +134,10 @@ public class FragmentMoveFromTable extends Fragment {
         });
         builder.show();
     }
+
+
+
+
 
 
 

@@ -40,54 +40,90 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
                     <LinearLayout
-                        android:weightSum="2"
+                        android:weightSum="3"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="20dp"
                         android:layout_marginRight="20dp"
                         android:layout_marginBottom="15dp"
-                        android:layout_marginTop="15dp"
-                        >
+                        android:layout_marginTop="15dp">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1">
+
+                            <Button
+                                android:id="@+id/quatityMenuReceipt"
+                                android:layout_width="25dp"
+                                android:layout_height="25dp"
+                                android:background="@drawable/buttonquality"
+                                android:textColor="#757575"
+                                android:clickable = "false"
+                                />
+
+                        </LinearLayout>
+
                         <TextView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:text="Tổng cộng"
                             android:textSize="16dp"
+                            android:layout_gravity="center"
                             />
 
                         <TextView
                             android:id="@+id/tvTotalMoney"
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:text=""
                             android:gravity="right"
                             android:textStyle="bold"
-                            android:textSize="16dp"
+                            android:textSize="20dp"
+                            android:textColor="@color/black"
                             />
 
                     </LinearLayout>
                 </android.support.v7.widget.CardView>
             </LinearLayout>
+
         </ScrollView>
 
+
+
         <LinearLayout
+            android:weightSum="2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="25dp"
-            android:layout_marginRight="25dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
             android:layout_alignParentBottom="true"
-            android:translationY="-10dp">
-
+            android:translationY="-10dp"
+            android:orientation="horizontal"
+            >
             <Button
-                android:id="@+id/btnReceipt"
-                android:layout_width="match_parent"
+                android:id="@+id/btnPrintReceipt"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:textColor="@color/white"
                 android:background="@drawable/button_login"
-                android:text="THANH TOÁN"
+                android:text="in hóa đơn"
+                android:layout_marginRight="15dp"
                 />
+            <Button
+                android:id="@+id/btnReceipt"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textColor="@color/white"
+                android:background="@drawable/button_login"
+                android:text="thanh toán"
+                android:layout_marginLeft="15dp"
+                />
+
         </LinearLayout>
 
     </RelativeLayout>

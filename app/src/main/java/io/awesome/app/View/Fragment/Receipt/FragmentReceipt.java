@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -40,7 +41,10 @@ public class FragmentReceipt extends Fragment implements FragmentReceiptView {
 
     private SharedPreferences prefs;
 
-    private Button btnReceipt;
+    private Button btnPrintReceipt,btnReceipt;
+
+
+    private Button quatityMenuReceipt;
 
     private TextView tvTotalMoney;
 
@@ -72,12 +76,23 @@ public class FragmentReceipt extends Fragment implements FragmentReceiptView {
             return view;
         }
 
+        quatityMenuReceipt = (Button) view.findViewById(R.id.quatityMenuReceipt);
+        quatityMenuReceipt.setText(listOrdered.size()+"");
+
 
         tvTotalMoney = (TextView) view.findViewById(R.id.tvTotalMoney);
 
         tvTotalMoney.setText(NumberFormat.getNumberInstance(Locale.GERMAN).format(totalMoney)+" đ");
 
         totalMoney = 0;
+
+        btnPrintReceipt = (Button) view.findViewById(R.id.btnPrintReceipt);
+        btnPrintReceipt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                toast("In hóa đơn !!!");
+            }
+        });
 
         btnReceipt = (Button) view.findViewById(R.id.btnReceipt);
         btnReceipt.setOnClickListener(new View.OnClickListener() {
@@ -94,6 +109,9 @@ public class FragmentReceipt extends Fragment implements FragmentReceiptView {
     public void loadMenuReceipt(List<Ordered> listOrdered) {
 
         for (Ordered itemOrdered: listOrdered) {
+            if(itemOrdered.getQuantity() == 0){
+                continue;
+            }
             View v = getView(itemOrdered);
             llReceipt.addView(v);
         }

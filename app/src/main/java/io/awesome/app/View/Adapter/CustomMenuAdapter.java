@@ -44,15 +44,13 @@ public class CustomMenuAdapter extends BaseAdapter {
     private String token;
 
 
-    public CustomMenuAdapter(Context context, List<Menu> menuList,MenuPresenterImpl menuPresenterImpl,String token ) {
+    public CustomMenuAdapter(Context context, List<Menu> menuList, MenuPresenterImpl menuPresenterImpl, String token) {
         this.context = context;
         this.menuList = menuList;
         this.menuPresenterImpl = menuPresenterImpl;
         this.layoutInflater = LayoutInflater.from(context);
         this.token = token;
     }
-
-
 
 
     @Override
@@ -76,11 +74,11 @@ public class CustomMenuAdapter extends BaseAdapter {
 
         final ViewHolder viewHolder;
 
-        if(view == null){
+        if (view == null) {
 
             viewHolder = new ViewHolder();
 
-            view = layoutInflater.inflate(R.layout.layout_gridview_menu,null);
+            view = layoutInflater.inflate(R.layout.layout_gridview_menu, null);
 
             viewHolder.imageMenu = (ImageView) view.findViewById(R.id.imageMenu);
 
@@ -98,13 +96,13 @@ public class CustomMenuAdapter extends BaseAdapter {
 
             view.setTag(viewHolder);
 
-        }else{
+        } else {
 
-            viewHolder =(ViewHolder) view.getTag();
+            viewHolder = (ViewHolder) view.getTag();
         }
 
         final Menu menu = (Menu) menuList.get(position);
-        Typeface mFont = Typeface.createFromAsset(context.getAssets(),"Roboto-Bold.ttf");
+        Typeface mFont = Typeface.createFromAsset(context.getAssets(), "Roboto-Bold.ttf");
 
         Picasso.with(context).load(menu.getUrlImage()).into(viewHolder.imageMenu);
 
@@ -112,25 +110,24 @@ public class CustomMenuAdapter extends BaseAdapter {
         viewHolder.tvNameMenu.setTypeface(mFont);
 
 
-
         String price = NumberFormat.getNumberInstance(Locale.GERMAN).format(menu.getPrice());
 
-        viewHolder.tvPriceMenu.setText(""+price+" đ");
+        viewHolder.tvPriceMenu.setText("" + price + " đ");
 
 
-        for(final Ordered itemOrdered : listOrdered){
-            if(itemOrdered.getItemId().equals(menu.get_id())){
+        for (final Ordered itemOrdered : listOrdered) {
+            if (itemOrdered.getItemId().equals(menu.get_id())) {
                 viewHolder.noteAdd.setVisibility(View.VISIBLE);
-                viewHolder.btnQuatityMenu.setText(itemOrdered.getQuantity()+"");
+                viewHolder.btnQuatityMenu.setText(itemOrdered.getQuantity() + "");
                 viewHolder.btnQuatityMenu.setVisibility(View.VISIBLE);
                 viewHolder.btnSubMenu.setVisibility(View.VISIBLE);
 
                 viewHolder.noteAdd.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        String textNote="";
-                        for(Ordered newOrdered : listOrdered){
-                            if(newOrdered.getItemId().equals(menu.get_id())){
+                        String textNote = "";
+                        for (Ordered newOrdered : listOrdered) {
+                            if (newOrdered.getItemId().equals(menu.get_id())) {
                                 textNote = newOrdered.getNote();
                                 menuPresenterImpl.setTextPopupNoteAdd(textNote, menu.get_id());
                                 menuPresenterImpl.showPopupNoteAdd();
@@ -142,7 +139,7 @@ public class CustomMenuAdapter extends BaseAdapter {
                 viewHolder.btnPlusMenu.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        menuPresenterImpl.qualityForReceipt(itemOrdered.getItemId(),token,"1");
+                        menuPresenterImpl.qualityForReceipt(itemOrdered.getItemId(), token, "1");
                         int qualityCurrent = Integer.parseInt(viewHolder.btnQuatityMenu.getText().toString());
                         viewHolder.btnQuatityMenu.setText((qualityCurrent + 1) + "");
                         viewHolder.btnQuatityMenu.setVisibility(View.VISIBLE);
@@ -154,22 +151,22 @@ public class CustomMenuAdapter extends BaseAdapter {
                 viewHolder.btnSubMenu.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        menuPresenterImpl.qualityForReceipt(itemOrdered.getItemId(),token, "-1");
+                        menuPresenterImpl.qualityForReceipt(itemOrdered.getItemId(), token, "-1");
                         int qualityCurrent = Integer.parseInt(viewHolder.btnQuatityMenu.getText().toString());
-                        if(qualityCurrent == 1){
+                        if (qualityCurrent == 1) {
                             viewHolder.btnQuatityMenu.setText((qualityCurrent - 1) + "");
-                            menuPresenterImpl.addNoteForReceipt("",itemOrdered.getItemId(), token);
+                            menuPresenterImpl.addNoteForReceipt(" ", itemOrdered.getItemId(), token);
                             viewHolder.noteAdd.setVisibility(View.INVISIBLE);
                             viewHolder.btnQuatityMenu.setVisibility(View.INVISIBLE);
                             viewHolder.btnSubMenu.setVisibility(View.INVISIBLE);
-                        }else{
+                        } else {
                             viewHolder.btnQuatityMenu.setText((qualityCurrent - 1) + "");
                         }
                     }
                 });
 
                 break;
-            }else{
+            } else {
                 viewHolder.noteAdd.setVisibility(View.INVISIBLE);
                 viewHolder.btnSubMenu.setVisibility(View.INVISIBLE);
                 viewHolder.btnQuatityMenu.setVisibility(View.INVISIBLE);
@@ -178,7 +175,7 @@ public class CustomMenuAdapter extends BaseAdapter {
                 viewHolder.btnPlusMenu.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        menuPresenterImpl.qualityForReceipt(menu.get_id(),token, "1");
+                        menuPresenterImpl.qualityForReceipt(menu.get_id(), token, "1");
                         int qualityCurrent = Integer.parseInt(viewHolder.btnQuatityMenu.getText().toString());
                         viewHolder.btnQuatityMenu.setText((qualityCurrent + 1) + "");
                         viewHolder.noteAdd.setVisibility(View.VISIBLE);
@@ -190,29 +187,27 @@ public class CustomMenuAdapter extends BaseAdapter {
                 viewHolder.btnSubMenu.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        menuPresenterImpl.qualityForReceipt(menu.get_id(),token, "-1");
+                        menuPresenterImpl.qualityForReceipt(menu.get_id(), token, "-1");
                         int qualityCurrent = Integer.parseInt(viewHolder.btnQuatityMenu.getText().toString());
-                        if(qualityCurrent == 1){
-                            menuPresenterImpl.addNoteForReceipt(" ",menu.get_id(), token);
+                        if (qualityCurrent == 1) {
+                            menuPresenterImpl.addNoteForReceipt(" ", menu.get_id(), token);
                             viewHolder.btnQuatityMenu.setText((qualityCurrent - 1) + "");
                             viewHolder.btnQuatityMenu.setVisibility(View.INVISIBLE);
                             viewHolder.noteAdd.setVisibility(View.INVISIBLE);
                             viewHolder.btnSubMenu.setVisibility(View.INVISIBLE);
-                        }else{
+                        } else {
                             viewHolder.btnQuatityMenu.setText((qualityCurrent - 1) + "");
                         }
                     }
                 });
 
 
-
-
                 viewHolder.noteAdd.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        String textNote="";
-                        for(Ordered newOrdered : listOrdered){
-                            if(newOrdered.getItemId().equals(menu.get_id())){
+                        String textNote = "";
+                        for (Ordered newOrdered : listOrdered) {
+                            if (newOrdered.getItemId().equals(menu.get_id())) {
                                 textNote = newOrdered.getNote();
                                 menuPresenterImpl.setTextPopupNoteAdd(textNote, menu.get_id());
                                 menuPresenterImpl.showPopupNoteAdd();
@@ -223,7 +218,7 @@ public class CustomMenuAdapter extends BaseAdapter {
                 });
             }
         }
-        if(listOrdered.size() == 0){
+        if (listOrdered.size() == 0) {
             /*viewHolder.noteAdd.setVisibility(View.INVISIBLE);
             viewHolder.btnQuatityMenu.setText("0");
             viewHolder.btnPlusMenu.setOnClickListener(new View.OnClickListener() {
@@ -258,7 +253,7 @@ public class CustomMenuAdapter extends BaseAdapter {
             viewHolder.btnPlusMenu.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    menuPresenterImpl.qualityForReceipt(menu.get_id(),token, "1");
+                    menuPresenterImpl.qualityForReceipt(menu.get_id(), token, "1");
                     int qualityCurrent = Integer.parseInt(viewHolder.btnQuatityMenu.getText().toString());
                     viewHolder.btnQuatityMenu.setText((qualityCurrent + 1) + "");
                     viewHolder.noteAdd.setVisibility(View.VISIBLE);
@@ -271,29 +266,27 @@ public class CustomMenuAdapter extends BaseAdapter {
 
                 @Override
                 public void onClick(View view) {
-                    menuPresenterImpl.qualityForReceipt(menu.get_id(),token, "-1");
+                    menuPresenterImpl.qualityForReceipt(menu.get_id(), token, "-1");
                     int qualityCurrent = Integer.parseInt(viewHolder.btnQuatityMenu.getText().toString());
-                    if(qualityCurrent == 1){
+                    if (qualityCurrent == 1) {
                         viewHolder.btnQuatityMenu.setText((qualityCurrent - 1) + "");
-                        menuPresenterImpl.addNoteForReceipt(" ",menu.get_id(), token);
+                        menuPresenterImpl.addNoteForReceipt(" ", menu.get_id(), token);
                         viewHolder.btnQuatityMenu.setVisibility(View.INVISIBLE);
                         viewHolder.noteAdd.setVisibility(View.INVISIBLE);
                         viewHolder.btnSubMenu.setVisibility(View.INVISIBLE);
-                    }else{
+                    } else {
                         viewHolder.btnQuatityMenu.setText((qualityCurrent - 1) + "");
                     }
                 }
             });
 
 
-
-
             viewHolder.noteAdd.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    String textNote=" ";
-                    for(Ordered newOrdered : listOrdered){
-                        if(newOrdered.getItemId().equals(menu.get_id())){
+                    String textNote = " ";
+                    for (Ordered newOrdered : listOrdered) {
+                        if (newOrdered.getItemId().equals(menu.get_id())) {
                             textNote = newOrdered.getNote();
                             menuPresenterImpl.setTextPopupNoteAdd(textNote, menu.get_id());
                             menuPresenterImpl.showPopupNoteAdd();
@@ -309,11 +302,11 @@ public class CustomMenuAdapter extends BaseAdapter {
     }
 
 
-    public void toast(String message){
-        Toast.makeText(context,message,Toast.LENGTH_SHORT).show();
+    public void toast(String message) {
+        Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
     }
 
-    public class ViewHolder{
+    public class ViewHolder {
         ImageView imageMenu;
         TextView tvNameMenu;
         ImageView noteAdd;
