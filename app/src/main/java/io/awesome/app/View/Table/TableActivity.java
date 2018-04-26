@@ -73,6 +73,7 @@ public class TableActivity extends AppCompatActivity implements NavigationView.O
     private String token;
 
     public static List<Ordered> listOrdered = new ArrayList<Ordered>();
+    public static List<Ordered> listToOrdered = new ArrayList<Ordered>();
 
 
 
@@ -113,7 +114,7 @@ public class TableActivity extends AppCompatActivity implements NavigationView.O
         sharedPreferences = getSharedPreferences(MyPREFERENCES, MODE_PRIVATE);
         token = sharedPreferences.getString("token", null);
 
-        intent = new Intent(this, MenuTabsActivity.class);
+
 
 
         tablePresenter = new TablePresenterImpl(getBaseContext(),this);
@@ -450,6 +451,7 @@ public class TableActivity extends AppCompatActivity implements NavigationView.O
     @Override
     public void gotoMenu(String receipt, int statusMenu) {
         receiptId = receipt;
+        intent = new Intent(this, MenuTabsActivity.class);
         intent.putExtra("statusReceipt",statusMenu);
         startActivity(intent);
     }

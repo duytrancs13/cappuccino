@@ -169,7 +169,6 @@ public class MenuPresenterImpl implements MenuPresenter {
     @Override
     public void qualityForReceipt(String menuId, final String token, final String quality) {
         String url = "https://cafeteria-service.herokuapp.com/api/v1/receipts/"+receiptId+"/items/"+menuId;
-        /*addItemForReceipt(url, token, "1", textNote, menuId);*/
         RequestQueue queue = Volley.newRequestQueue(context);
         StringRequest stringRequest = new StringRequest(Request.Method.PATCH, url, new Response.Listener<String>() {
             @Override
@@ -205,7 +204,6 @@ public class MenuPresenterImpl implements MenuPresenter {
     @Override
     public void getMenuReceipt(final String token) {
         String url ="https://cafeteria-service.herokuapp.com/api/v1/receipts/"+receiptId;
-        Log.v("AAA", url);
         RequestQueue queue = Volley.newRequestQueue(context);
         JsonObjectRequest jsonObjectRequest =new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
             @Override

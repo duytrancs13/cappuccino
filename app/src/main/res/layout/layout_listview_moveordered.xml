@@ -13,7 +13,7 @@
         android:layout_margin="10dp"
         >
         <ImageView
-            android:id="@+id/imageMoveFromTable"
+            android:id="@+id/imageMoveOrdered"
             android:layout_width="0dp"
             android:layout_height="50dp"
             android:scaleType="centerCrop"
@@ -34,7 +34,7 @@
                 >
 
                 <TextView
-                    android:id="@+id/tvNameMoveFromTable"
+                    android:id="@+id/tvNameMoveOrdered"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.6"
@@ -52,13 +52,13 @@
                     android:gravity="center"
                     >
                     <TextView
-                        android:id="@+id/quatityMoveFromTable"
+                        android:id="@+id/quatityMoveOrdered"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         />
                 </LinearLayout>
                 <TextView
-                    android:id="@+id/tvMoneyMoveFromTable"
+                    android:id="@+id/tvMoneyMoveOrdered"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.3"

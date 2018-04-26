@@ -9,15 +9,20 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import io.awesome.app.General.SetFont;
 import io.awesome.app.Model.Ordered;
 import io.awesome.app.Presenter.MenuTabs.MenuTabsPresenterImp;
-import io.awesome.app.Presenter.MoveReceipt.MoveOrderedPresenterImp;
+import io.awesome.app.Presenter.MoveOrdered.MoveOrderedPresenterImp;
 import io.awesome.app.R;
-import io.awesome.app.View.Fragment.MoveOrdered.FragmentMoveFromTable;
-import io.awesome.app.View.Fragment.MoveOrdered.FragmentMoveTable;
-import io.awesome.app.View.Fragment.MoveOrdered.FragmentMoveToTable;
+import io.awesome.app.View.Fragment.MoveOrdered.FragmentMoveFromOrdered;
+import io.awesome.app.View.Fragment.MoveOrdered.FragmentMoveOrdered;
+import io.awesome.app.View.Fragment.MoveOrdered.FragmentMoveToOrdered;
 import io.awesome.app.View.Fragment.MoveOrdered.MoveOrderedI;
+
+import static io.awesome.app.View.Main.MainActivity.receiptToOrdered;
 
 public class MoveOrderActivity extends AppCompatActivity implements MoveOrderedI, MoveOrderedView {
 
@@ -31,10 +36,12 @@ public class MoveOrderActivity extends AppCompatActivity implements MoveOrderedI
     private MenuTabsPresenterImp menuTabsPresenterImp;
     private String token;
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_move_order);
+        setContentView(R.layout.activity_move_ordered);
 
         sharedPreferences = getSharedPreferences(MyPREFERENCES, MODE_PRIVATE);
         token = sharedPreferences.getString("token", null);
@@ -53,8 +60,8 @@ public class MoveOrderActivity extends AppCompatActivity implements MoveOrderedI
         getSupportActionBar().setHomeAsUpIndicator(upArrow);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        moveOrderedPresenterImp = new MoveOrderedPresenterImp(this,this);
-        moveOrderedPresenterImp.getMenuOrdered(token);
+        moveOrderedPresenterImp = new MoveOrderedPresenterImp(this,this, token);
+        moveOrderedPresenterImp.getMenuOrdered();
 
     }
 
@@ -77,18 +84,25 @@ public class MoveOrderActivity extends AppCompatActivity implements MoveOrderedI
     }
 
     @Override
-    public void moveOrdered(Ordered ordered) {
-        FragmentMoveToTable fragmentMoveToTable =
-                (FragmentMoveToTable) getSupportFragmentManager().findFragmentById(R.id.frag_2);
-        fragmentMoveToTable.recevieData(ordered);
+    public void moveOrdered(String receiptId ,String menuId, String quality) {
+        moveOrderedPresenterImp.moveItemOrdered(receiptId, menuId,quality,"moveOrdered");
+        moveOrderedPresenterImp.moveItemOrdered(receiptToOrdered, menuId,"1", "toOrdered");
+        FragmentMoveToOrdered fragmentMoveToTable =
+                (FragmentMoveToOrdered) getSupportFragmentManager().findFragmentById(R.id.frag_2);
+        fragmentMoveToTable.recevieData();
+    }
+
+    @Override
+    public void getMenuToOrdered() {
+        moveOrderedPresenterImp.getMenuToOrdered();
     }
 
 
     @Override
     public void initFragment() {
-        FragmentMoveFromTable fragmentMoveFromTable = new FragmentMoveFromTable();
-        FragmentMoveTable fragmentMoveTable = new FragmentMoveTable();
-        FragmentMoveToTable fragmentMoveToTable = new FragmentMoveToTable();
+        FragmentMoveFromOrdered fragmentMoveFromTable = new FragmentMoveFromOrdered();
+        FragmentMoveOrdered fragmentMoveTable = new FragmentMoveOrdered();
+        FragmentMoveToOrdered fragmentMoveToTable = new FragmentMoveToOrdered();
 
 
         transaction =getSupportFragmentManager().beginTransaction();
@@ -98,4 +112,15 @@ public class MoveOrderActivity extends AppCompatActivity implements MoveOrderedI
 
         transaction.commit();
     }
+
+    @Override
+    public void FragmentToOrdered() {
+        FragmentMoveToOrdered fragmentMoveToTable = (FragmentMoveToOrdered) getSupportFragmentManager().findFragmentById(R.id.frag_2);
+        transaction = getSupportFragmentManager().beginTransaction();
+        transaction.detach(fragmentMoveToTable);
+        transaction.attach(fragmentMoveToTable);
+        transaction.commit();
+    }
+
+
 }

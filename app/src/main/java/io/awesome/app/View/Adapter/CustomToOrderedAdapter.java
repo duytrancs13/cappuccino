@@ -7,9 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
@@ -25,13 +23,13 @@ import io.awesome.app.R;
  * Created by sung on 20/03/2018.
  */
 
-public class CustomMoveFromTableAdapter extends BaseAdapter {
+public class CustomToOrderedAdapter extends BaseAdapter {
 
     private Context context;
     private LayoutInflater layoutInflater;
     private List<Ordered> listOrdered;
 
-    public CustomMoveFromTableAdapter(Context context, List<Ordered> listOrdered){
+    public CustomToOrderedAdapter(Context context, List<Ordered> listOrdered){
         this.context = context;
         this.listOrdered = listOrdered;
         this.layoutInflater = LayoutInflater.from(context);
@@ -58,46 +56,46 @@ public class CustomMoveFromTableAdapter extends BaseAdapter {
         ViewHolder viewHolder;
         if(convertView == null){
 
-            convertView = layoutInflater.inflate(R.layout.layout_listview_movefromtable,null);
+            convertView = layoutInflater.inflate(R.layout.layout_listview_toordered,null);
 
-            viewHolder = new CustomMoveFromTableAdapter.ViewHolder();
+            viewHolder = new CustomToOrderedAdapter.ViewHolder();
 
-            viewHolder.imageMoveFromTable = (ImageView) convertView.findViewById(R.id.imageMoveFromTable);
+            viewHolder.imageToOrdered = (ImageView) convertView.findViewById(R.id.imageToOrdered);
 
-            viewHolder.tvNameMoveFromTable = (TextView) convertView.findViewById(R.id.tvNameMoveFromTable);
+            viewHolder.tvNameToOrdered = (TextView) convertView.findViewById(R.id.tvNameToOrdered);
 
-            viewHolder.quatityMoveFromTable = (TextView) convertView.findViewById(R.id.quatityMoveFromTable);
+            viewHolder.quatityToOrdered = (TextView) convertView.findViewById(R.id.quatityToOrdered);
 
-            viewHolder.tvMoneyMoveFromTable = (TextView) convertView.findViewById(R.id.tvMoneyMoveFromTable);
+            viewHolder.tvMoneyToOrdered = (TextView) convertView.findViewById(R.id.tvMoneyToOrdered);
 
             convertView.setTag(viewHolder);
         }else{
-            viewHolder = (CustomMoveFromTableAdapter.ViewHolder) convertView.getTag();
+            viewHolder = (CustomToOrderedAdapter.ViewHolder) convertView.getTag();
         }
 
 
         Ordered ordered = this.listOrdered.get(position);
         Typeface mFont = Typeface.createFromAsset(context.getAssets(),"Roboto-Bold.ttf");
-        Picasso.with(context).load(ordered.getUrlImage()).into(viewHolder.imageMoveFromTable);
+        Picasso.with(context).load(ordered.getUrlImage()).into(viewHolder.imageToOrdered);
 
-        viewHolder.tvNameMoveFromTable.setText(ordered.getName());
-        viewHolder.tvNameMoveFromTable.setTypeface(mFont);
+        viewHolder.tvNameToOrdered.setText(ordered.getName());
+        viewHolder.tvNameToOrdered.setTypeface(mFont);
 
-        viewHolder.quatityMoveFromTable.setText(""+ordered.getQuantity());
+        viewHolder.quatityToOrdered.setText(""+ordered.getQuantity());
 
         int caculMoney = ordered.getPrice()*ordered.getQuantity();
 
         String money = NumberFormat.getNumberInstance(Locale.GERMAN).format(caculMoney);
 
-        viewHolder.tvMoneyMoveFromTable.setText(""+money+" đ");
+        viewHolder.tvMoneyToOrdered.setText(""+money+" đ");
 
         return convertView;
     }
 
     static class ViewHolder extends FragmentActivity {
-        ImageView imageMoveFromTable;
-        TextView tvNameMoveFromTable;
-        TextView quatityMoveFromTable;
-        TextView tvMoneyMoveFromTable;
+        ImageView imageToOrdered;
+        TextView tvNameToOrdered;
+        TextView quatityToOrdered;
+        TextView tvMoneyToOrdered;
     }
 }

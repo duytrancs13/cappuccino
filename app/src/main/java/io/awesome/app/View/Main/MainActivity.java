@@ -47,6 +47,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public static List<Category> listCategory = new ArrayList<Category>();
 
     public static String receiptId = "";
+    public static String receiptToOrdered = "";
 
 
     @Override

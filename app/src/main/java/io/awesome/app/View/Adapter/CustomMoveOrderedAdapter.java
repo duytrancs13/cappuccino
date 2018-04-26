@@ -23,13 +23,13 @@ import io.awesome.app.R;
  * Created by sung on 20/03/2018.
  */
 
-public class CustomMoveToTableAdapter extends BaseAdapter {
+public class CustomMoveOrderedAdapter extends BaseAdapter {
 
     private Context context;
     private LayoutInflater layoutInflater;
     private List<Ordered> listOrdered;
 
-    public CustomMoveToTableAdapter(Context context, List<Ordered> listOrdered){
+    public CustomMoveOrderedAdapter(Context context, List<Ordered> listOrdered){
         this.context = context;
         this.listOrdered = listOrdered;
         this.layoutInflater = LayoutInflater.from(context);
@@ -56,46 +56,46 @@ public class CustomMoveToTableAdapter extends BaseAdapter {
         ViewHolder viewHolder;
         if(convertView == null){
 
-            convertView = layoutInflater.inflate(R.layout.layout_listview_movetotable,null);
+            convertView = layoutInflater.inflate(R.layout.layout_listview_moveordered,null);
 
-            viewHolder = new CustomMoveToTableAdapter.ViewHolder();
+            viewHolder = new CustomMoveOrderedAdapter.ViewHolder();
 
-            viewHolder.imageMoveToTable = (ImageView) convertView.findViewById(R.id.imageMoveToTable);
+            viewHolder.imageMoveOrdered = (ImageView) convertView.findViewById(R.id.imageMoveOrdered);
 
-            viewHolder.tvNameMoveToTable = (TextView) convertView.findViewById(R.id.tvNameMoveToTable);
+            viewHolder.tvNameMoveOrdered = (TextView) convertView.findViewById(R.id.tvNameMoveOrdered);
 
-            /*viewHolder.btnQualityMoveToTable = (Button) convertView.findViewById(R.id.btnQualityMoveToTable);*/
+            viewHolder.quatityMoveOrdered = (TextView) convertView.findViewById(R.id.quatityMoveOrdered);
 
-            viewHolder.tvMoneyMoveToTable = (TextView) convertView.findViewById(R.id.tvMoneyMoveToTable);
+            viewHolder.tvMoneyMoveOrdered = (TextView) convertView.findViewById(R.id.tvMoneyMoveOrdered);
 
             convertView.setTag(viewHolder);
         }else{
-            viewHolder = (CustomMoveToTableAdapter.ViewHolder) convertView.getTag();
+            viewHolder = (CustomMoveOrderedAdapter.ViewHolder) convertView.getTag();
         }
 
 
         Ordered ordered = this.listOrdered.get(position);
         Typeface mFont = Typeface.createFromAsset(context.getAssets(),"Roboto-Bold.ttf");
-        Picasso.with(context).load(ordered.getUrlImage()).into(viewHolder.imageMoveToTable);
+        Picasso.with(context).load(ordered.getUrlImage()).into(viewHolder.imageMoveOrdered);
 
-        viewHolder.tvNameMoveToTable.setText(ordered.getName());
-        viewHolder.tvNameMoveToTable.setTypeface(mFont);
+        viewHolder.tvNameMoveOrdered.setText(ordered.getName());
+        viewHolder.tvNameMoveOrdered.setTypeface(mFont);
 
-        /*viewHolder.btnQualityMoveToTable.setText(""+ordered.getQuantity());*/
+        viewHolder.quatityMoveOrdered.setText(""+ordered.getQuantity());
 
         int caculMoney = ordered.getPrice()*ordered.getQuantity();
 
         String money = NumberFormat.getNumberInstance(Locale.GERMAN).format(caculMoney);
 
-        viewHolder.tvMoneyMoveToTable.setText(""+money+" đ");
+        viewHolder.tvMoneyMoveOrdered.setText(""+money+" đ");
 
         return convertView;
     }
 
     static class ViewHolder extends FragmentActivity {
-        ImageView imageMoveToTable;
-        TextView tvNameMoveToTable;
-        /*Button btnQualityMoveToTable;*/
-        TextView tvMoneyMoveToTable;
+        ImageView imageMoveOrdered;
+        TextView tvNameMoveOrdered;
+        TextView quatityMoveOrdered;
+        TextView tvMoneyMoveOrdered;
     }
 }
