@@ -45,7 +45,7 @@ public class FragmentMoveFromOrdered extends Fragment {
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
 
 //                moveItemOrdered(String menuId, final String quality)
-                moveOrderedI.moveOrdered(receiptId,listOrdered.get(position).getItemId(),"-1");
+                moveOrderedI.moveOrdered(listOrdered.get(position).getItemId(),"-1", "AtoB");
                 customMoveOrderedAdapter.notifyDataSetChanged();
 
                 //confirmDelete(position,listOrdered.get(position));
@@ -55,6 +55,10 @@ public class FragmentMoveFromOrdered extends Fragment {
     }
     public void toast(String message){
         Toast.makeText(getContext(),message,Toast.LENGTH_SHORT).show();
+    }
+
+    public void recevieData() {
+        customMoveOrderedAdapter.notifyDataSetChanged();
     }
 
     /*private void confirmDelete(final int position,final Ordered ordered){

@@ -117,37 +117,6 @@ public class TablePresenterImpl implements TablePresenter {
         };
 
         queue.add(stringRequest);
-
-
-        /*JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.PUT, url, null, new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response) {
-                try {
-                    JSONObject jsonObject = response.getJSONObject("response");
-                    String receiptId = jsonObject.getString("receiptId");
-
-                    // ĐI đến màn hình Menu
-                    tableView.goToPageMenu(receiptId,idTable);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.v("AAA",error.toString());
-            }
-        })*/
-        /*{
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String, String> params = new HashMap<>();
-                params.put("remove", "true");
-                return params;
-            }
-        }*/
-        ;
-       /* queue.add(jsonObjectRequest);*/
     }
 
 

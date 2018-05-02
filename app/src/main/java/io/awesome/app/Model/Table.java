@@ -1,8 +1,12 @@
 package io.awesome.app.Model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import java.io.Serializable;
 import java.util.List;
 
-public class Table {
+public class Table implements Serializable{
 
     private String id;
     private String name;
@@ -77,4 +81,5 @@ public class Table {
     public void setReceiptId(String receiptId) {
         this.receiptId = receiptId;
     }
+
 }

@@ -8,4 +8,5 @@ public interface MoveOrderedPresenter {
     void getMenuOrdered();
     void getMenuToOrdered();
     void moveItemOrdered(String receiptId, String menuId, String quality, String statusOrdered);
+    void createReceiptToOrdered(String idTable, int position);
 }

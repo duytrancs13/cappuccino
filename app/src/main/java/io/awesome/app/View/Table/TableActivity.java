@@ -122,7 +122,6 @@ public class TableActivity extends AppCompatActivity implements NavigationView.O
 
         // Nhờ TablePresenter để gọi đến API để load dữ liệu của bàn. Cần có token
         tablePresenter.loadTable(token);
-
     }
 
 

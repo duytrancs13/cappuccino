@@ -1,5 +1,6 @@
 package io.awesome.app.View.MoveOrder;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.support.v4.app.FragmentTransaction;
@@ -21,8 +22,11 @@ import io.awesome.app.View.Fragment.MoveOrdered.FragmentMoveFromOrdered;
 import io.awesome.app.View.Fragment.MoveOrdered.FragmentMoveOrdered;
 import io.awesome.app.View.Fragment.MoveOrdered.FragmentMoveToOrdered;
 import io.awesome.app.View.Fragment.MoveOrdered.MoveOrderedI;
+import io.awesome.app.View.Table.TableActivity;
 
+import static io.awesome.app.View.Main.MainActivity.receiptId;
 import static io.awesome.app.View.Main.MainActivity.receiptToOrdered;
+import static io.awesome.app.View.Table.TableActivity.listToOrdered;
 
 public class MoveOrderActivity extends AppCompatActivity implements MoveOrderedI, MoveOrderedView {
 
@@ -69,6 +73,9 @@ public class MoveOrderActivity extends AppCompatActivity implements MoveOrderedI
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
+            startActivity(new Intent(this, TableActivity.class));
+            receiptToOrdered = "";
+            listToOrdered = new ArrayList<Ordered>();
             finish();
         }
         return super.onOptionsItemSelected(item);
@@ -84,17 +91,30 @@ public class MoveOrderActivity extends AppCompatActivity implements MoveOrderedI
     }
 
     @Override
-    public void moveOrdered(String receiptId ,String menuId, String quality) {
-        moveOrderedPresenterImp.moveItemOrdered(receiptId, menuId,quality,"moveOrdered");
-        moveOrderedPresenterImp.moveItemOrdered(receiptToOrdered, menuId,"1", "toOrdered");
-        FragmentMoveToOrdered fragmentMoveToTable =
-                (FragmentMoveToOrdered) getSupportFragmentManager().findFragmentById(R.id.frag_2);
-        fragmentMoveToTable.recevieData();
+    public void moveOrdered(String menuId, String quality, String statusOrdered) {
+        if(statusOrdered == "AtoB"){
+            moveOrderedPresenterImp.moveItemOrdered(receiptId, menuId,quality,"moveOrdered");
+            moveOrderedPresenterImp.moveItemOrdered(receiptToOrdered, menuId,"1", "toOrdered");
+            FragmentMoveToOrdered fragmentMoveToTable =
+                    (FragmentMoveToOrdered) getSupportFragmentManager().findFragmentById(R.id.frag_2);
+            fragmentMoveToTable.recevieData();
+        }else{
+            moveOrderedPresenterImp.moveItemOrdered(receiptToOrdered, menuId,quality,"toOrdered");
+            moveOrderedPresenterImp.moveItemOrdered(receiptId, menuId,"1", "moveOrdered");
+            FragmentMoveFromOrdered fragmentMoveFromOrdered =
+                    (FragmentMoveFromOrdered) getSupportFragmentManager().findFragmentById(R.id.frag_1);
+            fragmentMoveFromOrdered.recevieData();
+        }
     }
 
     @Override
     public void getMenuToOrdered() {
         moveOrderedPresenterImp.getMenuToOrdered();
+    }
+
+    @Override
+    public void createReceiptToOrdered(String idTable, int position) {
+        moveOrderedPresenterImp.createReceiptToOrdered(idTable, position);
     }
 
 

@@ -40,7 +40,8 @@
         <activity android:name=".View.Table.TimerActivity" />
         <activity android:name=".View.ScaleDetectorTestActivity" />
         <activity android:name=".View.MoveOrderActivity" />
-        <activity android:name=".View.MoveOrder.MoveOrderActivity"></activity>
+        <activity android:name=".View.MoveOrder.MoveOrderActivity" />
+        <activity android:name=".View.ChooseTableActivity"></activity>
     </application>
 
 </manifest>

@@ -7,6 +7,7 @@ import io.awesome.app.Model.Ordered;
  */
 
 public interface MoveOrderedI {
-    public void moveOrdered(String receiptId, String menuId, String quality);
+    public void moveOrdered(String menuId, String quality, String statusOrdered);
     public void getMenuToOrdered();
+    public void createReceiptToOrdered(String idTable, int position);
 }

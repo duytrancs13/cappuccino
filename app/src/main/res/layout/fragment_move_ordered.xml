@@ -1,38 +1,73 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v7.widget.CardView
+    android:id="@+id/cVChooseTable"
+    android:layout_height="match_parent"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical">
+    xmlns:android="http://schemas.android.com/apk/res/android">
     <View
-        android:background="@color/colorPrimary"
-        android:layout_height="1dp"
-        android:layout_width="match_parent" />
-
-
-    <HorizontalScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp">
+        android:layout_height="1dp"
+        android:background="@color/colorPrimary">
 
-        <LinearLayout
-            android:id="@+id/linearLayoutOrdered"
-            android:layout_width="match_parent"
+    </View>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <TextView
+            android:id="@+id/tvChooseTable"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="2dp"
-            android:layout_marginBottom="2dp"
-            android:orientation="horizontal"
+            android:text="Vui lòng chọn bàn"
+            android:layout_marginLeft="10dp"
+            android:layout_gravity="center"
             />
-
-
-
-
-    </HorizontalScrollView>
-
+    </LinearLayout>
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@color/colorPrimary" />
+        android:background="@color/colorPrimary"
+        android:layout_gravity="bottom"
+        >
 
-</LinearLayout>
+    </View>
+
+</android.support.v7.widget.CardView>
+
+
+    <!--<LinearLayout-->
+    <!--xmlns:android="http://schemas.android.com/apk/res/android"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:orientation="vertical">-->
+    <!--<View-->
+        <!--android:background="@color/colorPrimary"-->
+        <!--android:layout_height="1dp"-->
+        <!--android:layout_width="match_parent" />-->
+
+
+    <!--<HorizontalScrollView-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginLeft="10dp"-->
+        <!--android:layout_marginRight="10dp">-->
+
+        <!--<LinearLayout-->
+            <!--android:id="@+id/linearLayoutOrdered"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginTop="2dp"-->
+            <!--android:layout_marginBottom="2dp"-->
+            <!--android:orientation="horizontal"-->
+            <!--/>-->
+
+
+
+
+    <!--</HorizontalScrollView>-->
+
+    <!--<View-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="1dp"-->
+        <!--android:background="@color/colorPrimary" />-->
+
+<!--</LinearLayout>-->
