@@ -38,6 +38,7 @@ import java.util.List;
 
 import io.awesome.app.Model.Ordered;
 import io.awesome.app.Model.Table;
+import io.awesome.app.Presenter.Pusher.PusherTable;
 import io.awesome.app.Presenter.Table.TablePresenterImpl;
 import io.awesome.app.View.Login.LoginActivity;
 import io.awesome.app.View.MenuTabs.MenuTabsActivity;
@@ -47,6 +48,7 @@ import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 import static io.awesome.app.View.Main.MainActivity.listTable;
+import static io.awesome.app.View.Main.MainActivity.onTableActivity;
 import static io.awesome.app.View.Main.MainActivity.receiptId;
 
 public class TableActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,TableView {
@@ -75,6 +77,10 @@ public class TableActivity extends AppCompatActivity implements NavigationView.O
     public static List<Ordered> listOrdered = new ArrayList<Ordered>();
     public static List<Ordered> listToOrdered = new ArrayList<Ordered>();
 
+    private PusherTable pusherTable;
+
+
+
 
 
     @Override
@@ -87,6 +93,10 @@ public class TableActivity extends AppCompatActivity implements NavigationView.O
                         .setFontAttrId(R.attr.fontPath)
                         .build()
         );
+
+
+
+
 
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -113,15 +123,20 @@ public class TableActivity extends AppCompatActivity implements NavigationView.O
         // Lấy biến token ra để sử dụng
         sharedPreferences = getSharedPreferences(MyPREFERENCES, MODE_PRIVATE);
         token = sharedPreferences.getString("token", null);
-
-
-
-
         tablePresenter = new TablePresenterImpl(getBaseContext(),this);
 
+        pusherTable = new PusherTable(this);
 
-        // Nhờ TablePresenter để gọi đến API để load dữ liệu của bàn. Cần có token
-        tablePresenter.loadTable(token);
+        if(onTableActivity == false){
+            pusherTable.subcribe();
+            // Nhờ TablePresenter để gọi đến API để load dữ liệu của bàn. Cần có token
+            tablePresenter.loadTable(token);
+        }else{
+            showTable();
+        }
+
+
+
     }
 
 
@@ -130,7 +145,7 @@ public class TableActivity extends AppCompatActivity implements NavigationView.O
     // Gồm có 3 trạng thái của bàn: "Rỗng", "đã đặt món", "đã giao món".
     @Override
     public void showTable() {
-
+        onTableActivity = true;
 
         for(int i = 0; i < listTable.size() ; i++){
 
@@ -145,8 +160,8 @@ public class TableActivity extends AppCompatActivity implements NavigationView.O
             RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(DrawerLayout.LayoutParams.WRAP_CONTENT, DrawerLayout.LayoutParams.WRAP_CONTENT);
 
             //Hiển thị vị trí của bàn.
-            int positionX = itemTable.getX()*150;
-            int positionY = itemTable.getY()*150;
+            int positionX = itemTable.getX()*100;
+            int positionY = itemTable.getY()*100;
             layoutParams.leftMargin = positionX;
             layoutParams.topMargin = positionY;
 
@@ -449,10 +464,17 @@ public class TableActivity extends AppCompatActivity implements NavigationView.O
 
     @Override
     public void gotoMenu(String receipt, int statusMenu) {
+        onTableActivity = false;
         receiptId = receipt;
         intent = new Intent(this, MenuTabsActivity.class);
         intent.putExtra("statusReceipt",statusMenu);
         startActivity(intent);
+    }
+
+    @Override
+    public void reloadTableActivity() {
+        finish();
+        startActivity(getIntent());
     }
 
 
@@ -512,10 +534,6 @@ public class TableActivity extends AppCompatActivity implements NavigationView.O
         }
         return super.onKeyDown(keyCode, event);
     }
-
-
-
-
 
 
 }

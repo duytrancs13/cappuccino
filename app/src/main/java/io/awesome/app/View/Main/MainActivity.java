@@ -50,6 +50,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public static String receiptToOrdered = "";
 
 
+//    private PusherTable pusherTable;
+    public static boolean onTableActivity = false;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,9 +63,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         SharedPreferences prefs = getSharedPreferences(MyPREFERENCES, MODE_PRIVATE);
         String token = prefs.getString("token", "");
 
-
-
-        PusherTable.subcribe();
+//        pusherTable = new PusherTable(TableActivity.class);
+//
+//        pusherTable.subcribe();
         PusherMenu.subcribe();
         PusherCategory.subcribe();
 

@@ -27,6 +27,7 @@ import java.util.Map;
 import io.awesome.app.View.Table.TableView;
 
 import static io.awesome.app.View.Main.MainActivity.listTable;
+import static io.awesome.app.View.Main.MainActivity.onTableActivity;
 
 
 /**

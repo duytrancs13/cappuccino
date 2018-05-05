@@ -10,4 +10,5 @@ public interface TableView {
     public void alertLogout();
     public void showTable();
     public void gotoMenu(String receipt ,int statusMenu);
+    public void reloadTableActivity();
 }

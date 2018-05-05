@@ -1,5 +1,6 @@
 package io.awesome.app.Presenter.Pusher;
 
+import android.content.Intent;
 import android.util.Log;
 
 import com.google.gson.Gson;
@@ -12,9 +13,11 @@ import com.pusher.client.channel.SubscriptionEventListener;
 import java.util.List;
 
 import io.awesome.app.Model.Table;
+import io.awesome.app.View.Table.TableActivity;
 import io.awesome.app.View.Table.TableView;
 
 import static io.awesome.app.View.Main.MainActivity.listTable;
+import static io.awesome.app.View.Main.MainActivity.onTableActivity;
 
 /**
  * Created by sung on 12/04/2018.
@@ -27,7 +30,13 @@ public class PusherTable {
     private static final String CHANEL_NAME = "tables";
     private static final String EVENT_NAME = "all-tables";
 
-    public static void subcribe(){
+    private TableView tableView;
+
+    public PusherTable(TableView tableView) {
+        this.tableView = tableView;
+    }
+
+    public void subcribe(){
         PusherOptions options = new PusherOptions();
         options.setCluster(APP_CLUSTER);
 
@@ -35,12 +44,20 @@ public class PusherTable {
 
         Channel channel = pusher.subscribe(CHANEL_NAME);
 
+
+
         channel.bind(EVENT_NAME, new SubscriptionEventListener() {
             @Override
             public void onEvent(String channel, String event, String data) {
                 Gson gson = new Gson();
                 TypeToken<List<Table>> token = new TypeToken<List<Table>>() {};
                 listTable = gson.fromJson(data, token.getType());
+                if(onTableActivity == true){
+                    Log.v("AAA", "TableActivity on");
+                    tableView.reloadTableActivity();
+                }else{
+                    Log.v("AAA", "TableActivity off");
+                }
             }
         });
         pusher.connect();
