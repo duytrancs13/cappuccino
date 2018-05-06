@@ -1,6 +1,8 @@
 package io.awesome.app.View.Fragment.MoveOrdered;
 
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -11,11 +13,13 @@ import android.widget.ListView;
 import android.widget.Toast;
 ;
 
+import io.awesome.app.Model.Ordered;
 import io.awesome.app.R;
 import io.awesome.app.View.Adapter.CustomMoveOrderedAdapter;
 
 import static io.awesome.app.View.Main.MainActivity.receiptId;
 import static io.awesome.app.View.Table.TableActivity.listOrdered;
+import static io.awesome.app.View.Table.TableActivity.onClickMoveOrdered;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -40,17 +44,20 @@ public class FragmentMoveFromOrdered extends Fragment {
         lvMoveFromTable.setAdapter(customMoveOrderedAdapter);
 
 
-        lvMoveFromTable.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
 
-//                moveItemOrdered(String menuId, final String quality)
-                moveOrderedI.moveOrdered(listOrdered.get(position).getItemId(),"-1", "AtoB");
-                customMoveOrderedAdapter.notifyDataSetChanged();
+        if(onClickMoveOrdered){
+            lvMoveFromTable.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+                confirmDelete(position,listOrdered.get(position));
+                }
+            });
+        }else{
+            lvMoveFromTable.setFocusable(onClickMoveOrdered);
+        }
 
-                //confirmDelete(position,listOrdered.get(position));
-            }
-        });
+
+
         return view;
     }
     public void toast(String message){
@@ -61,17 +68,14 @@ public class FragmentMoveFromOrdered extends Fragment {
         customMoveOrderedAdapter.notifyDataSetChanged();
     }
 
-    /*private void confirmDelete(final int position,final Ordered ordered){
+    private void confirmDelete(final int position,final Ordered ordered){
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        builder.setMessage("Ban co muốn xóa " + ordered.getName()+" không?");
+        builder.setMessage("Ban co muốn chuyển " + ordered.getName()+" không?");
         builder.setPositiveButton("Có", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-
-
-                listOrdered.remove(position);
+                moveOrderedI.moveOrdered(ordered.getItemId(),"-1", "AtoB");
                 customMoveOrderedAdapter.notifyDataSetChanged();
-                moveOrderedI.moveOrdered(ordered);
             }
         });
         builder.setNegativeButton("Không", new DialogInterface.OnClickListener() {
@@ -80,7 +84,7 @@ public class FragmentMoveFromOrdered extends Fragment {
             }
         });
         builder.show();
-    }*/
+    }
 
 
 

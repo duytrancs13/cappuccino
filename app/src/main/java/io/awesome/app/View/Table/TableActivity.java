@@ -79,6 +79,8 @@ public class TableActivity extends AppCompatActivity implements NavigationView.O
 
     private PusherTable pusherTable;
 
+    public static boolean onClickMoveOrdered = false;
+
 
 
 
@@ -93,10 +95,6 @@ public class TableActivity extends AppCompatActivity implements NavigationView.O
                         .setFontAttrId(R.attr.fontPath)
                         .build()
         );
-
-
-
-
 
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);

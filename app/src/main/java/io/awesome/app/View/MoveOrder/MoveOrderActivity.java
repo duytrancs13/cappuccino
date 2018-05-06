@@ -28,6 +28,7 @@ import static io.awesome.app.View.Main.MainActivity.onTableActivity;
 import static io.awesome.app.View.Main.MainActivity.receiptId;
 import static io.awesome.app.View.Main.MainActivity.receiptToOrdered;
 import static io.awesome.app.View.Table.TableActivity.listToOrdered;
+import static io.awesome.app.View.Table.TableActivity.onClickMoveOrdered;
 
 public class MoveOrderActivity extends AppCompatActivity implements MoveOrderedI, MoveOrderedView {
 
@@ -78,6 +79,7 @@ public class MoveOrderActivity extends AppCompatActivity implements MoveOrderedI
         if (item.getItemId() == android.R.id.home) {
             startActivity(new Intent(this, TableActivity.class));
             onTableActivity = true;
+            onClickMoveOrdered = false;
             receiptToOrdered = "";
             listToOrdered = new ArrayList<Ordered>();
             finish();

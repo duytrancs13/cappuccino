@@ -32,6 +32,7 @@ import io.awesome.app.View.MoveOrder.MoveOrderActivity;
 import static io.awesome.app.View.Main.MainActivity.listTable;
 import static io.awesome.app.View.Main.MainActivity.receiptId;
 import static io.awesome.app.View.Main.MainActivity.receiptToOrdered;
+import static io.awesome.app.View.Table.TableActivity.onClickMoveOrdered;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -57,7 +58,9 @@ public class FragmentMoveOrdered extends Fragment {
 
         if(position == -1){
             tvChooseTable.setText("Chọn bàn muốn chuyển");
+
         }else{
+
             tvChooseTable.setText(listTable.get(position).getName());
             if(listTable.get(position).getReceiptId().length() == 0 ){
                 moveOrderedI.createReceiptToOrdered(listTable.get(position).getId(),position);
@@ -70,6 +73,7 @@ public class FragmentMoveOrdered extends Fragment {
         cVChooseTable.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                onClickMoveOrdered = true;
                 Intent intent = new Intent(getActivity(), ChooseTableActivity.class);
                 intent.putExtra("positionTable", -1);
                 startActivity(intent);

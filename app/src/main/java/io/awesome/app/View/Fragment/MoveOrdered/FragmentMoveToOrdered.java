@@ -1,6 +1,8 @@
 package io.awesome.app.View.Fragment.MoveOrdered;
 
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -10,6 +12,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import io.awesome.app.Model.Ordered;
 import io.awesome.app.R;
 import io.awesome.app.View.Adapter.CustomToOrderedAdapter;
 
@@ -43,8 +46,9 @@ public class FragmentMoveToOrdered extends Fragment{
         lvMoveToTable.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                moveOrderedI.moveOrdered(listToOrdered.get(position).getItemId(),"-1", "BtoA");
-                customToOrderedAdapter.notifyDataSetChanged();
+//            moveOrderedI.moveOrdered(listToOrdered.get(position).getItemId(),"-1", "BtoA");
+//            customToOrderedAdapter.notifyDataSetChanged();
+              confirmDelete(position,listOrdered.get(position));
             }
         });
 
@@ -59,5 +63,23 @@ public class FragmentMoveToOrdered extends Fragment{
     public void recevieData() {
         //listToOrdered.add(ordered);
         customToOrderedAdapter.notifyDataSetChanged();
+    }
+
+    private void confirmDelete(final int position,final Ordered toOrdered){
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setMessage("Ban co muốn chuyển " + toOrdered.getName()+" không?");
+        builder.setPositiveButton("Có", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                moveOrderedI.moveOrdered(toOrdered.getItemId(),"-1", "BtoA");
+                customToOrderedAdapter.notifyDataSetChanged();
+            }
+        });
+        builder.setNegativeButton("Không", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+            }
+        });
+        builder.show();
     }
 }
