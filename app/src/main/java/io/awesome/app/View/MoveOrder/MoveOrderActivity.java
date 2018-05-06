@@ -24,6 +24,7 @@ import io.awesome.app.View.Fragment.MoveOrdered.FragmentMoveToOrdered;
 import io.awesome.app.View.Fragment.MoveOrdered.MoveOrderedI;
 import io.awesome.app.View.Table.TableActivity;
 
+import static io.awesome.app.View.Main.MainActivity.onTableActivity;
 import static io.awesome.app.View.Main.MainActivity.receiptId;
 import static io.awesome.app.View.Main.MainActivity.receiptToOrdered;
 import static io.awesome.app.View.Table.TableActivity.listToOrdered;
@@ -46,6 +47,8 @@ public class MoveOrderActivity extends AppCompatActivity implements MoveOrderedI
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_move_ordered);
+
+        onTableActivity = false;
 
         sharedPreferences = getSharedPreferences(MyPREFERENCES, MODE_PRIVATE);
         token = sharedPreferences.getString("token", null);
@@ -74,6 +77,7 @@ public class MoveOrderActivity extends AppCompatActivity implements MoveOrderedI
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
             startActivity(new Intent(this, TableActivity.class));
+            onTableActivity = true;
             receiptToOrdered = "";
             listToOrdered = new ArrayList<Ordered>();
             finish();

@@ -49,50 +49,15 @@ public class FragmentMoveOrdered extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_move_ordered, container, false);
 
+        cVChooseTable = (CardView) view.findViewById(R.id.cVChooseTable);
+        tvChooseTable = (TextView) view.findViewById(R.id.tvChooseTable);
         moveOrderedI = (MoveOrderedI) getActivity();
 
-        /*linearLayoutOrdered = (LinearLayout) view.findViewById(R.id.linearLayoutOrdered);
-        for(final Table table: listTable){
-            if(table.getReceiptId() == receiptId){
-                continue;
-            }
-
-            Button buttonOrdered = new Button(getContext());
-            LinearLayout.LayoutParams layoutButtonOrdered = new LinearLayout.LayoutParams(DrawerLayout.LayoutParams.WRAP_CONTENT, DrawerLayout.LayoutParams.WRAP_CONTENT);
-            layoutButtonOrdered.rightMargin = 10;
-            buttonOrdered.setLayoutParams(layoutButtonOrdered);
-
-            buttonOrdered.setText(table.getName());
-            if(table.getStatus() == "idle"){
-                buttonOrdered.setBackgroundColor(R.color.colorPrimary);
-            }else{
-                buttonOrdered.setBackgroundResource(R.drawable.buttonquality);
-            }
-
-            buttonOrdered.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                receiptToOrdered = table.getReceiptId();
-                moveOrderedI.getMenuToOrdered();
-
-                }
-            });
-            linearLayoutOrdered.addView(buttonOrdered);
-        }*/
-
         int position = getActivity().getIntent().getIntExtra("positionTable", -1);
+
         if(position == -1){
-            cVChooseTable = (CardView) view.findViewById(R.id.cVChooseTable);
-            cVChooseTable.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent intent = new Intent(getContext(), ChooseTableActivity.class);
-                    intent.putExtra("positionTable", -1);
-                    startActivity(intent);
-                }
-            });
+            tvChooseTable.setText("Chọn bàn muốn chuyển");
         }else{
-            tvChooseTable = (TextView) view.findViewById(R.id.tvChooseTable);
             tvChooseTable.setText(listTable.get(position).getName());
             if(listTable.get(position).getReceiptId().length() == 0 ){
                 moveOrderedI.createReceiptToOrdered(listTable.get(position).getId(),position);
@@ -100,8 +65,19 @@ public class FragmentMoveOrdered extends Fragment {
                 receiptToOrdered = listTable.get(position).getReceiptId();
                 moveOrderedI.getMenuToOrdered();
             }
-
         }
+
+        cVChooseTable.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), ChooseTableActivity.class);
+                intent.putExtra("positionTable", -1);
+                startActivity(intent);
+            }
+        });
+
+
+
 
         return view;
     }

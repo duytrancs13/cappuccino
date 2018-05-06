@@ -22,6 +22,7 @@ import java.util.List;
 
 import io.awesome.app.Model.Ordered;
 import io.awesome.app.Presenter.MenuTabs.MenuTabsPresenterImp;
+import io.awesome.app.Presenter.Pusher.PusherReceipt;
 import io.awesome.app.View.Adapter.ViewPagerMenuTabsAdapter;
 import io.awesome.app.General.SetFont;
 import io.awesome.app.R;
@@ -125,6 +126,8 @@ public class MenuTabsActivity extends AppCompatActivity implements MenuTabsView 
 
         int statusReceipt = getIntent().getIntExtra("statusReceipt",0);
         menuTabsPresenterImp = new MenuTabsPresenterImp(this, this);
+
+//        PusherReceipt.subcribe();
 
         if(statusReceipt == 0){
             goToMenu(statusReceipt);

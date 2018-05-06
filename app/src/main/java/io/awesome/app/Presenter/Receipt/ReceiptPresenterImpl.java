@@ -45,39 +45,7 @@ public class ReceiptPresenterImpl implements ReceiptPresenter {
 
     @Override
     public void getMenuReceipt(final String token) {
-        /*String url ="https://cafeteria-service.herokuapp.com/api/v1/receipts/"+receiptId;
-        RequestQueue queue = Volley.newRequestQueue(context);
-        JsonObjectRequest jsonObjectRequest =new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response) {
-                try {
-                    Gson gson = new Gson();
-                    JSONObject obj = new JSONObject(response.toString());
-                    JSONObject data = obj.getJSONObject("data");
-                    JSONArray items = data.getJSONArray("items");
-                    TypeToken<List<Ordered>> token = new TypeToken<List<Ordered>>() {};
-                    listOrdered = gson.fromJson(items.toString(), token.getType());
-
-                    fragmentReceipt.loadMenuReceipt(listOrdered);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-            }
-        }){
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                Map<String, String> headers = new HashMap<String, String>();
-                headers.put("Authorization", token);
-                return headers;
-            }
-        };
-        queue.add(jsonObjectRequest);*/
         fragmentReceipt.loadMenuReceipt(listOrdered);
-
     }
 
     @Override

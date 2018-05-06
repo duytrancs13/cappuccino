@@ -1,7 +1,10 @@
 package io.awesome.app.View.Adapter;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.Color;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,6 +33,7 @@ public class CustomChooseTableAdapter extends BaseAdapter {
         this.tableList = tableList;
     }
 
+
     @Override
     public int getCount() {
         return tableList.size();
@@ -45,9 +49,11 @@ public class CustomChooseTableAdapter extends BaseAdapter {
         return i;
     }
 
+    @SuppressLint("ResourceAsColor")
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         final ViewHolder viewHolder;
+
         if(convertView == null){
             convertView = layoutInflater.inflate(R.layout.layout_listview_choosetable,null);
             viewHolder = new ViewHolder();
@@ -56,10 +62,14 @@ public class CustomChooseTableAdapter extends BaseAdapter {
         }else{
             viewHolder = (ViewHolder) convertView.getTag();
         }
-        Table table = tableList.get(position);
-        if(table.getReceiptId() != receiptId){
+        Table table = this.tableList.get(position);
+        if(table.getReceiptId()==receiptId){
+            viewHolder.tvChooseTable.setText("");
+        }else{
             viewHolder.tvChooseTable.setText(table.getName());
         }
+
+
 
         return convertView;
     }

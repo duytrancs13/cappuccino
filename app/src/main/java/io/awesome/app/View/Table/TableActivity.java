@@ -488,15 +488,12 @@ public class TableActivity extends AppCompatActivity implements NavigationView.O
     }
 
     private String twoDigitString(long number) {
-
         if (number == 0) {
             return "00";
         }
-
         if (number / 10 == 0) {
             return "0" + number;
         }
-
         return String.valueOf(number);
     }
 
@@ -516,10 +513,7 @@ public class TableActivity extends AppCompatActivity implements NavigationView.O
     public void onBackPressed() {
         assert drawer != null;
         if (drawer.isDrawerOpen(GravityCompat.START)) {
-
             moveTaskToBack(true);
-
-
             drawer.closeDrawer(GravityCompat.START);
         } else {
             super.onBackPressed();
