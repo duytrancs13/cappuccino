@@ -1,9 +1,11 @@
 package io.awesome.app.View.Table;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.CountDownTimer;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -40,6 +42,7 @@ import io.awesome.app.Model.Ordered;
 import io.awesome.app.Model.Table;
 import io.awesome.app.Presenter.Pusher.PusherTable;
 import io.awesome.app.Presenter.Table.TablePresenterImpl;
+import io.awesome.app.View.Fragment.Menu.FragmentMenu;
 import io.awesome.app.View.Login.LoginActivity;
 import io.awesome.app.View.MenuTabs.MenuTabsActivity;
 import io.awesome.app.R;
@@ -81,6 +84,8 @@ public class TableActivity extends AppCompatActivity implements NavigationView.O
 
     public static boolean onClickMoveOrdered = false;
 
+    private ProgressDialog dialog ;
+
 
 
 
@@ -102,6 +107,9 @@ public class TableActivity extends AppCompatActivity implements NavigationView.O
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("Sơ đồ bàn");
+
+
+        dialog = new ProgressDialog(this,R.style.AppTheme_Dark_Dialog);
 
         //create default navigation drawer toggle
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar,
@@ -125,6 +133,8 @@ public class TableActivity extends AppCompatActivity implements NavigationView.O
 
         pusherTable = new PusherTable(this);
 
+        showProgress();
+
         if(onTableActivity == false){
             pusherTable.subcribe();
             // Nhờ TablePresenter để gọi đến API để load dữ liệu của bàn. Cần có token
@@ -133,6 +143,8 @@ public class TableActivity extends AppCompatActivity implements NavigationView.O
             showTable();
         }
 
+
+        dialog.dismiss();
 
 
     }
@@ -258,6 +270,7 @@ public class TableActivity extends AppCompatActivity implements NavigationView.O
                 }
             });*/
         }
+        dialog.dismiss();
 
     }
 
@@ -382,6 +395,7 @@ public class TableActivity extends AppCompatActivity implements NavigationView.O
                 // Khi chọn vào item "Tách - gộp bàn"
                 }else if(position == 1){
                     receiptId = receiptBusy;
+                    tablePresenter.getMenuOrdered(token);
                     intent = new Intent(TableActivity.this, MoveOrderActivity.class);
                     startActivity(intent);
                     /*toast("Tách - gộp bàn");*/
@@ -470,6 +484,12 @@ public class TableActivity extends AppCompatActivity implements NavigationView.O
     }
 
     @Override
+    public void gotoTransferOrdered() {
+        intent = new Intent(TableActivity.this, MoveOrderActivity.class);
+        startActivity(intent);
+    }
+
+    @Override
     public void reloadTableActivity() {
         finish();
         startActivity(getIntent());
@@ -525,6 +545,28 @@ public class TableActivity extends AppCompatActivity implements NavigationView.O
             return true;
         }
         return super.onKeyDown(keyCode, event);
+    }
+
+    public void showProgress() {
+        new Progress().execute();
+    }
+
+    private class Progress extends AsyncTask<Void, Void, Void> {
+
+
+
+        protected void onPreExecute() {
+            super.onPreExecute();
+            dialog.setMessage("Đang kết nối...");
+            dialog.setIndeterminate(true);
+            dialog.setCancelable(false);
+            dialog.show();
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            return null;
+        }
     }
 
 

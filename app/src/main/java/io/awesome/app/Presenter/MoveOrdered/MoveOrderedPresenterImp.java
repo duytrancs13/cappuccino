@@ -2,6 +2,8 @@ package io.awesome.app.Presenter.MoveOrdered;
 
 import android.content.Context;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -29,8 +31,10 @@ import io.awesome.app.View.MoveOrder.MoveOrderedView;
 import static io.awesome.app.View.Main.MainActivity.listTable;
 import static io.awesome.app.View.Main.MainActivity.receiptId;
 import static io.awesome.app.View.Main.MainActivity.receiptToOrdered;
+import static io.awesome.app.View.MoveOrder.MoveOrderActivity.listChooseTable;
+import static io.awesome.app.View.MoveOrder.MoveOrderActivity.lstChooseTable;
 import static io.awesome.app.View.Table.TableActivity.listOrdered;
-import static io.awesome.app.View.Table.TableActivity.listToOrdered;
+//import static io.awesome.app.View.Table.TableActivity.listToOrdered;
 
 /**
  * Created by sung on 23/04/2018.
@@ -88,17 +92,20 @@ public class MoveOrderedPresenterImp implements MoveOrderedPresenter {
     @Override
     public void getMenuToOrdered() {
         String url ="https://cafeteria-service.herokuapp.com/api/v1/receipts/"+receiptToOrdered;
+
         RequestQueue queue = Volley.newRequestQueue(context);
         JsonObjectRequest jsonObjectRequest =new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 try {
                     Gson gson = new Gson();
+                    List<Ordered> lstToOdered = new ArrayList<Ordered>();
                     JSONObject obj = new JSONObject(response.toString());
                     JSONObject data = obj.getJSONObject("data");
                     JSONArray items = data.getJSONArray("items");
                     TypeToken<List<Ordered>> token = new TypeToken<List<Ordered>>() {};
-                    listToOrdered = gson.fromJson(items.toString(), token.getType());
+                    lstToOdered = gson.fromJson(items.toString(), token.getType());
+                    lstChooseTable.put(receiptToOrdered,lstToOdered);
                     orderedView.FragmentToOrdered();
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -127,10 +134,10 @@ public class MoveOrderedPresenterImp implements MoveOrderedPresenter {
         StringRequest stringRequest = new StringRequest(Request.Method.PATCH, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                if(statusOrdered == "moveOrdered")
+                if(statusOrdered == "moveOrdered") {
                     getMenuOrdered();
-                else if(statusOrdered == "toOrdered"){
-                    getMenuToOrdered();
+                }else if(statusOrdered == "toOrdered"){
+                    //getMenuToOrdered();
                 }
             }
         }, new Response.ErrorListener() {
@@ -158,16 +165,29 @@ public class MoveOrderedPresenterImp implements MoveOrderedPresenter {
         queue.add(stringRequest);
     }
 
+
     @Override
-    public void createReceiptToOrdered(final String idTable, final int position) {
+    public void createReceiptToOrdered(final String idTable, final int position, final Button buttonToOrdered) {
         RequestQueue queue = Volley.newRequestQueue(context);
         String url = "https://cafeteria-service.herokuapp.com/api/v1/receipts";
+
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
+
                 receiptToOrdered = listTable.get(position).getReceiptId();
-                listToOrdered = new ArrayList<Ordered>();
+                listChooseTable.get(listChooseTable.size()-1).setReceiptId(receiptToOrdered);
+                listChooseTable.get(listChooseTable.size()-1).setStatus("busy");
+
+                buttonToOrdered.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        toast(receiptToOrdered);
+                    }
+                });
+//                listToOrdered = new ArrayList<Ordered>();
                 orderedView.FragmentToOrdered();
+
             }
         }, new Response.ErrorListener() {
             @Override

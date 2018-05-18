@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -49,15 +50,12 @@ public class FragmentMoveFromOrdered extends Fragment {
             lvMoveFromTable.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                confirmDelete(position,listOrdered.get(position));
+                confirmDelete(listOrdered.get(position));
                 }
             });
         }else{
             lvMoveFromTable.setFocusable(onClickMoveOrdered);
         }
-
-
-
         return view;
     }
     public void toast(String message){
@@ -68,13 +66,13 @@ public class FragmentMoveFromOrdered extends Fragment {
         customMoveOrderedAdapter.notifyDataSetChanged();
     }
 
-    private void confirmDelete(final int position,final Ordered ordered){
+    private void confirmDelete(final Ordered ordered){
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        builder.setMessage("Ban co muốn chuyển " + ordered.getName()+" không?");
+        builder.setMessage("Bạn có muốn chuyển " + ordered.getName()+" không?");
         builder.setPositiveButton("Có", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                moveOrderedI.moveOrdered(ordered.getItemId(),"-1", "AtoB");
+                moveOrderedI.moveOrdered(ordered, "AtoB");
                 customMoveOrderedAdapter.notifyDataSetChanged();
             }
         });

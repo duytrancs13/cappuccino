@@ -119,8 +119,17 @@ public class CustomMenuAdapter extends BaseAdapter {
             if (itemOrdered.getItemId().equals(menu.get_id())) {
                 viewHolder.noteAdd.setVisibility(View.VISIBLE);
                 viewHolder.btnQuatityMenu.setText(itemOrdered.getQuantity() + "");
-                viewHolder.btnQuatityMenu.setVisibility(View.VISIBLE);
-                viewHolder.btnSubMenu.setVisibility(View.VISIBLE);
+                if(itemOrdered.getQuantity() == 0){
+                    viewHolder.btnQuatityMenu.setVisibility(View.INVISIBLE);
+                    viewHolder.btnSubMenu.setVisibility(View.INVISIBLE);
+                    viewHolder.noteAdd.setVisibility(View.INVISIBLE);
+                }else{
+                    viewHolder.btnQuatityMenu.setVisibility(View.VISIBLE);
+                    viewHolder.btnSubMenu.setVisibility(View.VISIBLE);
+                    viewHolder.noteAdd.setVisibility(View.VISIBLE);
+                }
+
+
 
                 viewHolder.noteAdd.setOnClickListener(new View.OnClickListener() {
                     @Override

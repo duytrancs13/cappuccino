@@ -3,13 +3,10 @@ package io.awesome.app.View.Fragment.MoveOrdered;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.CardView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,19 +16,18 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 import io.awesome.app.Model.Ordered;
-import io.awesome.app.Model.Table;
-import io.awesome.app.Presenter.MenuTabs.MenuTabsPresenterImp;
-import io.awesome.app.Presenter.MoveOrdered.MoveOrderedPresenterImp;
 import io.awesome.app.R;
 import io.awesome.app.View.ChooseTableActivity;
-import io.awesome.app.View.MoveOrder.MoveOrderActivity;
 
-;import static android.content.Intent.getIntent;
+;
 import static io.awesome.app.View.Main.MainActivity.listTable;
-import static io.awesome.app.View.Main.MainActivity.receiptId;
 import static io.awesome.app.View.Main.MainActivity.receiptToOrdered;
+//import static io.awesome.app.View.MoveOrder.MoveOrderActivity.listChooseTable;
+import static io.awesome.app.View.MoveOrder.MoveOrderActivity.lstChooseTable;
 import static io.awesome.app.View.Table.TableActivity.onClickMoveOrdered;
 
 /**
@@ -39,10 +35,15 @@ import static io.awesome.app.View.Table.TableActivity.onClickMoveOrdered;
  */
 public class FragmentMoveOrdered extends Fragment {
 
-    private LinearLayout linearLayoutOrdered;
+    private LinearLayout llButtonOrdered;
+    private Button btnAddButtonOrdered;
     private MoveOrderedI moveOrderedI;
     private CardView cVChooseTable;
     private TextView tvChooseTable;
+
+
+
+
 
     @SuppressLint("ResourceAsColor")
     @Override
@@ -50,32 +51,69 @@ public class FragmentMoveOrdered extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_move_ordered, container, false);
 
+
         cVChooseTable = (CardView) view.findViewById(R.id.cVChooseTable);
         tvChooseTable = (TextView) view.findViewById(R.id.tvChooseTable);
         moveOrderedI = (MoveOrderedI) getActivity();
 
-        int position = getActivity().getIntent().getIntExtra("positionTable", -1);
 
-        if(position == -1){
-            tvChooseTable.setText("Chọn bàn muốn chuyển");
 
+        llButtonOrdered = (LinearLayout) view.findViewById(R.id.llButtonOrdered);
+        moveOrderedI = (MoveOrderedI) getActivity();
+        int position = getActivity().getIntent().getIntExtra("positionTable",-1);
+
+        /*Lúc khởi tạo activity thì hiển thị "Chọn bàn muốn chuyển"*/
+        if(lstChooseTable.size() == 0){
+            TextView textViewHint = new TextView(getContext());
+            LinearLayout.LayoutParams layoutTextViewOrdered = new LinearLayout.LayoutParams(DrawerLayout.LayoutParams.WRAP_CONTENT, DrawerLayout.LayoutParams.WRAP_CONTENT);
+            textViewHint.setLayoutParams(layoutTextViewOrdered);
+            textViewHint.setText("Chọn bàn muốn chuyển");
+            llButtonOrdered.addView(textViewHint);
         }else{
+            int i=0;
+            for (final Map.Entry<String, List<Ordered>> item: lstChooseTable.entrySet()){
 
-            tvChooseTable.setText(listTable.get(position).getName());
-            if(listTable.get(position).getReceiptId().length() == 0 ){
-                moveOrderedI.createReceiptToOrdered(listTable.get(position).getId(),position);
-            }else{
-                receiptToOrdered = listTable.get(position).getReceiptId();
-                moveOrderedI.getMenuToOrdered();
+
+                final Button buttonToOrdered = new Button(getContext());
+                LinearLayout.LayoutParams layoutButtonOrdered = new LinearLayout.LayoutParams(DrawerLayout.LayoutParams.WRAP_CONTENT, DrawerLayout.LayoutParams.WRAP_CONTENT);
+                layoutButtonOrdered.rightMargin = 10;
+                buttonToOrdered.setLayoutParams(layoutButtonOrdered);
+                buttonToOrdered.setText(listTable.get(position).getName());
+                buttonToOrdered.setId(i++);
+
+                if(item.getKey().equals(receiptToOrdered)){
+                    buttonToOrdered.setBackgroundResource(R.drawable.buttonchoosetransfer);
+                }else{
+                    buttonToOrdered.setBackgroundResource(R.drawable.buttontransfer);
+                }
+
+
+
+
+                buttonToOrdered.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+
+                        receiptToOrdered = item.getKey();
+                        moveOrderedI.onClickGetMenuToOrdered();
+                    }
+                });
+
+                llButtonOrdered.addView(buttonToOrdered);
             }
+
         }
 
-        cVChooseTable.setOnClickListener(new View.OnClickListener() {
+
+
+
+
+        btnAddButtonOrdered = (Button) view.findViewById(R.id.btnAddButtonOrdered);
+        btnAddButtonOrdered.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 onClickMoveOrdered = true;
                 Intent intent = new Intent(getActivity(), ChooseTableActivity.class);
-                intent.putExtra("positionTable", -1);
                 startActivity(intent);
             }
         });
@@ -83,7 +121,13 @@ public class FragmentMoveOrdered extends Fragment {
 
 
 
+
+
+
         return view;
+    }
+    private void showChooseTable(){
+
     }
     public void toast(String message){
         Toast.makeText(getContext(),message,Toast.LENGTH_SHORT).show();

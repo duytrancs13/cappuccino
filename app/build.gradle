@@ -33,4 +33,5 @@ dependencies {
     compile 'com.android.support:support-v4:23.4.0'
     compile 'com.pusher:pusher-java-client:1.4.0'
     compile 'com.android.support:design:23.1.1'
+    compile 'org.lucasr.twowayview:twowayview:0.1.4'
 }

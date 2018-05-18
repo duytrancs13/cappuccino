@@ -16,4 +16,5 @@ public interface TablePresenter {
     void loadTable(String token);
     void dragTable(LinearLayout linearLayout);
     void createReceipt(String idTable,String token, int position);
+    void getMenuOrdered(String token);
 }

@@ -9,6 +9,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -16,7 +17,10 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 
+import java.util.ArrayList;
+
 import io.awesome.app.General.SetFont;
+import io.awesome.app.Model.Ordered;
 import io.awesome.app.R;
 import io.awesome.app.View.Adapter.CustomChooseTableAdapter;
 
@@ -25,6 +29,9 @@ import io.awesome.app.View.MoveOrder.MoveOrderActivity;
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 
 import static io.awesome.app.View.Main.MainActivity.listTable;
+import static io.awesome.app.View.Main.MainActivity.receiptToOrdered;
+//import static io.awesome.app.View.MoveOrder.MoveOrderActivity.listChooseTable;
+import static io.awesome.app.View.MoveOrder.MoveOrderActivity.lstChooseTable;
 
 public class ChooseTableActivity extends AppCompatActivity {
     private Toolbar toolbar;
@@ -74,6 +81,13 @@ public class ChooseTableActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
                 Intent intent = new Intent(getBaseContext(), MoveOrderActivity.class);
                 intent.putExtra("positionTable", position);
+                if(listTable.get(position).getReceiptId().length()==0){
+                    receiptToOrdered = "tableId"+listTable.get(position).getId();
+                    lstChooseTable.put("tableId"+listTable.get(position).getId(),new ArrayList<Ordered>());
+                }else {
+                    receiptToOrdered = listTable.get(position).getReceiptId();
+                    lstChooseTable.put(listTable.get(position).getReceiptId(), new ArrayList<Ordered>());
+                }
                 startActivity(intent);
             }
         });
