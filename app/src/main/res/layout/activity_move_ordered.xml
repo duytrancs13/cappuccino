@@ -17,11 +17,20 @@
             android:background="?attr/colorPrimary"
             app:titleTextColor="@android:color/white"
             >
-            <Button
-                android:id="@+id/demo"
+
+            <ImageView
+                android:id="@+id/syncTransfer"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="add"
+                android:src="@drawable/ic_sync"
+                android:layout_gravity="right"
+                />
+
+            <ImageView
+                android:id="@+id/undoTransfer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_undo"
                 android:layout_gravity="right"
                 />
         </android.support.v7.widget.Toolbar>

@@ -1,5 +1,6 @@
 package io.awesome.app.View.MoveOrder;
 
+import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -14,11 +15,13 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import io.awesome.app.General.SetFont;
 import io.awesome.app.Model.Ordered;
@@ -55,7 +58,7 @@ public class MoveOrderActivity extends AppCompatActivity implements MoveOrderedI
     public static HashMap<String, List<Ordered>> lstChooseTable = new HashMap<String, List<Ordered>>();
 
     private ProgressDialog dialog ;
-    private Button demo;
+    private ImageView syncTransfer, undoTransfer;
 
 
 
@@ -96,13 +99,29 @@ public class MoveOrderActivity extends AppCompatActivity implements MoveOrderedI
             }else{
                 getMenuToOrdered();
             }
-
         }
-        demo = (Button) findViewById(R.id.demo);
-        demo.setOnClickListener(new View.OnClickListener() {
+
+        syncTransfer = (ImageView) findViewById(R.id.syncTransfer);
+        syncTransfer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                toast("demo");
+                Log.v("AAA", listOrdered.size()+"");
+                for (final Map.Entry<String, List<Ordered>> item: lstChooseTable.entrySet()){
+                    Log.v("AAA", lstChooseTable.get(item.getKey()).toString()+"");
+                }
+            }
+        });
+
+        undoTransfer = (ImageView) findViewById(R.id.undoTransfer);
+        undoTransfer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showProgress();
+                onClickMoveOrdered = false;
+                receiptToOrdered = "";
+                listToOrdered = new ArrayList<Ordered>();
+                lstChooseTable = new HashMap<String, List<Ordered>>();
+                getMenuOrdered();
             }
         });
 
@@ -138,6 +157,7 @@ public class MoveOrderActivity extends AppCompatActivity implements MoveOrderedI
     @Override
     public void moveOrdered(Ordered ordered, String statusOrdered) {
         if(statusOrdered == "AtoB"){
+            showProgress();
             /*Bên chuyển giảm số lượng đi 1*/
             ordered.setQuantity(ordered.getQuantity()-1);
 
@@ -145,7 +165,7 @@ public class MoveOrderActivity extends AppCompatActivity implements MoveOrderedI
             * Nếu có thì trả về vị trí
             * Không đúng trả về -1
             * */
-            int positionInListToOrdered=checkListToOrdered(ordered.getItemId());
+            int positionInListToOrdered=checkListToOrdered(ordered.getItemId(), lstChooseTable.get(receiptToOrdered));
 
             /*Trường hợp bên nhận không có trong danh sách*/
             if(positionInListToOrdered == -1){
@@ -162,7 +182,7 @@ public class MoveOrderActivity extends AppCompatActivity implements MoveOrderedI
 
         }else{
             ordered.setQuantity(ordered.getQuantity()-1);
-            int positionInListOrdered=checkListToOrdered(ordered.getItemId());
+            int positionInListOrdered= checkListToOrdered(ordered.getItemId(), listOrdered);
             if(positionInListOrdered == -1){
                 Ordered newOrdered = new Ordered(ordered.getItemId(),ordered.getName(),ordered.getPrice(),ordered.getUrlImage(),1,ordered.getNote());
                 listOrdered.add(newOrdered);
@@ -170,11 +190,11 @@ public class MoveOrderActivity extends AppCompatActivity implements MoveOrderedI
             }else{
                 int newQuatity = listOrdered.get(positionInListOrdered).getQuantity()+1;
                 listOrdered.get(positionInListOrdered).setQuantity(newQuatity);
-
             }
             FragmentMoveFromOrdered fragmentMoveFromTable = (FragmentMoveFromOrdered) getSupportFragmentManager().findFragmentById(R.id.frag_1);
             fragmentMoveFromTable.recevieData();
         }
+        dialog.dismiss();
     }
 
     @Override
@@ -183,10 +203,10 @@ public class MoveOrderActivity extends AppCompatActivity implements MoveOrderedI
     }
 
     /*Hàm kiểm trả xem trong danh nhận coi có hay không */
-    private int checkListToOrdered(String idItemOrdered){
-
-        for(int i=0; i<lstChooseTable.get(receiptToOrdered).size();i++){
-            if(lstChooseTable.get(receiptToOrdered).get(i).getItemId().equals(idItemOrdered)){
+    private int checkListToOrdered(String idItemOrdered,List<Ordered> checkList){
+//        lstChooseTable.get(receiptToOrdered)
+        for(int i=0; i< checkList.size(); i++){
+            if(checkList.get(i).getItemId().equals(idItemOrdered)){
                 return i;
             }
         }
@@ -209,6 +229,14 @@ public class MoveOrderActivity extends AppCompatActivity implements MoveOrderedI
     @Override
     public void FragmentToOrdered() {
         getSupportFragmentManager().beginTransaction().replace(R.id.frag_2, new FragmentMoveToOrdered()).commit();
+    }
+
+    @Override
+    public void undoAllFragment(){
+        getSupportFragmentManager().beginTransaction().replace(R.id.frag_1, new FragmentMoveFromOrdered()).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.frag_3, new FragmentMoveOrdered()).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.frag_2, new FragmentMoveToOrdered()).commit();
+        dialog.dismiss();
     }
 
     @Override

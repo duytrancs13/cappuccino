@@ -69,7 +69,7 @@ public class MoveOrderedPresenterImp implements MoveOrderedPresenter {
                     JSONArray items = data.getJSONArray("items");
                     TypeToken<List<Ordered>> token = new TypeToken<List<Ordered>>() {};
                     listOrdered = gson.fromJson(items.toString(), token.getType());
-                    orderedView.initFragment();
+                    orderedView.undoAllFragment();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

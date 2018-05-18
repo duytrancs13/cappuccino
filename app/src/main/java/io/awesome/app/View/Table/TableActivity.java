@@ -90,6 +90,7 @@ public class TableActivity extends AppCompatActivity implements NavigationView.O
 
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -388,7 +389,6 @@ public class TableActivity extends AppCompatActivity implements NavigationView.O
 
                 // Khi chọn vào item "đặt thêm món"
                 if(position == 0){
-
                     // Đi đến màn hình menu.
                     gotoMenu(receiptBusy,1);
 
@@ -396,10 +396,6 @@ public class TableActivity extends AppCompatActivity implements NavigationView.O
                 }else if(position == 1){
                     receiptId = receiptBusy;
                     tablePresenter.getMenuOrdered(token);
-                    intent = new Intent(TableActivity.this, MoveOrderActivity.class);
-                    startActivity(intent);
-                    /*toast("Tách - gộp bàn");*/
-
                     // Khi chọn vào item "Giao món"
                 }else if(position == 2){
                     /*table.setBackgroundResource(R.drawable.ic_table_deliver);

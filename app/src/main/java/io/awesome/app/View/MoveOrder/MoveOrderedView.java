@@ -6,6 +6,7 @@ package io.awesome.app.View.MoveOrder;
 
 public interface MoveOrderedView {
     public void initFragment();
+    public void undoAllFragment();
     public void FragmentToOrdered();
     public void showProgress();
 }

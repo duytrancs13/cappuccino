@@ -70,7 +70,7 @@ public class FragmentMoveOrdered extends Fragment {
             textViewHint.setText("Chọn bàn muốn chuyển");
             llButtonOrdered.addView(textViewHint);
         }else{
-            int i=0;
+
             for (final Map.Entry<String, List<Ordered>> item: lstChooseTable.entrySet()){
 
 
@@ -79,7 +79,6 @@ public class FragmentMoveOrdered extends Fragment {
                 layoutButtonOrdered.rightMargin = 10;
                 buttonToOrdered.setLayoutParams(layoutButtonOrdered);
                 buttonToOrdered.setText(listTable.get(position).getName());
-                buttonToOrdered.setId(i++);
 
                 if(item.getKey().equals(receiptToOrdered)){
                     buttonToOrdered.setBackgroundResource(R.drawable.buttonchoosetransfer);

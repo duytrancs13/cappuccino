@@ -80,7 +80,7 @@ public class FragmentMoveToOrdered extends Fragment{
 
     private void confirmDelete(final Ordered toOrdered){
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        builder.setMessage("Bạn có muốn chuyển " + toOrdered.getName()+" không?");
+        builder.setMessage("Bạn có muốn chuyển " +toOrdered.getName()+" không?");
         builder.setPositiveButton("Có", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
