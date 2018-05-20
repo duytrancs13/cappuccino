@@ -50,7 +50,9 @@ public class FragmentMoveFromOrdered extends Fragment {
             lvMoveFromTable.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                confirmDelete(listOrdered.get(position));
+//                confirmDelete(listOrdered.get(position));
+                  moveOrderedI.moveOrdered(listOrdered.get(position), "AtoB");
+                  customMoveOrderedAdapter.notifyDataSetChanged();
                 }
             });
         }else{
@@ -66,7 +68,7 @@ public class FragmentMoveFromOrdered extends Fragment {
         customMoveOrderedAdapter.notifyDataSetChanged();
     }
 
-    private void confirmDelete(final Ordered ordered){
+    /*private void confirmDelete(final Ordered ordered){
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setMessage("Bạn có muốn chuyển " + ordered.getName()+" không?");
         builder.setPositiveButton("Có", new DialogInterface.OnClickListener() {
@@ -82,7 +84,7 @@ public class FragmentMoveFromOrdered extends Fragment {
             }
         });
         builder.show();
-    }
+    }*/
 
 
 
