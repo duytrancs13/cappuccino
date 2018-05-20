@@ -153,9 +153,6 @@ public class FragmentReceipt extends Fragment implements FragmentReceiptView {
         TextView tvPriceReceipt;
         Button btnQualityReceipt;
         TextView tvMoneyReceipt;
-        Button btnMinusReceipt;
-        Button btnPlusReceipt;
-
     }
 
     public View getView(final Ordered ordered) {
@@ -181,10 +178,6 @@ public class FragmentReceipt extends Fragment implements FragmentReceiptView {
         viewHolder.btnQualityReceipt = (Button) view.findViewById(R.id.btnQualityReceipt);
 
         viewHolder.tvMoneyReceipt = (TextView) view.findViewById(R.id.tvMoneyReceipt);
-
-        viewHolder.btnMinusReceipt = (Button) view.findViewById(R.id.btnMinusReceipt);
-
-        viewHolder.btnPlusReceipt = (Button) view.findViewById(R.id.btnPlusReceipt);
 
 
         view.setTag(viewHolder);
@@ -212,14 +205,6 @@ public class FragmentReceipt extends Fragment implements FragmentReceiptView {
 
         viewHolder.tvMoneyReceipt.setText(""+money+" đ");
 
-        viewHolder.btnPlusReceipt.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                int qualityCurrent = Integer.parseInt(viewHolder.btnQualityReceipt.getText().toString());
-                receiptPresenter.addReceipt(receiptId, token, "menuItemId", ordered.getItemId());
-                viewHolder.btnQualityReceipt.setText((qualityCurrent + 1) + "");
-            }
-        });
         return view;
     }
 
