@@ -73,6 +73,9 @@ public class CustomCategoryAdapter extends BaseAdapter {
         }
 
         Category category = this.categoryList.get(position);
+//        if (category.getId() == 1) {
+//            viewHolder.imageCategories.setVisibility(View.GONE);
+//        }
         Typeface mFont = Typeface.createFromAsset(context.getAssets(),"Roboto-Bold.ttf");
 
         Picasso.with(context).load(category.getUrlImage()).into(viewHolder.imageCategories);

@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
+import java.io.IOException;
 import java.text.NumberFormat;
 import java.util.List;
 import java.util.Locale;
@@ -28,6 +29,7 @@ import io.awesome.app.R;
 import io.awesome.app.View.Table.TableActivity;
 
 import static android.content.Context.MODE_PRIVATE;
+import static io.awesome.app.View.Main.MainActivity.bluetoothSocket;
 import static io.awesome.app.View.Main.MainActivity.receiptId;
 import static io.awesome.app.View.Table.TableActivity.listOrdered;
 
@@ -52,6 +54,8 @@ public class FragmentReceipt extends Fragment implements FragmentReceiptView {
 
     private int totalMoney=0;
 
+    private boolean checkClickPrintPay = false;
+
 
 
 
@@ -70,7 +74,8 @@ public class FragmentReceipt extends Fragment implements FragmentReceiptView {
 
         receiptPresenter = new ReceiptPresenterImpl(this.getContext(), this);
 
-        if(!listOrdered.equals(null)){
+        if(listOrdered.size() != 0){
+            checkClickPrintPay = true;
             receiptPresenter.getMenuReceipt(token);
         }else{
             return view;
@@ -86,21 +91,36 @@ public class FragmentReceipt extends Fragment implements FragmentReceiptView {
 
         totalMoney = 0;
 
-        btnPrintReceipt = (Button) view.findViewById(R.id.btnPrintReceipt);
-        btnPrintReceipt.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                toast("In hóa đơn !!!");
-            }
-        });
+        if(checkClickPrintPay){
+            btnPrintReceipt = (Button) view.findViewById(R.id.btnPrintReceipt);
+            btnPrintReceipt.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
 
-        btnReceipt = (Button) view.findViewById(R.id.btnReceipt);
-        btnReceipt.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-            receiptPresenter.updateReceipt(token);
-            }
-        });
+                    try {
+                        if(bluetoothSocket==null){
+                            toast("Vui long ket noi bluetooth");
+
+                        }else{
+                            receiptPresenter.printReceipt();
+                            receiptPresenter.printData();
+                        }
+
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+
+            btnReceipt = (Button) view.findViewById(R.id.btnReceipt);
+            btnReceipt.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    receiptPresenter.updateReceipt(token);
+                }
+            });
+        }
+
 
         return view;
     }

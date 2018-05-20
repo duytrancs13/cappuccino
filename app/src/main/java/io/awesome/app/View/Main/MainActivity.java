@@ -1,5 +1,6 @@
 package io.awesome.app.View.Main;
 
+import android.bluetooth.BluetoothSocket;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
@@ -48,6 +49,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     public static String receiptId = "";
     public static String receiptToOrdered = "";
+    public static BluetoothSocket bluetoothSocket = null;
 
 
 //    private PusherTable pusherTable;

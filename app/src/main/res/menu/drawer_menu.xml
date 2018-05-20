@@ -6,6 +6,11 @@
         android:title="Thông tin cá nhân" />
 
     <item
+        android:id="@+id/connectBluetooth"
+        android:icon="@drawable/ic_bluetooth"
+        android:title="Demo kết nối bluetooth" />
+
+    <item
         android:id="@+id/logout"
         android:icon="@drawable/ic_logout"
         android:title="Đăng xuất" />

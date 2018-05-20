@@ -42,6 +42,7 @@ import io.awesome.app.Model.Ordered;
 import io.awesome.app.Model.Table;
 import io.awesome.app.Presenter.Pusher.PusherTable;
 import io.awesome.app.Presenter.Table.TablePresenterImpl;
+import io.awesome.app.View.Bluetooth.BluetoothActivity;
 import io.awesome.app.View.Fragment.Menu.FragmentMenu;
 import io.awesome.app.View.Login.LoginActivity;
 import io.awesome.app.View.MenuTabs.MenuTabsActivity;
@@ -304,7 +305,10 @@ public class TableActivity extends AppCompatActivity implements NavigationView.O
         if (id == R.id.profile) {
             toast("profile ");
 
-        } else if (id == R.id.logout) {
+        }else if(id == R.id.connectBluetooth){
+            intent = new Intent(TableActivity.this, BluetoothActivity.class);
+            startActivity(intent);
+        }else if (id == R.id.logout) {
             alertLogout();
         }
         drawer.closeDrawer(GravityCompat.START);
