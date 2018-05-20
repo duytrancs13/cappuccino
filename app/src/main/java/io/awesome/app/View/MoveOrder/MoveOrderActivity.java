@@ -40,6 +40,7 @@ import static io.awesome.app.View.Main.MainActivity.receiptId;
 import static io.awesome.app.View.Main.MainActivity.receiptToOrdered;
 import static io.awesome.app.View.Table.TableActivity.listOrdered;
 import static io.awesome.app.View.Table.TableActivity.listToOrdered;
+import static io.awesome.app.View.Table.TableActivity.nameTableMoveOrdered;
 import static io.awesome.app.View.Table.TableActivity.onClickMoveOrdered;
 
 public class MoveOrderActivity extends AppCompatActivity implements MoveOrderedI, MoveOrderedView {
@@ -79,11 +80,9 @@ public class MoveOrderActivity extends AppCompatActivity implements MoveOrderedI
         SetFont setFont = new SetFont("Roboto-Regular.ttf");
         setFont.getFont();
 
-
-
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("Tách - gộp bàn");
+        getSupportActionBar().setTitle(nameTableMoveOrdered);
 
         // Set ActionBar
         final Drawable upArrow = getResources().getDrawable(R.drawable.ic_back);

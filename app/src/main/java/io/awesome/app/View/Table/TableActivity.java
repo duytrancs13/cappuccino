@@ -87,6 +87,8 @@ public class TableActivity extends AppCompatActivity implements NavigationView.O
 
     private ProgressDialog dialog ;
 
+    public static String nameTableMoveOrdered = "";
+
 
 
 
@@ -162,7 +164,7 @@ public class TableActivity extends AppCompatActivity implements NavigationView.O
         for(int i = 0; i < listTable.size() ; i++){
 
             // Đối tượng của 1 bàn itemTable
-            Table itemTable = listTable.get(i);
+            final Table itemTable = listTable.get(i);
             final String receiptBusy = itemTable.getReceiptId();
 
             linearLayout = new LinearLayout(this);
@@ -183,7 +185,7 @@ public class TableActivity extends AppCompatActivity implements NavigationView.O
 
 
             // Kiểm tra trạng thái của từng bàn
-            Button table = new Button(this);
+            final Button table = new Button(this);
             final int position = i;
 
             // Bàn màu xanh là bàn ở trạng thái rỗng
@@ -206,7 +208,7 @@ public class TableActivity extends AppCompatActivity implements NavigationView.O
                     @Override
                     public void onClick(View view) {
                         /*popupTableWaiting(view,table,itemTable.getReceiptId(),itemTable.getId(),timer);*/
-                        popupTableBusy(view, receiptBusy);
+                        popupTableBusy(view, receiptBusy, itemTable.getName());
                     }
                 });
             }
@@ -382,8 +384,8 @@ public class TableActivity extends AppCompatActivity implements NavigationView.O
     }
 
     // Hàm xử lí sự kiện khi gọi bàn ở trạng thái bận.
-    void popupTableBusy(View v,final String receiptBusy){
-        final CharSequence[] items = {"Đặt thêm món","Tách - gộp bàn", "Giao món","Thanh toán"};
+    void popupTableBusy(View v,final String receiptBusy, final String nameTable){
+        final CharSequence[] items = {"Đặt thêm món","Chuyển bàn", "Đặt chỗ","Thanh toán"};
 
         AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
         builder.setIcon(R.drawable.ic_option);
@@ -396,17 +398,18 @@ public class TableActivity extends AppCompatActivity implements NavigationView.O
                     // Đi đến màn hình menu.
                     gotoMenu(receiptBusy,1);
 
-                // Khi chọn vào item "Tách - gộp bàn"
+                // Khi chọn vào item "Chuyển bàn"
                 }else if(position == 1){
                     receiptId = receiptBusy;
+                    nameTableMoveOrdered = nameTable;
                     tablePresenter.getMenuOrdered(token);
-                    // Khi chọn vào item "Giao món"
+                    // Khi chọn vào item "Đặt chỗ"
                 }else if(position == 2){
                     /*table.setBackgroundResource(R.drawable.ic_table_deliver);
                     countUp.stop();
                     timer.setVisibility(View.VISIBLE);
                     timer.setText("00:00:00");*/
-                    toast("Giao mon");
+                    toast("Đặt chỗ");
 
 
                 // Khi chọn vào item "Thanh toán"
