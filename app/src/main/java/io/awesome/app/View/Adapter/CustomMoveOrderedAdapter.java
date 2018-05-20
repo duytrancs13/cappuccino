@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
@@ -60,7 +61,10 @@ public class CustomMoveOrderedAdapter extends BaseAdapter {
 
             viewHolder = new CustomMoveOrderedAdapter.ViewHolder();
 
+            viewHolder.llItemMoveOrdered = (LinearLayout) convertView.findViewById(R.id.llItemMoveOrdered);
+
             viewHolder.imageMoveOrdered = (ImageView) convertView.findViewById(R.id.imageMoveOrdered);
+
 
             viewHolder.tvNameMoveOrdered = (TextView) convertView.findViewById(R.id.tvNameMoveOrdered);
 
@@ -75,6 +79,13 @@ public class CustomMoveOrderedAdapter extends BaseAdapter {
 
 
         Ordered ordered = this.listOrdered.get(position);
+
+        if(ordered.getQuantity() == 0){
+            viewHolder.llItemMoveOrdered.setVisibility(View.GONE);
+        }else{
+            viewHolder.llItemMoveOrdered.setVisibility(View.VISIBLE);
+        }
+
         Typeface mFont = Typeface.createFromAsset(context.getAssets(),"Roboto-Bold.ttf");
         Picasso.with(context).load(ordered.getUrlImage()).into(viewHolder.imageMoveOrdered);
 
@@ -93,6 +104,7 @@ public class CustomMoveOrderedAdapter extends BaseAdapter {
     }
 
     static class ViewHolder extends FragmentActivity {
+        LinearLayout llItemMoveOrdered;
         ImageView imageMoveOrdered;
         TextView tvNameMoveOrdered;
         TextView quatityMoveOrdered;
