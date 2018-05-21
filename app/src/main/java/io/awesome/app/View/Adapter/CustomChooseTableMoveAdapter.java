@@ -70,19 +70,27 @@ public class CustomChooseTableMoveAdapter extends BaseAdapter {
         if(table.getReceiptId().equals(receiptId)){
             viewHolder.llItemChooseTableMove.setVisibility(View.GONE);
         }else{
-            /*if(lstChooseTable.size() != 0){
-                for (final Map.Entry<String, List<Ordered>> item: lstChooseTable.entrySet()){
-                    if(item.getKey().equals(table.getReceiptId()) || item.getKey().equals("tableId"+table.getId())){
-                        viewHolder.llItemChooseTableMove.setVisibility(View.GONE);
-                        break;
-                    }
+            if(lstChooseTable.size() != 0) {
+                if (checkListChooseTable(table)) {
+                    viewHolder.llItemChooseTableMove.setVisibility(View.GONE);
+                }else{
+                    viewHolder.llItemChooseTableMove.setVisibility(View.VISIBLE);
                 }
-            }*/
-
-            viewHolder.llItemChooseTableMove.setVisibility(View.VISIBLE);
+            }else{
+                viewHolder.llItemChooseTableMove.setVisibility(View.VISIBLE);
+            }
         }
         viewHolder.tvChooseTableMove.setText(table.getName());
         return convertView;
+    }
+
+    private boolean checkListChooseTable(Table table){
+        for (final Map.Entry<String, List<Ordered>> item: lstChooseTable.entrySet()){
+            if(item.getKey().equals(table.getReceiptId()) || item.getKey().equals("tableId"+table.getId())){
+                return true;
+            }
+        }
+        return false;
     }
 
     static class ViewHolder extends FragmentActivity {

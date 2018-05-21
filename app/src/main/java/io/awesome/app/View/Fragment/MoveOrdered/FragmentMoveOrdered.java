@@ -15,6 +15,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -68,6 +69,7 @@ public class FragmentMoveOrdered extends Fragment {
             llButtonOrdered.addView(textViewHint);
         }else{
 
+            final List<Button> listButtonToOrdered = new ArrayList<Button>();
             for (final Map.Entry<String, List<Ordered>> item: lstChooseTable.entrySet()){
 
 
@@ -76,6 +78,7 @@ public class FragmentMoveOrdered extends Fragment {
                 layoutButtonOrdered.rightMargin = 10;
                 buttonToOrdered.setLayoutParams(layoutButtonOrdered);
                 buttonToOrdered.setText(listTable.get(position).getName());
+                buttonToOrdered.setId(listButtonToOrdered.size());
 
                 if(item.getKey().equals(receiptToOrdered)){
                     buttonToOrdered.setBackgroundResource(R.drawable.buttonchoosetransfer);
@@ -83,7 +86,7 @@ public class FragmentMoveOrdered extends Fragment {
                     buttonToOrdered.setBackgroundResource(R.drawable.buttontransfer);
                 }
 
-
+                listButtonToOrdered.add(buttonToOrdered);
 
 
                 buttonToOrdered.setOnClickListener(new View.OnClickListener() {
@@ -91,6 +94,14 @@ public class FragmentMoveOrdered extends Fragment {
                     public void onClick(View view) {
 
                         receiptToOrdered = item.getKey();
+                        for(int i=0; i<listButtonToOrdered.size();i++){
+                            if(i==buttonToOrdered.getId()){
+                                listButtonToOrdered.get(i).setBackgroundResource(R.drawable.buttonchoosetransfer);
+                            }else{
+                                listButtonToOrdered.get(i).setBackgroundResource(R.drawable.buttontransfer);
+                            }
+                        }
+
                         moveOrderedI.onClickGetMenuToOrdered();
                     }
                 });
