@@ -54,6 +54,8 @@ public class FragmentReceipt extends Fragment implements FragmentReceiptView {
 
     private int totalMoney=0;
 
+    private int tatalQuatityReceipt=0;
+
     private boolean checkClickPrintPay = false;
 
 
@@ -82,7 +84,8 @@ public class FragmentReceipt extends Fragment implements FragmentReceiptView {
         }
 
         quatityMenuReceipt = (Button) view.findViewById(R.id.quatityMenuReceipt);
-        quatityMenuReceipt.setText(listOrdered.size()+"");
+        /*quatityMenuReceipt.setText(listOrdered.size()+"");*/
+        quatityMenuReceipt.setText(tatalQuatityReceipt+"");
 
 
         tvTotalMoney = (TextView) view.findViewById(R.id.tvTotalMoney);
@@ -90,6 +93,7 @@ public class FragmentReceipt extends Fragment implements FragmentReceiptView {
         tvTotalMoney.setText(NumberFormat.getNumberInstance(Locale.GERMAN).format(totalMoney)+" đ");
 
         totalMoney = 0;
+        tatalQuatityReceipt=0;
 
         if(checkClickPrintPay){
             btnPrintReceipt = (Button) view.findViewById(R.id.btnPrintReceipt);
@@ -196,6 +200,12 @@ public class FragmentReceipt extends Fragment implements FragmentReceiptView {
         viewHolder.tvPriceReceipt.setText(""+price+" đ");
 
         viewHolder.btnQualityReceipt.setText(""+ordered.getQuantity());
+
+        /*Tinh tong so mon da ordered*/
+
+        tatalQuatityReceipt+=ordered.getQuantity();
+
+        /*Tinh tong tien*/
 
         int caculMoney = ordered.getPrice()*ordered.getQuantity();
 
