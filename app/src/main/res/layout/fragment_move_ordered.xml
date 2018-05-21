@@ -23,7 +23,7 @@
         <HorizontalScrollView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="0.93">
+            android:layout_weight="0.85">
 
             <LinearLayout
                 android:id="@+id/llButtonOrdered"
@@ -41,9 +41,8 @@
             android:id="@+id/btnAddButtonOrdered"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="0.07"
-            android:drawableRight="@drawable/ic_plus"
-            android:background="@drawable/buttonplus"
+            android:layout_weight="0.15"
+            android:background="@drawable/ic_add_to_ordered"
             />
     </LinearLayout>
         <View

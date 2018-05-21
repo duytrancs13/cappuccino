@@ -3,13 +3,10 @@ package io.awesome.app.View;
 
 import android.content.Intent;
 
-import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
-import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -22,27 +19,25 @@ import java.util.ArrayList;
 import io.awesome.app.General.SetFont;
 import io.awesome.app.Model.Ordered;
 import io.awesome.app.R;
-import io.awesome.app.View.Adapter.CustomChooseTableAdapter;
+import io.awesome.app.View.Adapter.CustomChooseTableMoveAdapter;
 
 import io.awesome.app.View.MoveOrder.MoveOrderActivity;
-
-import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 
 import static io.awesome.app.View.Main.MainActivity.listTable;
 import static io.awesome.app.View.Main.MainActivity.receiptToOrdered;
 //import static io.awesome.app.View.MoveOrder.MoveOrderActivity.listChooseTable;
 import static io.awesome.app.View.MoveOrder.MoveOrderActivity.lstChooseTable;
 
-public class ChooseTableActivity extends AppCompatActivity {
+public class ChooseTableMoveActivity extends AppCompatActivity {
     private Toolbar toolbar;
     private ListView lvChooseTable;
 
-    private CustomChooseTableAdapter customChooseTableAdapter;
+    private CustomChooseTableMoveAdapter customChooseTableAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_choose_table);
+        setContentView(R.layout.activity_choose_table_move);
 
 //        CalligraphyConfig.initDefault(
 //                new CalligraphyConfig.Builder()
@@ -62,7 +57,7 @@ public class ChooseTableActivity extends AppCompatActivity {
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("Chọn bàn");
+        getSupportActionBar().setTitle("Chọn bàn muốn chuyển");
 
         // Set ActionBar
         final Drawable upArrow = getResources().getDrawable(R.drawable.ic_back);
@@ -72,7 +67,7 @@ public class ChooseTableActivity extends AppCompatActivity {
 
         lvChooseTable = (ListView) findViewById(R.id.lvChooseTable);
 
-        customChooseTableAdapter = new CustomChooseTableAdapter(this, listTable);
+        customChooseTableAdapter = new CustomChooseTableMoveAdapter(this, listTable);
 
         lvChooseTable.setAdapter(customChooseTableAdapter);
 

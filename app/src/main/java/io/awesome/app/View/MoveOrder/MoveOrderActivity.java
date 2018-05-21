@@ -59,7 +59,7 @@ public class MoveOrderActivity extends AppCompatActivity implements MoveOrderedI
     public static HashMap<String, List<Ordered>> lstChooseTable = new HashMap<String, List<Ordered>>();
 
     private ProgressDialog dialog ;
-    private ImageView syncTransfer, undoTransfer;
+    private Button syncTransfer, undoTransfer;
 
 
 
@@ -100,18 +100,18 @@ public class MoveOrderActivity extends AppCompatActivity implements MoveOrderedI
             }
         }
 
-        syncTransfer = (ImageView) findViewById(R.id.syncTransfer);
+        syncTransfer = (Button) findViewById(R.id.syncTransfer);
         syncTransfer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.v("AAA", listOrdered.size()+"");
+
                 for (final Map.Entry<String, List<Ordered>> item: lstChooseTable.entrySet()){
                     Log.v("AAA", lstChooseTable.get(item.getKey()).toString()+"");
                 }
             }
         });
 
-        undoTransfer = (ImageView) findViewById(R.id.undoTransfer);
+        undoTransfer = (Button) findViewById(R.id.undoTransfer);
         undoTransfer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

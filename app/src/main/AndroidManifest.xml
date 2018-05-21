@@ -43,7 +43,7 @@
         <activity android:name=".View.ScaleDetectorTestActivity" />
         <activity android:name=".View.MoveOrderActivity" />
         <activity android:name=".View.MoveOrder.MoveOrderActivity" />
-        <activity android:name=".View.ChooseTableActivity" />
+        <activity android:name=".View.ChooseTableMoveActivity" />
         <activity android:name=".View.Bluetooth.BluetoothActivity"></activity>
     </application>
 

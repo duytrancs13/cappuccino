@@ -15,13 +15,12 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import io.awesome.app.Model.Ordered;
 import io.awesome.app.R;
-import io.awesome.app.View.ChooseTableActivity;
+import io.awesome.app.View.ChooseTableMoveActivity;
 
 ;
 import static io.awesome.app.View.Main.MainActivity.listTable;
@@ -39,7 +38,6 @@ public class FragmentMoveOrdered extends Fragment {
     private Button btnAddButtonOrdered;
     private MoveOrderedI moveOrderedI;
     private CardView cVChooseTable;
-    private TextView tvChooseTable;
 
 
 
@@ -53,7 +51,6 @@ public class FragmentMoveOrdered extends Fragment {
 
 
         cVChooseTable = (CardView) view.findViewById(R.id.cVChooseTable);
-        tvChooseTable = (TextView) view.findViewById(R.id.tvChooseTable);
         moveOrderedI = (MoveOrderedI) getActivity();
 
 
@@ -112,7 +109,7 @@ public class FragmentMoveOrdered extends Fragment {
             @Override
             public void onClick(View view) {
                 onClickMoveOrdered = true;
-                Intent intent = new Intent(getActivity(), ChooseTableActivity.class);
+                Intent intent = new Intent(getActivity(), ChooseTableMoveActivity.class);
                 startActivity(intent);
             }
         });
