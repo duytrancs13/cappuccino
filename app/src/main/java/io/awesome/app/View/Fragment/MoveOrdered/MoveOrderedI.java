@@ -13,9 +13,8 @@ import io.awesome.app.Model.Table;
  */
 
 public interface MoveOrderedI {
-    public void moveOrdered(Ordered ordered, String statusOrdered );
+    public void moveOrdered(Ordered ordered, String statusOrdered, int quatity);
     public void getMenuOrdered();
-    public void getMenuToOrdered();
     public void onClickGetMenuToOrdered();
-    public void createReceiptToOrdered(String idTable, int position, Button buttonToOrdered);
+    public void showProgress();
 }

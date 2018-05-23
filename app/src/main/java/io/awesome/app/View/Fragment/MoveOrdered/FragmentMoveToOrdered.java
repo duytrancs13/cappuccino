@@ -28,7 +28,7 @@ import static io.awesome.app.View.Table.TableActivity.listToOrdered;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class FragmentMoveToOrdered extends Fragment{
+public class FragmentMoveToOrdered extends Fragment {
 
     private ListView lvMoveToTable;
     private CustomToOrderedAdapter customToOrderedAdapter;
@@ -43,41 +43,32 @@ public class FragmentMoveToOrdered extends Fragment{
         lvMoveToTable = (ListView) view.findViewById(R.id.lvMoveToTable);
         moveOrderedI = (MoveOrderedI) getActivity();
 
-        if(receiptToOrdered.length()==0){
+        if (receiptToOrdered.length() == 0) {
             customToOrderedAdapter = new CustomToOrderedAdapter(view.getContext(), new ArrayList<Ordered>());
-        }else{
-
+        } else {
             customToOrderedAdapter = new CustomToOrderedAdapter(view.getContext(), lstChooseTable.get(receiptToOrdered));
         }
-
-
-
-
-
         moveOrderedI = (MoveOrderedI) getActivity();
-
         lvMoveToTable.setAdapter(customToOrderedAdapter);
-
         lvMoveToTable.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
 
-//              confirmDelete(lstChooseTable.get(receiptToOrdered).get(position));
-              moveOrderedI.moveOrdered(lstChooseTable.get(receiptToOrdered).get(position), "BtoA");
-              customToOrderedAdapter.notifyDataSetChanged();
+//          confirmDelete(lstChooseTable.get(receiptToOrdered).get(position));
+            moveOrderedI.moveOrdered(lstChooseTable.get(receiptToOrdered).get(position), "BtoA", 1);
+            customToOrderedAdapter.notifyDataSetChanged();
             }
         });
 
         return view;
     }
 
-    public void toast(String message){
-        Toast.makeText(getContext(),message,Toast.LENGTH_SHORT).show();
+    public void toast(String message) {
+        Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
     }
 
 
     public void recevieData() {
-        //listToOrdered.add(ordered);
         customToOrderedAdapter.notifyDataSetChanged();
     }
 

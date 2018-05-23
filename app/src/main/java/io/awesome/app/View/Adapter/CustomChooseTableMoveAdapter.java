@@ -86,7 +86,7 @@ public class CustomChooseTableMoveAdapter extends BaseAdapter {
 
     private boolean checkListChooseTable(Table table){
         for (final Map.Entry<String, List<Ordered>> item: lstChooseTable.entrySet()){
-            if(item.getKey().equals(table.getReceiptId()) || item.getKey().equals("tableId"+table.getId())){
+            if(item.getKey().equals(table.getId())){
                 return true;
             }
         }

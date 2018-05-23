@@ -45,23 +45,23 @@ public class FragmentMoveFromOrdered extends Fragment {
         lvMoveFromTable.setAdapter(customMoveOrderedAdapter);
 
 
-
-        if(onClickMoveOrdered){
+        if (onClickMoveOrdered) {
             lvMoveFromTable.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
 //                confirmDelete(listOrdered.get(position));
-                  moveOrderedI.moveOrdered(listOrdered.get(position), "AtoB");
-                  customMoveOrderedAdapter.notifyDataSetChanged();
+                    moveOrderedI.moveOrdered(listOrdered.get(position), "AtoB", 1);
+                    customMoveOrderedAdapter.notifyDataSetChanged();
                 }
             });
-        }else{
+        } else {
             lvMoveFromTable.setFocusable(onClickMoveOrdered);
         }
         return view;
     }
-    public void toast(String message){
-        Toast.makeText(getContext(),message,Toast.LENGTH_SHORT).show();
+
+    public void toast(String message) {
+        Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
     }
 
     public void recevieData() {
@@ -85,11 +85,6 @@ public class FragmentMoveFromOrdered extends Fragment {
         });
         builder.show();
     }*/
-
-
-
-
-
 
 
 }

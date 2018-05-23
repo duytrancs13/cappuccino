@@ -7,27 +7,32 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.CardView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import io.awesome.app.Model.Ordered;
 import io.awesome.app.R;
 import io.awesome.app.View.ChooseTableMoveActivity;
+import io.awesome.app.View.MoveOrder.MoveOrderedView;
 
 ;
 import static io.awesome.app.View.Main.MainActivity.listTable;
 import static io.awesome.app.View.Main.MainActivity.receiptToOrdered;
 //import static io.awesome.app.View.MoveOrder.MoveOrderActivity.listChooseTable;
 import static io.awesome.app.View.MoveOrder.MoveOrderActivity.lstChooseTable;
+import static io.awesome.app.View.Table.TableActivity.listToOrdered;
 import static io.awesome.app.View.Table.TableActivity.onClickMoveOrdered;
 
 /**
@@ -39,12 +44,9 @@ public class FragmentMoveOrdered extends Fragment {
     private Button btnAddButtonOrdered;
     private MoveOrderedI moveOrderedI;
     private CardView cVChooseTable;
+    private MoveOrderedView moveOrderedView;
 
 
-
-
-
-    @SuppressLint("ResourceAsColor")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -55,65 +57,74 @@ public class FragmentMoveOrdered extends Fragment {
         moveOrderedI = (MoveOrderedI) getActivity();
 
 
-
         llButtonOrdered = (LinearLayout) view.findViewById(R.id.llButtonOrdered);
         moveOrderedI = (MoveOrderedI) getActivity();
-        int position = getActivity().getIntent().getIntExtra("positionTable",-1);
+        int position = getActivity().getIntent().getIntExtra("positionTable", -1);
 
         /*Lúc khởi tạo activity thì hiển thị "Chọn bàn muốn chuyển"*/
-        if(lstChooseTable.size() == 0){
+        if (lstChooseTable.size() == 0) {
             TextView textViewHint = new TextView(getContext());
             LinearLayout.LayoutParams layoutTextViewOrdered = new LinearLayout.LayoutParams(DrawerLayout.LayoutParams.WRAP_CONTENT, DrawerLayout.LayoutParams.WRAP_CONTENT);
             textViewHint.setLayoutParams(layoutTextViewOrdered);
             textViewHint.setText("Chọn bàn muốn chuyển");
             llButtonOrdered.addView(textViewHint);
-        }else{
+        } else {
+            for (final Map.Entry<String, List<Ordered>> item : lstChooseTable.entrySet()) {
 
-            final List<Button> listButtonToOrdered = new ArrayList<Button>();
-            for (final Map.Entry<String, List<Ordered>> item: lstChooseTable.entrySet()){
+                LinearLayout.LayoutParams llChooseTableMove = new LinearLayout.LayoutParams(DrawerLayout.LayoutParams.WRAP_CONTENT, DrawerLayout.LayoutParams.WRAP_CONTENT);
 
-
+                /*Set Button*/
                 final Button buttonToOrdered = new Button(getContext());
-                LinearLayout.LayoutParams layoutButtonOrdered = new LinearLayout.LayoutParams(DrawerLayout.LayoutParams.WRAP_CONTENT, DrawerLayout.LayoutParams.WRAP_CONTENT);
-                layoutButtonOrdered.rightMargin = 10;
-                buttonToOrdered.setLayoutParams(layoutButtonOrdered);
                 buttonToOrdered.setText(listTable.get(position).getName());
-                buttonToOrdered.setId(listButtonToOrdered.size());
-
-                if(item.getKey().equals(receiptToOrdered)){
+                if (item.getKey().equals(receiptToOrdered)) {
                     buttonToOrdered.setBackgroundResource(R.drawable.buttonchoosetransfer);
-                }else{
+                } else {
                     buttonToOrdered.setBackgroundResource(R.drawable.buttontransfer);
                 }
-
-                listButtonToOrdered.add(buttonToOrdered);
-
+                buttonToOrdered.setLayoutParams(llChooseTableMove);
 
                 buttonToOrdered.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-
+                        moveOrderedI.showProgress();
                         receiptToOrdered = item.getKey();
-                        for(int i=0; i<listButtonToOrdered.size();i++){
-                            if(i==buttonToOrdered.getId()){
-                                listButtonToOrdered.get(i).setBackgroundResource(R.drawable.buttonchoosetransfer);
-                            }else{
-                                listButtonToOrdered.get(i).setBackgroundResource(R.drawable.buttontransfer);
-                            }
-                        }
-
                         moveOrderedI.onClickGetMenuToOrdered();
                     }
                 });
 
+                /*Set ImageView*/
+                final ImageView imageViewRemoveToOrdered = new ImageView(getContext());
+                imageViewRemoveToOrdered.setImageDrawable(getResources().getDrawable(R.drawable.ic_delete));
+                imageViewRemoveToOrdered.setLayoutParams(llChooseTableMove);
+
+                imageViewRemoveToOrdered.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        moveOrderedI.showProgress();
+                        receiptToOrdered = item.getKey();
+                        if (lstChooseTable.size() == 1) {
+                            onClickMoveOrdered = false;
+                            receiptToOrdered = "";
+                            listToOrdered = new ArrayList<Ordered>();
+                            lstChooseTable = new HashMap<String, List<Ordered>>();
+                            moveOrderedI.getMenuOrdered();
+                        } else if (lstChooseTable.size() > 1) {
+                            for (Ordered ordered : lstChooseTable.get(receiptToOrdered)) {
+                                moveOrderedI.moveOrdered(ordered, "BtoA", ordered.getQuantity());
+                            }
+                            lstChooseTable.remove(receiptToOrdered);
+                            Map.Entry<String, List<Ordered>> entry = lstChooseTable.entrySet().iterator().next();
+                            receiptToOrdered = entry.getKey();
+                            moveOrderedI.onClickGetMenuToOrdered();
+                        }
+                    }
+                });
+
                 llButtonOrdered.addView(buttonToOrdered);
+                llButtonOrdered.addView(imageViewRemoveToOrdered);
             }
 
         }
-
-
-
-
 
         btnAddButtonOrdered = (Button) view.findViewById(R.id.btnAddButtonOrdered);
         btnAddButtonOrdered.setOnClickListener(new View.OnClickListener() {
@@ -125,27 +136,12 @@ public class FragmentMoveOrdered extends Fragment {
             }
         });
 
-
-
-
-
-
-
         return view;
     }
-    private void showChooseTable(){
 
+    public void toast(String message) {
+        Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
     }
-    public void toast(String message){
-        Toast.makeText(getContext(),message,Toast.LENGTH_SHORT).show();
-    }
-
-
-
-
-
-
-
 
 
 }
