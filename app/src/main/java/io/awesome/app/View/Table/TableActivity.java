@@ -1,6 +1,8 @@
 package io.awesome.app.View.Table;
 
+import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
+import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -23,9 +25,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
@@ -35,7 +39,9 @@ import com.pusher.client.PusherOptions;
 import com.pusher.client.channel.Channel;
 import com.pusher.client.channel.SubscriptionEventListener;
 
+import java.text.DateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import io.awesome.app.Model.Ordered;
@@ -55,10 +61,11 @@ import static io.awesome.app.View.Main.MainActivity.listTable;
 import static io.awesome.app.View.Main.MainActivity.onTableActivity;
 import static io.awesome.app.View.Main.MainActivity.receiptId;
 
-public class TableActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,TableView {
+public class TableActivity extends AppCompatActivity implements
+        NavigationView.OnNavigationItemSelectedListener,TableView,
+        DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener
 
-
-
+{
 
     private DrawerLayout drawer;
     public static final String MyPREFERENCES = "capuccino" ;
@@ -88,6 +95,9 @@ public class TableActivity extends AppCompatActivity implements NavigationView.O
     private ProgressDialog dialog ;
 
     public static String nameTableMoveOrdered = "";
+
+    private int day, month, year, hour, minute;
+    private int dayFinal, monthFinal, yearFinal, hourFinal, minuteFinal;
 
 
 
@@ -356,6 +366,13 @@ public class TableActivity extends AppCompatActivity implements NavigationView.O
                 // Khi chọn vào item "đặt chỗ".
                 else if(item == 1){
                     toast("dat cho");
+                    Calendar c = Calendar.getInstance();
+                    year = c.get(Calendar.YEAR);
+                    month = c.get(Calendar.MONTH);
+                    day = c.get(Calendar.DAY_OF_MONTH);
+
+                    DatePickerDialog datePickerDialog = new DatePickerDialog(TableActivity.this, TableActivity.this, year, month, day);
+                    datePickerDialog.show();
                     /*intent = new Intent(TableActivity.this, TimerActivity.class);
                     startActivity(intent);
 
@@ -553,7 +570,6 @@ public class TableActivity extends AppCompatActivity implements NavigationView.O
     public void showProgress() {
         new Progress().execute();
     }
-
     private class Progress extends AsyncTask<Void, Void, Void> {
 
 
@@ -571,6 +587,33 @@ public class TableActivity extends AppCompatActivity implements NavigationView.O
             return null;
         }
     }
+
+    @Override
+    public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
+        yearFinal = i;
+        monthFinal = i1+1;
+        dayFinal = i2;
+
+        Calendar c = Calendar.getInstance();
+        hour = c.get(Calendar.HOUR);
+        minute = c.get(Calendar.MINUTE);
+
+        TimePickerDialog timePickerDialog = new TimePickerDialog(TableActivity.this, TableActivity.this, hour, minute, true);
+        timePickerDialog.show();
+
+
+    }
+
+    @Override
+    public void onTimeSet(TimePicker timePicker, int i, int i1) {
+        hourFinal = i;
+        minuteFinal = i1;
+        Log.v("AAA", "year:"+yearFinal+"-month:"+monthFinal+"-day:"+dayFinal);
+        Log.v("AAA", "hour:"+hourFinal+"-minute:"+minuteFinal);
+
+    }
+
+
 
 
 }

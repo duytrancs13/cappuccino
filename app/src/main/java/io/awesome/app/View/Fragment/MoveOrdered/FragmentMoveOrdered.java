@@ -2,6 +2,8 @@ package io.awesome.app.View.Fragment.MoveOrdered;
 
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -100,23 +102,8 @@ public class FragmentMoveOrdered extends Fragment {
                 imageViewRemoveToOrdered.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        moveOrderedI.showProgress();
                         receiptToOrdered = item.getKey();
-                        if (lstChooseTable.size() == 1) {
-                            onClickMoveOrdered = false;
-                            receiptToOrdered = "";
-                            listToOrdered = new ArrayList<Ordered>();
-                            lstChooseTable = new HashMap<String, List<Ordered>>();
-                            moveOrderedI.getMenuOrdered();
-                        } else if (lstChooseTable.size() > 1) {
-                            for (Ordered ordered : lstChooseTable.get(receiptToOrdered)) {
-                                moveOrderedI.moveOrdered(ordered, "BtoA", ordered.getQuantity());
-                            }
-                            lstChooseTable.remove(receiptToOrdered);
-                            Map.Entry<String, List<Ordered>> entry = lstChooseTable.entrySet().iterator().next();
-                            receiptToOrdered = entry.getKey();
-                            moveOrderedI.onClickGetMenuToOrdered();
-                        }
+                        confirmDelete();
                     }
                 });
 
@@ -139,6 +126,37 @@ public class FragmentMoveOrdered extends Fragment {
         return view;
     }
 
+    private void confirmDelete(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setMessage("Bạn có muốn chuyển xóa không?");
+        builder.setPositiveButton("Có", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                moveOrderedI.showProgress();
+                if (lstChooseTable.size() == 1) {
+                    onClickMoveOrdered = false;
+                    receiptToOrdered = "";
+                    listToOrdered = new ArrayList<Ordered>();
+                    lstChooseTable = new HashMap<String, List<Ordered>>();
+                    moveOrderedI.getMenuOrdered();
+                } else if (lstChooseTable.size() > 1) {
+                    for (Ordered ordered : lstChooseTable.get(receiptToOrdered)) {
+                        moveOrderedI.moveOrdered(ordered, "BtoA", ordered.getQuantity());
+                    }
+                    lstChooseTable.remove(receiptToOrdered);
+                    Map.Entry<String, List<Ordered>> entry = lstChooseTable.entrySet().iterator().next();
+                    receiptToOrdered = entry.getKey();
+                    moveOrderedI.onClickGetMenuToOrdered();
+                }
+            }
+        });
+        builder.setNegativeButton("Không", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+            }
+        });
+        builder.show();
+    }
     public void toast(String message) {
         Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
     }

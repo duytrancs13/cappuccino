@@ -18,6 +18,10 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -52,7 +56,6 @@ public class MoveOrderActivity extends AppCompatActivity implements MoveOrderedI
 
     public static final String MyPREFERENCES = "capuccino";
     private SharedPreferences sharedPreferences;
-    private MenuTabsPresenterImp menuTabsPresenterImp;
     private String token;
 
     public static ArrayList<Table> listChooseTable = new ArrayList<Table>();
@@ -60,6 +63,9 @@ public class MoveOrderActivity extends AppCompatActivity implements MoveOrderedI
 
     private ProgressDialog dialog;
     private Button syncTransfer, undoTransfer;
+
+    private static final int TIME_DELAY = 2000;
+    private static long back_pressed;
 
 
     @Override
@@ -97,10 +103,46 @@ public class MoveOrderActivity extends AppCompatActivity implements MoveOrderedI
         syncTransfer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                for (final Map.Entry<String, List<Ordered>> item : lstChooseTable.entrySet()) {
-                    Log.v("AAA", lstChooseTable.get(item.getKey()).toString() + "");
+                try {
+                    /*Json Object Source*/
+                    JSONObject jsonObjectItemsSource = new JSONObject();
+                    JSONArray jsonArrayItemsSource = new JSONArray();
+                    for (Ordered ordered : listOrdered) {
+                        JSONObject itemSource = new JSONObject()
+                                .put("itemId", ordered.getItemId())
+                                .put("quantity", ordered.getQuantity());
+                        jsonArrayItemsSource.put(itemSource);
+                    }
+                    jsonObjectItemsSource.put("items", jsonArrayItemsSource);
+
+
+                    /*Json object Destinations*/
+                    JSONArray jsonArrayDestinations = new JSONArray();
+                    for (Map.Entry<String, List<Ordered>> item : lstChooseTable.entrySet()) {
+                        String tableId = item.getKey();
+                        JSONObject itemDestination = new JSONObject()
+                                .put("tableId",tableId);
+
+                        JSONArray jsonArrayItemsDestinations = new JSONArray();
+                        List<Ordered> listToOrdered = item.getValue();
+                        for (Ordered ordered : listToOrdered){
+                            JSONObject jsonObjectItemDestination = new JSONObject()
+                                    .put("itemId", ordered.getItemId())
+                                    .put("quantity", ordered.getQuantity())
+                                    ;
+                            jsonArrayItemsDestinations.put(jsonObjectItemDestination);
+                        }
+                        itemDestination.put("items",jsonArrayItemsDestinations);
+                        jsonArrayDestinations.put(itemDestination);
+                    }
+                    JSONObject object = new JSONObject().put("source", jsonObjectItemsSource)
+                                                        .put("destinations",jsonArrayDestinations);
+                    moveOrderedPresenterImp.syncMoveOrdered(object);
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
+
         });
 
         /*Bắt sự kiện khi người dùng không muốn chuyển món quay lại trạng thái ban đầu*/
@@ -124,13 +166,18 @@ public class MoveOrderActivity extends AppCompatActivity implements MoveOrderedI
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
-            startActivity(new Intent(this, TableActivity.class));
-            onTableActivity = true;
-            onClickMoveOrdered = false;
-            receiptToOrdered = "";
-            listToOrdered = new ArrayList<Ordered>();
-            lstChooseTable = new HashMap<String, List<Ordered>>();
-            finish();
+            if (back_pressed + TIME_DELAY > System.currentTimeMillis()) {
+                startActivity(new Intent(this, TableActivity.class));
+                onTableActivity = true;
+                onClickMoveOrdered = false;
+                receiptToOrdered = "";
+                listToOrdered = new ArrayList<Ordered>();
+                lstChooseTable = new HashMap<String, List<Ordered>>();
+            } else {
+                toast("Chạm 2 lần liên tiếp để thoát");
+            }
+            back_pressed = System.currentTimeMillis();
+
         }
         return super.onOptionsItemSelected(item);
     }
@@ -138,7 +185,12 @@ public class MoveOrderActivity extends AppCompatActivity implements MoveOrderedI
 
     @Override
     public void onBackPressed() {
-        finish();
+        if (back_pressed + TIME_DELAY > System.currentTimeMillis()) {
+            finish();
+        } else {
+            toast("Chạm 2 lần liên tiếp để thoát");
+        }
+        back_pressed = System.currentTimeMillis();
     }
 
     public void toast(String message) {
@@ -221,7 +273,6 @@ public class MoveOrderActivity extends AppCompatActivity implements MoveOrderedI
     }
 
 
-
     /*Khởi tạo các fragment trong 1 activity*/
     @Override
     public void initFragment() {
@@ -244,6 +295,7 @@ public class MoveOrderActivity extends AppCompatActivity implements MoveOrderedI
     public void showProgress() {
         new Progress().execute();
     }
+
     private class Progress extends AsyncTask<Void, Void, Void> {
 
 

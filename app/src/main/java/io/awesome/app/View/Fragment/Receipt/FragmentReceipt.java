@@ -1,5 +1,7 @@
 package io.awesome.app.View.Fragment.Receipt;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -120,7 +122,8 @@ public class FragmentReceipt extends Fragment implements FragmentReceiptView {
             btnReceipt.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    receiptPresenter.updateReceipt(token);
+                    confirmUpdateReceipt();
+
                 }
             });
         }
@@ -218,4 +221,20 @@ public class FragmentReceipt extends Fragment implements FragmentReceiptView {
         return view;
     }
 
+    private void confirmUpdateReceipt(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setMessage("Bạn có muốn thanh toán hóa đơn này không?");
+        builder.setPositiveButton("Có", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                receiptPresenter.updateReceipt(token);
+            }
+        });
+        builder.setNegativeButton("Không", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+            }
+        });
+        builder.show();
+    }
 }
