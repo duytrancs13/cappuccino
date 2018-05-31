@@ -92,15 +92,13 @@ public class MoveOrderedPresenterImp implements MoveOrderedPresenter {
     @Override
     public void syncMoveOrdered(JSONObject object) {
         String url ="https://cafeteria-service.herokuapp.com/api/v1/receipts/"+receiptId;
-        Log.v("AAA",url);
-        Log.v("AAA",token);
-        Log.v("AAA",object.toString());
         RequestQueue queue = Volley.newRequestQueue(context);
         String data= "";
         JsonObjectRequest jsonObjectRequest =new JsonObjectRequest(Request.Method.POST, url, object, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 Log.v("AAA", response.toString());
+                getMenuOrdered();
             }
         }, new Response.ErrorListener() {
             @Override

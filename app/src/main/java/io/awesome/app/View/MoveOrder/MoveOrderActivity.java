@@ -1,7 +1,9 @@
 package io.awesome.app.View.MoveOrder;
 
+import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
@@ -30,7 +32,6 @@ import java.util.Map;
 import io.awesome.app.General.SetFont;
 import io.awesome.app.Model.Ordered;
 import io.awesome.app.Model.Table;
-import io.awesome.app.Presenter.MenuTabs.MenuTabsPresenterImp;
 import io.awesome.app.Presenter.MoveOrdered.MoveOrderedPresenterImp;
 import io.awesome.app.R;
 import io.awesome.app.View.Fragment.MoveOrdered.FragmentMoveFromOrdered;
@@ -103,43 +104,15 @@ public class MoveOrderActivity extends AppCompatActivity implements MoveOrderedI
         syncTransfer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                try {
-                    /*Json Object Source*/
-                    JSONObject jsonObjectItemsSource = new JSONObject();
-                    JSONArray jsonArrayItemsSource = new JSONArray();
-                    for (Ordered ordered : listOrdered) {
-                        JSONObject itemSource = new JSONObject()
-                                .put("itemId", ordered.getItemId())
-                                .put("quantity", ordered.getQuantity());
-                        jsonArrayItemsSource.put(itemSource);
+                if (lstChooseTable.size() == 0) {
+                    toast("Vui lòng chọn bàn để chuyển !!!");
+                } else {
+                    if(checkListChooseTable()){
+                        confirmSyncMoveOrdered();
+                    }else{
+                        toast("Vui lòng chọn món để chuyển !!!");
                     }
-                    jsonObjectItemsSource.put("items", jsonArrayItemsSource);
 
-
-                    /*Json object Destinations*/
-                    JSONArray jsonArrayDestinations = new JSONArray();
-                    for (Map.Entry<String, List<Ordered>> item : lstChooseTable.entrySet()) {
-                        String tableId = item.getKey();
-                        JSONObject itemDestination = new JSONObject()
-                                .put("tableId",tableId);
-
-                        JSONArray jsonArrayItemsDestinations = new JSONArray();
-                        List<Ordered> listToOrdered = item.getValue();
-                        for (Ordered ordered : listToOrdered){
-                            JSONObject jsonObjectItemDestination = new JSONObject()
-                                    .put("itemId", ordered.getItemId())
-                                    .put("quantity", ordered.getQuantity())
-                                    ;
-                            jsonArrayItemsDestinations.put(jsonObjectItemDestination);
-                        }
-                        itemDestination.put("items",jsonArrayItemsDestinations);
-                        jsonArrayDestinations.put(itemDestination);
-                    }
-                    JSONObject object = new JSONObject().put("source", jsonObjectItemsSource)
-                                                        .put("destinations",jsonArrayDestinations);
-                    moveOrderedPresenterImp.syncMoveOrdered(object);
-                } catch (Exception e) {
-                    e.printStackTrace();
                 }
             }
 
@@ -150,12 +123,7 @@ public class MoveOrderActivity extends AppCompatActivity implements MoveOrderedI
         undoTransfer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showProgress();
-                onClickMoveOrdered = false;
-                receiptToOrdered = "";
-                listToOrdered = new ArrayList<Ordered>();
-                lstChooseTable = new HashMap<String, List<Ordered>>();
-                getMenuOrdered();
+                confirmUndoTransfer();
             }
         });
 
@@ -167,18 +135,20 @@ public class MoveOrderActivity extends AppCompatActivity implements MoveOrderedI
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
             if (back_pressed + TIME_DELAY > System.currentTimeMillis()) {
-                startActivity(new Intent(this, TableActivity.class));
                 onTableActivity = true;
                 onClickMoveOrdered = false;
                 receiptToOrdered = "";
                 listToOrdered = new ArrayList<Ordered>();
                 lstChooseTable = new HashMap<String, List<Ordered>>();
+
+                startActivity(new Intent(this, TableActivity.class));
             } else {
                 toast("Chạm 2 lần liên tiếp để thoát");
             }
             back_pressed = System.currentTimeMillis();
 
         }
+
         return super.onOptionsItemSelected(item);
     }
 
@@ -266,6 +236,10 @@ public class MoveOrderActivity extends AppCompatActivity implements MoveOrderedI
 
     @Override
     public void undoAllFragment() {
+        onClickMoveOrdered = false;
+        receiptToOrdered = "";
+        listToOrdered = new ArrayList<Ordered>();
+        lstChooseTable = new HashMap<String, List<Ordered>>();
         getSupportFragmentManager().beginTransaction().replace(R.id.frag_1, new FragmentMoveFromOrdered()).commit();
         getSupportFragmentManager().beginTransaction().replace(R.id.frag_3, new FragmentMoveOrdered()).commit();
         getSupportFragmentManager().beginTransaction().replace(R.id.frag_2, new FragmentMoveToOrdered()).commit();
@@ -315,5 +289,87 @@ public class MoveOrderActivity extends AppCompatActivity implements MoveOrderedI
         }
     }
 
+    private void confirmSyncMoveOrdered(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("Món sẽ được chuyển !!!");
+        builder.setPositiveButton("Có", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                try {
+                    showProgress();
+                        /*Json Object Source*/
+                    JSONObject jsonObjectItemsSource = new JSONObject();
+                    JSONArray jsonArrayItemsSource = new JSONArray();
+                    for (Ordered ordered : listOrdered) {
+                        JSONObject itemSource = new JSONObject()
+                                .put("itemId", ordered.getItemId())
+                                .put("quantity", ordered.getQuantity());
+                        jsonArrayItemsSource.put(itemSource);
+                    }
+                    jsonObjectItemsSource.put("items", jsonArrayItemsSource);
+
+
+                        /*Json object Destinations*/
+                    JSONArray jsonArrayDestinations = new JSONArray();
+                    for (Map.Entry<String, List<Ordered>> item : lstChooseTable.entrySet()) {
+                        String tableId = item.getKey();
+                        JSONObject itemDestination = new JSONObject()
+                                .put("tableId", tableId);
+
+                        JSONArray jsonArrayItemsDestinations = new JSONArray();
+                        List<Ordered> listToOrdered = item.getValue();
+                        for (Ordered ordered : listToOrdered) {
+                            JSONObject jsonObjectItemDestination = new JSONObject()
+                                    .put("itemId", ordered.getItemId())
+                                    .put("quantity", ordered.getQuantity());
+                            jsonArrayItemsDestinations.put(jsonObjectItemDestination);
+                        }
+                        itemDestination.put("items", jsonArrayItemsDestinations);
+                        jsonArrayDestinations.put(itemDestination);
+                    }
+                    JSONObject object = new JSONObject().put("source", jsonObjectItemsSource)
+                            .put("destinations", jsonArrayDestinations);
+                    moveOrderedPresenterImp.syncMoveOrdered(object);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        builder.setNegativeButton("Không", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+            }
+        });
+        builder.show();
+    }
+
+    private void confirmUndoTransfer(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("Các món chuyển sẽ được trả lại bàn cũ");
+        builder.setPositiveButton("Có", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                showProgress();
+                getMenuOrdered();
+            }
+        });
+        builder.setNegativeButton("Không", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+            }
+        });
+        builder.show();
+    }
+
+    private boolean checkListChooseTable(){
+        for (Map.Entry<String, List<Ordered>> item : lstChooseTable.entrySet()) {
+            if(item.getValue().size() != 0 ){
+                return true;
+            }else{
+                continue;
+            }
+        }
+        return false;
+    }
 
 }

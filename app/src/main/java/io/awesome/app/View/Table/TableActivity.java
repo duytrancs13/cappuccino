@@ -54,6 +54,7 @@ import io.awesome.app.View.Login.LoginActivity;
 import io.awesome.app.View.MenuTabs.MenuTabsActivity;
 import io.awesome.app.R;
 import io.awesome.app.View.MoveOrder.MoveOrderActivity;
+import io.awesome.app.View.Reserve.ReserveActivity;
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
@@ -61,11 +62,7 @@ import static io.awesome.app.View.Main.MainActivity.listTable;
 import static io.awesome.app.View.Main.MainActivity.onTableActivity;
 import static io.awesome.app.View.Main.MainActivity.receiptId;
 
-public class TableActivity extends AppCompatActivity implements
-        NavigationView.OnNavigationItemSelectedListener,TableView,
-        DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener
-
-{
+public class TableActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,TableView {
 
     private DrawerLayout drawer;
     public static final String MyPREFERENCES = "capuccino" ;
@@ -157,7 +154,6 @@ public class TableActivity extends AppCompatActivity implements
             showTable();
         }
 
-
         dialog.dismiss();
 
 
@@ -184,8 +180,8 @@ public class TableActivity extends AppCompatActivity implements
             RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(DrawerLayout.LayoutParams.WRAP_CONTENT, DrawerLayout.LayoutParams.WRAP_CONTENT);
 
             //Hiển thị vị trí của bàn.
-            int positionX = itemTable.getX()*100;
-            int positionY = itemTable.getY()*100;
+            int positionX = itemTable.getX()*150;
+            int positionY = itemTable.getY()*150;
             layoutParams.leftMargin = positionX;
             layoutParams.topMargin = positionY;
 
@@ -207,7 +203,7 @@ public class TableActivity extends AppCompatActivity implements
                     @Override
                     public void onClick(View view) {
                         /*popupTableFree(view,table,itemTable,timer);*/
-                        popupTableFree(view,idTable, position);
+                        popupTableFree(view,idTable, position, table);
                     }
                 });
             }
@@ -239,15 +235,15 @@ public class TableActivity extends AppCompatActivity implements
             //tablePresenter.dragTable(linearLayout);
 
             // Hiển thị thời gian nhưng bị VISIBLE.
-            /*final TextView timer = new TextView(this);
+            final TextView timer = new TextView(this);
             timer.setId(i);
-            timer.setVisibility(View.VISIBLE);
+            timer.setVisibility(View.INVISIBLE);
             timer.setText("00:00:00");
             RelativeLayout.LayoutParams layoutTimer = new RelativeLayout.LayoutParams(DrawerLayout.LayoutParams.WRAP_CONTENT, DrawerLayout.LayoutParams.WRAP_CONTENT);
             layoutTimer.addRule(RelativeLayout.BELOW,nameTable.getId());
 
             timer.setLayoutParams(layoutTimer);
-            linearLayout.addView(timer);*/
+            linearLayout.addView(timer);
 
             // Di chuyển bàn
             //tablePresenter.dragTable(linearLayout);
@@ -329,7 +325,7 @@ public class TableActivity extends AppCompatActivity implements
 
     // Hàm xử lí sự kiện khi gọi bàn ở trạng thái rỗng.
     /*void popupTableFree(View v,final Button btnTable, final Table table, final TextView timer)*/
-    void popupTableFree(View v, final String idTable, final int position){
+    void popupTableFree(View v, final String idTable, final int position, final Button table){
         final CharSequence[] items = {"Đặt món", "Đặt chỗ"};
 
         AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
@@ -365,19 +361,13 @@ public class TableActivity extends AppCompatActivity implements
 
                 // Khi chọn vào item "đặt chỗ".
                 else if(item == 1){
-                    toast("dat cho");
-                    Calendar c = Calendar.getInstance();
-                    year = c.get(Calendar.YEAR);
-                    month = c.get(Calendar.MONTH);
-                    day = c.get(Calendar.DAY_OF_MONTH);
+                    /*intent = new Intent(getBaseContext(), ReserveActivity.class);
+                    startActivity(intent);*/
 
-                    DatePickerDialog datePickerDialog = new DatePickerDialog(TableActivity.this, TableActivity.this, year, month, day);
-                    datePickerDialog.show();
-                    /*intent = new Intent(TableActivity.this, TimerActivity.class);
-                    startActivity(intent);
 
                     new CountDownTimer(3000, 1000) {
-                        TextView textTimer = (TextView) findViewById(R.id.timer);
+                        //TextView textTimer = (TextView) findViewById(R.id.timer);
+                        TextView textTimer = (TextView) findViewById(position);
                         public void onTick(long millisUntilFinished) {
                             table.setBackgroundResource(R.drawable.ic_table_busy);
                             table.setEnabled(false);
@@ -391,7 +381,7 @@ public class TableActivity extends AppCompatActivity implements
                             textTimer.setVisibility(View.INVISIBLE);
                             table.setEnabled(true);
                         }
-                    }.start();*/
+                    }.start();
                 }
             }
         });
@@ -588,30 +578,9 @@ public class TableActivity extends AppCompatActivity implements
         }
     }
 
-    @Override
-    public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
-        yearFinal = i;
-        monthFinal = i1+1;
-        dayFinal = i2;
-
-        Calendar c = Calendar.getInstance();
-        hour = c.get(Calendar.HOUR);
-        minute = c.get(Calendar.MINUTE);
-
-        TimePickerDialog timePickerDialog = new TimePickerDialog(TableActivity.this, TableActivity.this, hour, minute, true);
-        timePickerDialog.show();
 
 
-    }
 
-    @Override
-    public void onTimeSet(TimePicker timePicker, int i, int i1) {
-        hourFinal = i;
-        minuteFinal = i1;
-        Log.v("AAA", "year:"+yearFinal+"-month:"+monthFinal+"-day:"+dayFinal);
-        Log.v("AAA", "hour:"+hourFinal+"-minute:"+minuteFinal);
-
-    }
 
 
 

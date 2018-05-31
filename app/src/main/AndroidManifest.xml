@@ -3,8 +3,8 @@
     package="io.awesome.app">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.BLUETOOTH"/>
-    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
 
     <application
         android:allowBackup="true"
@@ -39,12 +39,12 @@
                     android:scheme="https" />
             </intent-filter>
         </activity>
-        <activity android:name=".View.Table.TimerActivity" />
         <activity android:name=".View.ScaleDetectorTestActivity" />
         <activity android:name=".View.MoveOrderActivity" />
         <activity android:name=".View.MoveOrder.MoveOrderActivity" />
         <activity android:name=".View.ChooseTableMoveActivity" />
-        <activity android:name=".View.Bluetooth.BluetoothActivity"></activity>
+        <activity android:name=".View.Bluetooth.BluetoothActivity" />
+        <activity android:name=".View.Reserve.ReserveActivity"></activity>
     </application>
 
 </manifest>
