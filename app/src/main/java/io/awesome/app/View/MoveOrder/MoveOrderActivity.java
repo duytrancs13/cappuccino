@@ -135,13 +135,7 @@ public class MoveOrderActivity extends AppCompatActivity implements MoveOrderedI
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
             if (back_pressed + TIME_DELAY > System.currentTimeMillis()) {
-                onTableActivity = true;
-                onClickMoveOrdered = false;
-                receiptToOrdered = "";
-                listToOrdered = new ArrayList<Ordered>();
-                lstChooseTable = new HashMap<String, List<Ordered>>();
-
-                startActivity(new Intent(this, TableActivity.class));
+                gotoBackTableActivity();
             } else {
                 toast("Chạm 2 lần liên tiếp để thoát");
             }
@@ -244,6 +238,17 @@ public class MoveOrderActivity extends AppCompatActivity implements MoveOrderedI
         getSupportFragmentManager().beginTransaction().replace(R.id.frag_3, new FragmentMoveOrdered()).commit();
         getSupportFragmentManager().beginTransaction().replace(R.id.frag_2, new FragmentMoveToOrdered()).commit();
         dialog.dismiss();
+    }
+
+    @Override
+    public void gotoBackTableActivity() {
+        onTableActivity = true;
+        onClickMoveOrdered = false;
+        receiptToOrdered = "";
+        listToOrdered = new ArrayList<Ordered>();
+        lstChooseTable = new HashMap<String, List<Ordered>>();
+
+        startActivity(new Intent(this, TableActivity.class));
     }
 
 
@@ -371,5 +376,7 @@ public class MoveOrderActivity extends AppCompatActivity implements MoveOrderedI
         }
         return false;
     }
+
+
 
 }

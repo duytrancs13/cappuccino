@@ -9,5 +9,5 @@ import io.awesome.app.Model.Category;
  */
 
 public interface FragmentCategoryView {
-    void showMenuCategory(List<Category> listCategory);
+    void showMenuCategory();
 }

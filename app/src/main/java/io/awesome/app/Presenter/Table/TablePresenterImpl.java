@@ -87,7 +87,7 @@ public class TablePresenterImpl implements TablePresenter {
 
     @Override
     public void dragTable(LinearLayout linearLayout) {
-        linearLayout.setOnTouchListener(new OnDragTouchListener(linearLayout));
+            linearLayout.setOnTouchListener(new OnDragTouchListener(linearLayout));
     }
 
     // Gọi API cập nhật receipt cần có 2 param là idTable và token

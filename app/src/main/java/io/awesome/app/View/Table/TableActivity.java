@@ -34,6 +34,7 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.otaliastudios.zoom.ZoomLayout;
 import com.pusher.client.Pusher;
 import com.pusher.client.PusherOptions;
 import com.pusher.client.channel.Channel;
@@ -96,6 +97,8 @@ public class TableActivity extends AppCompatActivity implements NavigationView.O
     private int day, month, year, hour, minute;
     private int dayFinal, monthFinal, yearFinal, hourFinal, minuteFinal;
 
+    private ZoomLayout zoomLayout;
+
 
 
 
@@ -132,6 +135,9 @@ public class TableActivity extends AppCompatActivity implements NavigationView.O
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         assert navigationView != null;
         navigationView.setNavigationItemSelectedListener(this);
+
+        zoomLayout = (ZoomLayout) findViewById(R.id.zoom_layout);
+        zoomLayout.setVisibility(View.VISIBLE);
 
         root = (ViewGroup) findViewById(R.id.root);
 
@@ -180,8 +186,8 @@ public class TableActivity extends AppCompatActivity implements NavigationView.O
             RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(DrawerLayout.LayoutParams.WRAP_CONTENT, DrawerLayout.LayoutParams.WRAP_CONTENT);
 
             //Hiển thị vị trí của bàn.
-            int positionX = itemTable.getX()*150;
-            int positionY = itemTable.getY()*150;
+            int positionX = itemTable.getX()*100;
+            int positionY = itemTable.getY()*100;
             layoutParams.leftMargin = positionX;
             layoutParams.topMargin = positionY;
 
@@ -246,7 +252,7 @@ public class TableActivity extends AppCompatActivity implements NavigationView.O
             linearLayout.addView(timer);
 
             // Di chuyển bàn
-            //tablePresenter.dragTable(linearLayout);
+//            tablePresenter.dragTable(linearLayout);
 
             // Bắt sự kiện trạng thái của từng bàn.
             /*table.setOnClickListener(new View.OnClickListener() {
@@ -361,11 +367,11 @@ public class TableActivity extends AppCompatActivity implements NavigationView.O
 
                 // Khi chọn vào item "đặt chỗ".
                 else if(item == 1){
-                    /*intent = new Intent(getBaseContext(), ReserveActivity.class);
-                    startActivity(intent);*/
+                    intent = new Intent(getBaseContext(), ReserveActivity.class);
+                    startActivity(intent);
 
 
-                    new CountDownTimer(3000, 1000) {
+                    /*new CountDownTimer(3000, 1000) {
                         //TextView textTimer = (TextView) findViewById(R.id.timer);
                         TextView textTimer = (TextView) findViewById(position);
                         public void onTick(long millisUntilFinished) {
@@ -381,7 +387,7 @@ public class TableActivity extends AppCompatActivity implements NavigationView.O
                             textTimer.setVisibility(View.INVISIBLE);
                             table.setEnabled(true);
                         }
-                    }.start();
+                    }.start();*/
                 }
             }
         });

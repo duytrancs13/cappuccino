@@ -1,16 +1,22 @@
 package io.awesome.app.Presenter.ForgotPassword;
 
 import android.content.Context;
+import android.util.Log;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import io.awesome.app.View.ForgotPassword.*;
 
@@ -64,23 +70,23 @@ public class ForgotPasswordPresenterImpl implements ForgotPasswordPresenter {
     // Lỗi tài khoản  hiển thị thông báo
     // Hoặc lỗi server hiển thị thông báo
     @Override
-    public void forgot(String email) {
+    public void forgot(final String email) {
 
-        String url = "https://cappuccino-hello.herokuapp.com/api/forgot?email="+email;
+        String url = "https://cafeteria-service.herokuapp.com/api/v1/users/forgot";
         RequestQueue queue = Volley.newRequestQueue(context);
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 try {
                     JSONObject jsonObject = new JSONObject(response);
-                    int flag = jsonObject.getInt("flag");
-                    if(flag == 1){
+                    String mgs = jsonObject.getString("message");
+                    if(mgs.equals("Successful.")){
                         forgotPasswordActivity.alertMessage("Thành công", "Vui lòng xác nhận Email",200);
-                    }else if(flag == 0){
+                    }else{
                         forgotPasswordActivity.alertMessage("Lỗi tài khoản", "Email chưa được đăng kí !!!", 500);
                     }
 
-                } catch (JSONException e) {
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
@@ -89,8 +95,49 @@ public class ForgotPasswordPresenterImpl implements ForgotPasswordPresenter {
             public void onErrorResponse(VolleyError error) {
                 forgotPasswordActivity.alertMessage("Lỗi server", "Vui lòng thử lại !!!", 500);
             }
-        });
-        queue.add(stringRequest);
+        }){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> headers = new HashMap<String, String>();
+                headers.put("Content-Type", "application/x-www-form-urlencoded");
+                return headers;
+            }
 
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("email", email);
+                return params;
+            }
+        };
+        queue.add(stringRequest);
+        /*String url = "https://cafeteria-service.herokuapp.com/api/v1/users/forgot";
+        RequestQueue queue = Volley.newRequestQueue(context);
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                Log.v("AAA", response.toString());
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.v("AAA", error.toString());
+            }
+        }){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> headers = new HashMap<String, String>();
+                headers.put("Content-Type", "application/x-www-form-urlencoded");
+                return headers;
+            }
+
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("email", email);
+                return params;
+            }
+        };
+        queue.add(jsonObjectRequest);*/
     }
 }

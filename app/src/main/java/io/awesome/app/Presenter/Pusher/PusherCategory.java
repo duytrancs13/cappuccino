@@ -1,5 +1,8 @@
 package io.awesome.app.Presenter.Pusher;
 
+import android.content.Context;
+import android.util.Log;
+
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.pusher.client.Pusher;
@@ -10,8 +13,8 @@ import com.pusher.client.channel.SubscriptionEventListener;
 import java.util.List;
 
 import io.awesome.app.Model.Category;
-import io.awesome.app.Model.Menu;
-
+import io.awesome.app.View.Fragment.Category.FragmentCategory;
+//import static io.awesome.app.View.Fragment.Category.FragmentCategory.categoryAdapter;
 import static io.awesome.app.View.Main.MainActivity.listCategory;
 import static io.awesome.app.View.Main.MainActivity.listMenu;
 
@@ -25,7 +28,12 @@ public class PusherCategory {
     private static final String CHANEL_NAME = "categories";
     private static final String EVENT_NAME = "all-categories";
 
-    public static void subcribe(){
+    private FragmentCategory fragmentCategory;
+    public PusherCategory(FragmentCategory fragmentCategory) {
+        this.fragmentCategory = fragmentCategory;
+    }
+
+    public void subcribe(){
 
         PusherOptions options = new PusherOptions();
 
@@ -35,12 +43,14 @@ public class PusherCategory {
 
         Channel channel = pusher.subscribe(CHANEL_NAME);
 
+
         channel.bind(EVENT_NAME, new SubscriptionEventListener() {
             @Override
             public void onEvent(String channel, String event, String data) {
                 Gson gson = new Gson();
                 TypeToken<List<Category>> token = new TypeToken<List<Category>>() {};
                 listCategory = gson.fromJson(data, token.getType());
+                fragmentCategory.showMenuCategory();
             }
         });
         pusher.connect();

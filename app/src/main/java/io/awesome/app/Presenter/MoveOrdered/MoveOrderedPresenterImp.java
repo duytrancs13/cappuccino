@@ -7,10 +7,12 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.HurlStack;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
@@ -93,12 +95,12 @@ public class MoveOrderedPresenterImp implements MoveOrderedPresenter {
     public void syncMoveOrdered(JSONObject object) {
         String url ="https://cafeteria-service.herokuapp.com/api/v1/receipts/"+receiptId;
         RequestQueue queue = Volley.newRequestQueue(context);
-        String data= "";
         JsonObjectRequest jsonObjectRequest =new JsonObjectRequest(Request.Method.POST, url, object, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 Log.v("AAA", response.toString());
-                getMenuOrdered();
+                //getMenuOrdered();
+                orderedView.gotoBackTableActivity();
             }
         }, new Response.ErrorListener() {
             @Override
@@ -114,6 +116,10 @@ public class MoveOrderedPresenterImp implements MoveOrderedPresenter {
                 return headers;
             }
         };
+        jsonObjectRequest.setRetryPolicy(new DefaultRetryPolicy(
+                DefaultRetryPolicy.DEFAULT_TIMEOUT_MS * 2,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         queue.add(jsonObjectRequest);
     }
 

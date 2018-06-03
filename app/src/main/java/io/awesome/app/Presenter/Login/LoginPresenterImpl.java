@@ -91,6 +91,9 @@ public class LoginPresenterImpl implements LoginPresenter {
     @Override
     public void login(final String email, final String password) {
         String url = "https://cafeteria-service.herokuapp.com/api/v1/users/login";
+        Log.v("AAA", email);
+        Log.v("AAA", password);
+
         RequestQueue queue = Volley.newRequestQueue(context);
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
 
@@ -111,6 +114,13 @@ public class LoginPresenterImpl implements LoginPresenter {
                 viewLoginActivity.alertMessage("Lỗi server", "Vui lòng thử lại !!!", 500);
             }
         }){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> headers = new HashMap<String, String>();
+                headers.put("Content-Type", "application/x-www-form-urlencoded");
+                return headers;
+            }
+
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String,String> params = new HashMap<>();

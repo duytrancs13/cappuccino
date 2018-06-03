@@ -75,7 +75,7 @@
                         android:layout_height="match_parent"
                         android:inputType="textEmailAddress"
                         android:hint="EMAIL"
-                        android:text="admin@cafeteria.com"
+                        android:text="td010691@gmail.com"
                         android:textSize="14dp"
                         android:background="@color/bgrEdittext"
                         android:drawableLeft="@drawable/ic_email"
