@@ -25,6 +25,7 @@ import java.util.List;
 import java.util.Map;
 
 import io.awesome.app.Model.Ordered;
+import io.awesome.app.Model.Table;
 import io.awesome.app.R;
 import io.awesome.app.View.ChooseTableMoveActivity;
 import io.awesome.app.View.MoveOrder.MoveOrderedView;
@@ -77,7 +78,14 @@ public class FragmentMoveOrdered extends Fragment {
 
                 /*Set Button*/
                 final Button buttonToOrdered = new Button(getContext());
-                buttonToOrdered.setText(listTable.get(position).getName());
+                for(Table table: listTable){
+                    if(table.getId().equals(item.getKey())){
+                        buttonToOrdered.setText(table.getName());
+                    }else{
+                        continue;
+                    }
+                }
+
                 if (item.getKey().equals(receiptToOrdered)) {
                     buttonToOrdered.setBackgroundResource(R.drawable.buttonchoosetransfer);
                 } else {

@@ -10,6 +10,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.gson.Gson;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -17,7 +18,10 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
+import io.awesome.app.Model.Account;
 import io.awesome.app.View.Login.LoginView;
+
+import static io.awesome.app.View.Main.MainActivity.account;
 
 /**
  * Created by sung on 10/11/2017.
@@ -91,9 +95,6 @@ public class LoginPresenterImpl implements LoginPresenter {
     @Override
     public void login(final String email, final String password) {
         String url = "https://cafeteria-service.herokuapp.com/api/v1/users/login";
-        Log.v("AAA", email);
-        Log.v("AAA", password);
-
         RequestQueue queue = Volley.newRequestQueue(context);
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
 
@@ -102,8 +103,9 @@ public class LoginPresenterImpl implements LoginPresenter {
                 try {
                     JSONObject jsonObject = new JSONObject(response);
                     String token = jsonObject.getString("token");
+                    Gson gson = new Gson();
+                    account = gson.fromJson(jsonObject.toString(), Account.class);
                     viewLoginActivity.loginSuccessful(token);
-                    // Gia khong thanh cong
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }

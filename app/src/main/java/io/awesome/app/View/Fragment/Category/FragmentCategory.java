@@ -2,6 +2,8 @@ package io.awesome.app.View.Fragment.Category;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -19,6 +21,9 @@ import com.pusher.client.PusherOptions;
 import com.pusher.client.channel.Channel;
 import com.pusher.client.channel.SubscriptionEventListener;
 
+import org.json.JSONObject;
+
+import java.util.ArrayList;
 import java.util.List;
 
 import io.awesome.app.Presenter.Category.CategoryPresenterImpl;
@@ -63,14 +68,16 @@ public class FragmentCategory extends Fragment implements FragmentCategoryView{
 
         categoryPresenter = new CategoryPresenterImpl(view.getContext(),this);
 
-        categoryAdapter = new CustomCategoryAdapter(this.getContext(),listCategory);
+        categoryAdapter = new CustomCategoryAdapter(getContext(), listCategory);
         lvCategory.setAdapter(categoryAdapter);
 
 
 
 
+
         if(onSubcribeCategory){
-            //categoryAdapter = new CustomCategoryAdapter(this.getContext(),listCategory);
+
+            onSubcribeCategory = false;
 
 
             PusherOptions options = new PusherOptions();
@@ -84,19 +91,28 @@ public class FragmentCategory extends Fragment implements FragmentCategoryView{
 
             channel.bind(EVENT_NAME, new SubscriptionEventListener() {
                 @Override
-                public void onEvent(String channel, String event, String data) {
-                    onSubcribeCategory = false;
-                    Gson gson = new Gson();
-                    TypeToken<List<Category>> token = new TypeToken<List<Category>>() {};
-                    listCategory = gson.fromJson(data, token.getType());
-                    Log.v("AAA", listCategory.get(0).getName());
+                public void onEvent(String channel, String event, final String data) {
+
+                    new Handler(Looper.getMainLooper()).post(new Runnable() {
+                        @Override
+                        public void run() {
+                            // this will run in the main thread
+
+                            Gson gson = new Gson();
+                            TypeToken<List<Category>> token = new TypeToken<List<Category>>() {};
+                            listCategory = gson.fromJson(data, token.getType());
+                            categoryAdapter.realTimeCategory(listCategory);
+                        }
+                    });
+
+
                 }
             });
             pusher.connect();
-
+        }else{
+            categoryPresenter.loadMenuCategory(token);
         }
 
-        categoryPresenter.loadMenuCategory(token);
 
         return view;
     }
@@ -108,11 +124,12 @@ public class FragmentCategory extends Fragment implements FragmentCategoryView{
 
 
 
+
+
     @Override
     public void showMenuCategory() {
 
-        categoryAdapter.notifyDataSetChanged();
-
+        categoryAdapter.realTimeCategory(listCategory);
         lvCategory.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {

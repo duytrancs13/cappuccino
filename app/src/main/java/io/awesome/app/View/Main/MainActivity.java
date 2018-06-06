@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.awesome.app.General.SetFont;
+import io.awesome.app.Model.Account;
 import io.awesome.app.Model.Category;
 import io.awesome.app.Model.Menu;
 import io.awesome.app.Model.Table;
@@ -50,6 +51,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public static String receiptId = "";
     public static String receiptToOrdered = "";
     public static BluetoothSocket bluetoothSocket = null;
+
+    public static Account account;
 
 
 //    private PusherTable pusherTable;

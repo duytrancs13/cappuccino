@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -60,7 +61,9 @@ public class CustomChooseTableMoveAdapter extends BaseAdapter {
             convertView = layoutInflater.inflate(R.layout.layout_listview_choosetablemove,null);
             viewHolder = new ViewHolder();
             viewHolder.llItemChooseTableMove = (LinearLayout) convertView.findViewById(R.id.llItemChooseTableMove);
-            viewHolder.tvChooseTableMove = (TextView) convertView.findViewById(R.id.tvChooseTableMove);
+            viewHolder.btnStatusTable = (Button) convertView.findViewById(R.id.btnStatusTable);
+            viewHolder.tvNameTable = (TextView) convertView.findViewById(R.id.tvNameTable);
+            viewHolder.tvTotalMoney = (TextView) convertView.findViewById(R.id.tvTotalMoney);
 
             convertView.setTag(viewHolder);
         }else{
@@ -80,7 +83,13 @@ public class CustomChooseTableMoveAdapter extends BaseAdapter {
                 viewHolder.llItemChooseTableMove.setVisibility(View.VISIBLE);
             }
         }
-        viewHolder.tvChooseTableMove.setText(table.getName());
+        if(table.getStatus().equals("idle")){
+            viewHolder.btnStatusTable.setBackgroundResource(R.drawable.ic_table_idle);
+        }else if(table.getStatus().equals("busy")){
+            viewHolder.btnStatusTable.setBackgroundResource(R.drawable.ic_table_busy);
+        }
+        viewHolder.tvNameTable.setText(table.getName());
+        viewHolder.tvTotalMoney.setText("0");
         return convertView;
     }
 
@@ -95,6 +104,8 @@ public class CustomChooseTableMoveAdapter extends BaseAdapter {
 
     static class ViewHolder extends FragmentActivity {
         LinearLayout llItemChooseTableMove;
-        TextView tvChooseTableMove;
+        Button btnStatusTable;
+        TextView tvNameTable;
+        TextView tvTotalMoney;
     }
 }

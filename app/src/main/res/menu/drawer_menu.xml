@@ -3,12 +3,12 @@
     <item
         android:id="@+id/profile"
         android:icon="@drawable/ic_profile"
-        android:title="Thông tin cá nhân" />
+        android:title="Thông tin tài khoản" />
 
     <item
         android:id="@+id/connectBluetooth"
         android:icon="@drawable/ic_bluetooth"
-        android:title="Demo kết nối bluetooth" />
+        android:title="Kết nối bluetooth" />
 
     <item
         android:id="@+id/logout"

@@ -5,7 +5,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
 import io.awesome.app.View.Fragment.Menu.FragmentMenu;
-import io.awesome.app.View.Fragment.Fragment5;
 import io.awesome.app.View.Fragment.RootFragment;
 
 

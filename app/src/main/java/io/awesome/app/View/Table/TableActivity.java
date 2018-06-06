@@ -45,10 +45,12 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import dalvik.annotation.TestTarget;
 import io.awesome.app.Model.Ordered;
 import io.awesome.app.Model.Table;
 import io.awesome.app.Presenter.Pusher.PusherTable;
 import io.awesome.app.Presenter.Table.TablePresenterImpl;
+import io.awesome.app.View.Account.AccountActivity;
 import io.awesome.app.View.Bluetooth.BluetoothActivity;
 import io.awesome.app.View.Fragment.Menu.FragmentMenu;
 import io.awesome.app.View.Login.LoginActivity;
@@ -137,6 +139,8 @@ public class TableActivity extends AppCompatActivity implements NavigationView.O
         navigationView.setNavigationItemSelectedListener(this);
 
         zoomLayout = (ZoomLayout) findViewById(R.id.zoom_layout);
+
+
         zoomLayout.setVisibility(View.VISIBLE);
 
         root = (ViewGroup) findViewById(R.id.root);
@@ -208,7 +212,6 @@ public class TableActivity extends AppCompatActivity implements NavigationView.O
                 table.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        /*popupTableFree(view,table,itemTable,timer);*/
                         popupTableFree(view,idTable, position, table);
                     }
                 });
@@ -317,7 +320,8 @@ public class TableActivity extends AppCompatActivity implements NavigationView.O
         int id = item.getItemId();
 
         if (id == R.id.profile) {
-            toast("profile ");
+            intent = new Intent(this, AccountActivity.class);
+            startActivity(intent);
 
         }else if(id == R.id.connectBluetooth){
             intent = new Intent(TableActivity.this, BluetoothActivity.class);
@@ -335,9 +339,9 @@ public class TableActivity extends AppCompatActivity implements NavigationView.O
         final CharSequence[] items = {"Đặt món", "Đặt chỗ"};
 
         AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
-        builder.setIcon(R.drawable.ic_option);
+        builder.setIcon(R.drawable.ic_table_idle);
 
-        builder.setTitle("Tùy chọn");
+        builder.setTitle(listTable.get(position).getName());
 
         builder.setItems(items, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int item) {
@@ -401,8 +405,8 @@ public class TableActivity extends AppCompatActivity implements NavigationView.O
         final CharSequence[] items = {"Đặt thêm món","Chuyển bàn", "Đặt chỗ","Thanh toán"};
 
         AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
-        builder.setIcon(R.drawable.ic_option);
-        builder.setTitle("Tùy chọn");
+        builder.setIcon(R.drawable.ic_table_busy);
+        builder.setTitle(nameTable);
         builder.setItems(items, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int position) {
 
@@ -583,6 +587,44 @@ public class TableActivity extends AppCompatActivity implements NavigationView.O
             return null;
         }
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

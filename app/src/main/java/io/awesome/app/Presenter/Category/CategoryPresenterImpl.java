@@ -45,7 +45,7 @@ public class CategoryPresenterImpl implements CategoryPresenter {
             @Override
             public void onResponse(JSONObject response) {
 
-               //fragmentCategory.showMenuCategory();
+               fragmentCategory.showMenuCategory();
             }
         }, new Response.ErrorListener() {
             @Override

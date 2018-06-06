@@ -13,6 +13,7 @@ import com.pusher.client.channel.SubscriptionEventListener;
 import java.util.List;
 
 import io.awesome.app.Model.Category;
+import io.awesome.app.View.Adapter.CustomCategoryAdapter;
 import io.awesome.app.View.Fragment.Category.FragmentCategory;
 //import static io.awesome.app.View.Fragment.Category.FragmentCategory.categoryAdapter;
 import static io.awesome.app.View.Main.MainActivity.listCategory;
@@ -28,9 +29,9 @@ public class PusherCategory {
     private static final String CHANEL_NAME = "categories";
     private static final String EVENT_NAME = "all-categories";
 
-    private FragmentCategory fragmentCategory;
-    public PusherCategory(FragmentCategory fragmentCategory) {
-        this.fragmentCategory = fragmentCategory;
+    private CustomCategoryAdapter customCategoryAdapter;
+    public PusherCategory(CustomCategoryAdapter customCategoryAdapter) {
+        this.customCategoryAdapter = customCategoryAdapter;
     }
 
     public void subcribe(){
@@ -50,7 +51,7 @@ public class PusherCategory {
                 Gson gson = new Gson();
                 TypeToken<List<Category>> token = new TypeToken<List<Category>>() {};
                 listCategory = gson.fromJson(data, token.getType());
-                fragmentCategory.showMenuCategory();
+                customCategoryAdapter.realTimeCategory(listCategory);
             }
         });
         pusher.connect();

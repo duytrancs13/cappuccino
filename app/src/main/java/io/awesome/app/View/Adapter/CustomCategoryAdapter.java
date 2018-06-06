@@ -3,6 +3,7 @@ package io.awesome.app.View.Adapter;
 import android.content.Context;
 import android.graphics.Typeface;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -83,6 +84,12 @@ public class CustomCategoryAdapter extends BaseAdapter {
 
 
         return convertView;
+    }
+
+    public void realTimeCategory(List<Category> lstC) {
+        this.categoryList = lstC;
+        Log.v("AAA", lstC.get(0).getName()+"duy");
+        notifyDataSetChanged();
     }
 
 

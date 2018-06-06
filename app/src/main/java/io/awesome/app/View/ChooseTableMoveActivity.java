@@ -76,13 +76,7 @@ public class ChooseTableMoveActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
                 Intent intent = new Intent(getBaseContext(), MoveOrderActivity.class);
                 intent.putExtra("positionTable", position);
-                /*if(listTable.get(position).getReceiptId().length()==0){
-                    receiptToOrdered = "tableId"+listTable.get(position).getId();
-                    lstChooseTable.put("tableId"+listTable.get(position).getId(),new ArrayList<Ordered>());
-                }else {
-                    receiptToOrdered = listTable.get(position).getReceiptId();
-                    lstChooseTable.put(listTable.get(position).getReceiptId(), new ArrayList<Ordered>());
-                }*/
+
                 receiptToOrdered = listTable.get(position).getId();
                 lstChooseTable.put(listTable.get(position).getId(), new ArrayList<Ordered>());
                 startActivity(intent);
