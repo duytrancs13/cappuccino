@@ -19,6 +19,7 @@ import android.os.Bundle;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.MenuItem;
@@ -202,6 +203,7 @@ public class TableActivity extends AppCompatActivity implements NavigationView.O
 
             // Kiểm tra trạng thái của từng bàn
             final Button table = new Button(this);
+            table.setLayoutParams(new LinearLayout.LayoutParams(75, 75));
             final int position = i;
 
             // Bàn màu xanh là bàn ở trạng thái rỗng
@@ -234,6 +236,7 @@ public class TableActivity extends AppCompatActivity implements NavigationView.O
             TextView nameTable = new TextView(this);
             nameTable.setId(i);
             nameTable.setText(itemTable.getName());
+            nameTable.setTextSize(TypedValue.COMPLEX_UNIT_SP, 9f);
             RelativeLayout.LayoutParams layoutNameTable = new RelativeLayout.LayoutParams(DrawerLayout.LayoutParams.WRAP_CONTENT, DrawerLayout.LayoutParams.WRAP_CONTENT);
 
             layoutNameTable.addRule(RelativeLayout.BELOW,table.getId());
