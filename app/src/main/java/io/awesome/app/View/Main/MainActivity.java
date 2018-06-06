@@ -12,6 +12,8 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -67,6 +69,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         // Để xác thực người dùng đã đăng nhập hay chưa. Kiểm tra token
         SharedPreferences prefs = getSharedPreferences(MyPREFERENCES, MODE_PRIVATE);
         String token = prefs.getString("token", "");
+        String objectAccount =  prefs.getString("objectAccount", "");
 
 //        pusherTable = new PusherTable(TableActivity.class);
 //
@@ -76,6 +79,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         // Nếu token còn tồn tại thì chuyển người dùng thẳng đến màn hình đặt bàn không thì thôi
         if( !token.equals("") ) {
+            Gson gson = new Gson();
+            account = gson.fromJson(objectAccount.toString(), Account.class);
             Intent intent = new Intent(MainActivity.this, TableActivity.class);
             startActivity(intent);
         }

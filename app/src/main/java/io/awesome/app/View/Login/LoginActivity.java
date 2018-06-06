@@ -19,9 +19,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.tapadoo.alerter.Alerter;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import io.awesome.app.General.SetFont;
+import io.awesome.app.Model.Account;
 import io.awesome.app.Presenter.Login.LoginPresenterImpl;
 import io.awesome.app.R;
 import io.awesome.app.View.CustomEditText.CustomEditTextEmailTextWatcher;
@@ -29,6 +34,7 @@ import io.awesome.app.View.CustomEditText.CustomEditTextPWTextWatcher;
 import io.awesome.app.View.Main.MainActivity;
 import io.awesome.app.View.Table.TableActivity;
 import io.awesome.app.View.ForgotPassword.ForgotPasswordActivity;
+import static io.awesome.app.View.Main.MainActivity.account;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener, LoginView {
 
@@ -142,8 +148,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     // Khi login thành công. Trả về token và gán vào biến token bằng SharedPreferences để sử dụng trong toàn bộ app.
     @Override
-    public void loginSuccessful(String token){
-        dialog.dismiss();
+    public void loginSuccessful(String objectAccount){
+
 
         editEmailLogin.setText("");
         clearLogin.setVisibility(View.GONE);
@@ -151,12 +157,27 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         editPwLogin.setText("");
         visibilityLoginPW.setVisibility(View.GONE);
 
-        sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedpreferences.edit();
+        try {
+            JSONObject jsonObject = new JSONObject(objectAccount);
+            String token = jsonObject.getString("token");
+            Gson gson = new Gson();
+            account = gson.fromJson(jsonObject.toString(), Account.class);
 
-        editor.putString("token", token);
+            sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedpreferences.edit();
 
-        editor.commit();
+            editor.putString("token", token);
+            editor.putString("objectAccount", objectAccount);
+
+            editor.commit();
+
+            dialog.dismiss();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+
+
 
         Intent intent = new Intent(LoginActivity.this, TableActivity.class);
         startActivity(intent);

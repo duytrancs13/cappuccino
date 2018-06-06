@@ -101,12 +101,12 @@ public class LoginPresenterImpl implements LoginPresenter {
             @Override
             public void onResponse(String response) {
                 try {
-                    JSONObject jsonObject = new JSONObject(response);
+                    /*JSONObject jsonObject = new JSONObject(response);
                     String token = jsonObject.getString("token");
                     Gson gson = new Gson();
-                    account = gson.fromJson(jsonObject.toString(), Account.class);
-                    viewLoginActivity.loginSuccessful(token);
-                } catch (JSONException e) {
+                    account = gson.fromJson(jsonObject.toString(), Account.class);*/
+                    viewLoginActivity.loginSuccessful(response);
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
