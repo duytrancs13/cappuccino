@@ -11,8 +11,14 @@
         android:title="Kết nối bluetooth" />
 
     <item
+        android:id="@+id/expense"
         android:icon="@drawable/ic_expense"
         android:title="Chi tiêu" />
+
+    <item
+        android:id="@+id/changePassword"
+        android:icon="@drawable/ic_changepw"
+        android:title="Đổi mật khẩu" />
 
     <item
         android:id="@+id/logout"

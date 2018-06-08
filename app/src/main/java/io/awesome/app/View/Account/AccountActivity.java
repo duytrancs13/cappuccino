@@ -8,9 +8,13 @@ import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -29,9 +33,9 @@ public class AccountActivity extends AppCompatActivity {
 
     private ImageView imageAccount;
     private Button btnAddImageAccount;
-    private TextView tvNameAccount;
-    private TextView tvEmailAccount;
-    private Button btnChangePassword;
+    private EditText edNameAccount;
+    private EditText edEmailAccount;
+    private Button btnSaveAccount;
 
 
     public static final String MyPREFERENCES = "capuccino" ;
@@ -44,9 +48,9 @@ public class AccountActivity extends AppCompatActivity {
         setContentView(R.layout.activity_account);
         imageAccount = (ImageView) findViewById(R.id.imageAccount);
         btnAddImageAccount = (Button) findViewById(R.id.btnAddImageAccount);
-        tvNameAccount = (TextView) findViewById(R.id.tvNameAccount);
-        tvEmailAccount = (TextView) findViewById(R.id.tvEmailAccount);
-        btnChangePassword = (Button) findViewById(R.id.btnChangePassword) ;
+        edNameAccount = (EditText) findViewById(R.id.edNameAccount);
+        edEmailAccount = (EditText) findViewById(R.id.edEmailAccount);
+        btnSaveAccount = (Button) findViewById(R.id.btnSaveAccount) ;
 
 
         SetFont setFont = new SetFont("Roboto-Regular.ttf");
@@ -78,19 +82,41 @@ public class AccountActivity extends AppCompatActivity {
             }
         });
 
-        tvNameAccount.setText(account.getDisplayName());
-        tvEmailAccount.setText(account.getEmail());
+        edNameAccount.setText(account.getDisplayName());
+        edNameAccount.addTextChangedListener(new TextWatcher() {
+
+            public void onTextChanged(final CharSequence s, int start, int before,
+                                      int count) {
+                if(s.toString().equals(account.getDisplayName())) {
+                    btnSaveAccount.setEnabled(false);
+                }else{
+                    btnSaveAccount.setEnabled(true);
+                }
+                btnSaveAccount.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        toast("Save");
+                    }
+                });
+            }
 
 
 
+            public void beforeTextChanged(CharSequence s, int start, int count,
+                                          int after) {
 
-        btnChangePassword.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getBaseContext(), ChangePasswordActivity.class);
-                startActivity(intent);
+            }
+
+            public void afterTextChanged(Editable s) {
+
             }
         });
+        edEmailAccount.setText(account.getEmail());
+
+
+
+
+
     }
     public void toast(String message){
         Toast.makeText(getBaseContext(),message,Toast.LENGTH_SHORT).show();

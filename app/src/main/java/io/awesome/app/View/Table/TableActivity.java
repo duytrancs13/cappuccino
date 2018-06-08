@@ -55,6 +55,8 @@ import io.awesome.app.Presenter.Pusher.PusherTable;
 import io.awesome.app.Presenter.Table.TablePresenterImpl;
 import io.awesome.app.View.Account.AccountActivity;
 import io.awesome.app.View.Bluetooth.BluetoothActivity;
+import io.awesome.app.View.ChangePassword.ChangePasswordActivity;
+import io.awesome.app.View.Expense.ExpenseActivity;
 import io.awesome.app.View.Fragment.Menu.FragmentMenu;
 import io.awesome.app.View.Login.LoginActivity;
 import io.awesome.app.View.Main.MainActivity;
@@ -368,6 +370,12 @@ public class TableActivity extends AppCompatActivity implements NavigationView.O
 
         }else if(id == R.id.connectBluetooth){
             intent = new Intent(TableActivity.this, BluetoothActivity.class);
+            startActivity(intent);
+        }else if(id == R.id.expense) {
+            intent = new Intent(TableActivity.this, ExpenseActivity.class);
+            startActivity(intent);
+        }else if(id == R.id.changePassword) {
+            intent = new Intent(TableActivity.this, ChangePasswordActivity.class);
             startActivity(intent);
         }else if (id == R.id.logout) {
             alertLogout();
