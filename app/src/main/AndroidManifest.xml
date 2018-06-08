@@ -41,12 +41,12 @@
             </intent-filter>
         </activity>
         <activity android:name=".View.MoveOrderActivity" />
-        <activity android:name=".View.MoveOrder.MoveOrderActivity" />
-        <activity android:name=".View.ChooseTableMoveActivity" />
+        <activity android:name=".View.MoveOrder.MoveOrderActivity" android:noHistory="true" />
+        <activity android:name=".View.ChooseTableMoveActivity" android:noHistory="true"  />
         <activity android:name=".View.Bluetooth.BluetoothActivity" />
         <activity android:name=".View.Reserve.ReserveActivity" />
         <activity android:name=".View.Account.AccountActivity" />
-        <activity android:name=".View.ChangePassword.ChangePasswordActivity"></activity>
+        <activity android:name=".View.ChangePassword.ChangePasswordActivity" android:noHistory="true" ></activity>
     </application>
 
 </manifest>

@@ -88,7 +88,6 @@ public class CustomCategoryAdapter extends BaseAdapter {
 
     public void realTimeCategory(List<Category> lstC) {
         this.categoryList = lstC;
-        Log.v("AAA", lstC.get(0).getName()+"duy");
         notifyDataSetChanged();
     }
 

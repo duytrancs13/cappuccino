@@ -1,9 +1,19 @@
 package io.awesome.app.View.Fragment.Receipt;
 
 import android.app.AlertDialog;
+import android.app.Application;
+import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothDevice;
+import android.bluetooth.BluetoothHeadset;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.media.AudioDeviceInfo;
+import android.media.AudioManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -21,6 +31,7 @@ import android.widget.Toast;
 import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
+import java.lang.reflect.Method;
 import java.text.NumberFormat;
 import java.util.List;
 import java.util.Locale;
@@ -97,13 +108,14 @@ public class FragmentReceipt extends Fragment implements FragmentReceiptView {
         totalMoney = 0;
         tatalQuatityReceipt=0;
 
+
         if(checkClickPrintPay){
             btnPrintReceipt = (Button) view.findViewById(R.id.btnPrintReceipt);
             btnPrintReceipt.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
 
-                    try {
+                    /*try {
                         if(bluetoothSocket==null){
                             toast("Vui long ket noi bluetooth");
 
@@ -114,7 +126,9 @@ public class FragmentReceipt extends Fragment implements FragmentReceiptView {
 
                     } catch (IOException e) {
                         e.printStackTrace();
-                    }
+                    }*/
+
+
                 }
             });
 
@@ -144,9 +158,12 @@ public class FragmentReceipt extends Fragment implements FragmentReceiptView {
         }
     }
 
+
+
     @Override
     public void gotoTable() {
-        startActivity(intent);
+//        startActivity(intent);
+        getActivity().onBackPressed();
     }
 
     public void toast(String msg) {

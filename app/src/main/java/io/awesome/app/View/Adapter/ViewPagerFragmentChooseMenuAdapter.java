@@ -4,6 +4,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
+import io.awesome.app.View.Fragment.Category.FragmentCategory;
 import io.awesome.app.View.Fragment.Menu.FragmentMenu;
 import io.awesome.app.View.Fragment.RootFragment;
 
@@ -33,7 +34,7 @@ public class ViewPagerFragmentChooseMenuAdapter extends FragmentPagerAdapter {
     @Override
     public int getItemPosition(Object object) {
         // POSITION_NONE makes it possible to reload the PagerAdapter
+//        return POSITION_UNCHANGED;
         return POSITION_NONE;
-
     }
 }

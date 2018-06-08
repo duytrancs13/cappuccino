@@ -33,7 +33,6 @@ public class AccountActivity extends AppCompatActivity {
     private TextView tvEmailAccount;
     private Button btnChangePassword;
 
-    private int hadPhoto = 1;
 
     public static final String MyPREFERENCES = "capuccino" ;
     private SharedPreferences sharedPreferences;
@@ -67,13 +66,9 @@ public class AccountActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 
-        if(hadPhoto==0){
-            imageAccount.setBackgroundResource(R.drawable.ic_profile);
-            btnAddImageAccount.setText(" Thêm ảnh");
-        }else{
-            toast("Set anh vao!!!");
-            btnAddImageAccount.setText(" Thay đổi ảnh ");
-        }
+        imageAccount.setBackgroundResource(R.drawable.ic_profile);
+        btnAddImageAccount.setText(" Thay đổi ảnh");
+
 
         btnAddImageAccount.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -115,7 +110,6 @@ public class AccountActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
-            startActivity(new Intent(this, TableActivity.class));
             finish();
         }
         return super.onOptionsItemSelected(item);

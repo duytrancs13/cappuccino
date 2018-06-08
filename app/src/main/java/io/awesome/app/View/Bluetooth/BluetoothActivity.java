@@ -72,7 +72,6 @@ public class BluetoothActivity extends AppCompatActivity {
             Intent enableBT = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
             startActivityForResult(enableBT, 0);
         }
-        toast("Bluetooth already !!!");
         Set<BluetoothDevice> pairDevice = bluetoothAdapter.getBondedDevices();
         if(pairDevice.size()>0){
             for (BluetoothDevice pairedDevice : pairDevice){

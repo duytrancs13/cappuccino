@@ -23,7 +23,6 @@ import io.awesome.app.General.SetFont;
 import io.awesome.app.R;
 import io.awesome.app.View.Table.TableActivity;
 
-import static io.awesome.app.View.Main.MainActivity.onTableActivity;
 import static io.awesome.app.View.Table.TableActivity.nameTableMoveOrdered;
 
 public class ReserveActivity extends AppCompatActivity{
@@ -46,8 +45,6 @@ public class ReserveActivity extends AppCompatActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reserve);
-
-        onTableActivity = false;
 
         sharedPreferences = getSharedPreferences(MyPREFERENCES, MODE_PRIVATE);
         token = sharedPreferences.getString("token", null);

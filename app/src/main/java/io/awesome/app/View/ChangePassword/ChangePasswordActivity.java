@@ -7,6 +7,7 @@ import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -121,6 +122,21 @@ public class ChangePasswordActivity extends AppCompatActivity implements ChangeP
             dialog.dismiss();
             return null;
         }
+
+
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+        }
+        return super.onOptionsItemSelected(item);
+    }
+    // Quay về màn hình tableActivity bằng nút back của android
+    @Override
+    public void onBackPressed() {
+        finish();
     }
 
 

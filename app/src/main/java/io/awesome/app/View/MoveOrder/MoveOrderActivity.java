@@ -40,7 +40,6 @@ import io.awesome.app.View.Fragment.MoveOrdered.FragmentMoveToOrdered;
 import io.awesome.app.View.Fragment.MoveOrdered.MoveOrderedI;
 import io.awesome.app.View.Table.TableActivity;
 
-import static io.awesome.app.View.Main.MainActivity.onTableActivity;
 import static io.awesome.app.View.Main.MainActivity.receiptId;
 import static io.awesome.app.View.Main.MainActivity.receiptToOrdered;
 import static io.awesome.app.View.Table.TableActivity.listOrdered;
@@ -73,8 +72,6 @@ public class MoveOrderActivity extends AppCompatActivity implements MoveOrderedI
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_move_ordered);
-
-        onTableActivity = false;
 
         sharedPreferences = getSharedPreferences(MyPREFERENCES, MODE_PRIVATE);
         token = sharedPreferences.getString("token", null);
@@ -141,6 +138,7 @@ public class MoveOrderActivity extends AppCompatActivity implements MoveOrderedI
             }
             back_pressed = System.currentTimeMillis();
 
+
         }
 
         return super.onOptionsItemSelected(item);
@@ -149,12 +147,13 @@ public class MoveOrderActivity extends AppCompatActivity implements MoveOrderedI
 
     @Override
     public void onBackPressed() {
-        if (back_pressed + TIME_DELAY > System.currentTimeMillis()) {
+        /*if (back_pressed + TIME_DELAY > System.currentTimeMillis()) {
             finish();
         } else {
             toast("Chạm 2 lần liên tiếp để thoát");
         }
-        back_pressed = System.currentTimeMillis();
+        back_pressed = System.currentTimeMillis();*/
+        finish();
     }
 
     public void toast(String message) {
@@ -242,13 +241,13 @@ public class MoveOrderActivity extends AppCompatActivity implements MoveOrderedI
 
     @Override
     public void gotoBackTableActivity() {
-        onTableActivity = true;
         onClickMoveOrdered = false;
         receiptToOrdered = "";
         listToOrdered = new ArrayList<Ordered>();
         lstChooseTable = new HashMap<String, List<Ordered>>();
 
-        startActivity(new Intent(this, TableActivity.class));
+        /*startActivity(new Intent(this, TableActivity.class));*/
+        finish();
     }
 
 
@@ -301,7 +300,7 @@ public class MoveOrderActivity extends AppCompatActivity implements MoveOrderedI
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 try {
-                    showProgress();
+                    //showProgress();
                         /*Json Object Source*/
                     JSONObject jsonObjectItemsSource = new JSONObject();
                     JSONArray jsonArrayItemsSource = new JSONArray();

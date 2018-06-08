@@ -49,6 +49,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     public static List<Category> listCategory = new ArrayList<Category>();
     public static boolean onSubcribeCategory = true;
+    public static boolean onSubcribeTable = true;
 
     public static String receiptId = "";
     public static String receiptToOrdered = "";
@@ -58,7 +59,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
 //    private PusherTable pusherTable;
-    public static boolean onTableActivity = false;
 
 
     @Override

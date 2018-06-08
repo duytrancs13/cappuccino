@@ -32,7 +32,6 @@ import io.awesome.app.Model.Ordered;
 import io.awesome.app.View.Table.TableView;
 
 import static io.awesome.app.View.Main.MainActivity.listTable;
-import static io.awesome.app.View.Main.MainActivity.onTableActivity;
 import static io.awesome.app.View.Main.MainActivity.receiptId;
 import static io.awesome.app.View.Table.TableActivity.listOrdered;
 
@@ -68,7 +67,8 @@ public class TablePresenterImpl implements TablePresenter {
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
-                tableView.showTable();
+                Log.v("AAA", "Get table successfull "+response.toString());
+                /*tableView.showTable();*/
             }
         }, new Response.ErrorListener() {
             @Override

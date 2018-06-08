@@ -9,6 +9,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.CountDownTimer;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -55,6 +57,7 @@ import io.awesome.app.View.Account.AccountActivity;
 import io.awesome.app.View.Bluetooth.BluetoothActivity;
 import io.awesome.app.View.Fragment.Menu.FragmentMenu;
 import io.awesome.app.View.Login.LoginActivity;
+import io.awesome.app.View.Main.MainActivity;
 import io.awesome.app.View.MenuTabs.MenuTabsActivity;
 import io.awesome.app.R;
 import io.awesome.app.View.MoveOrder.MoveOrderActivity;
@@ -63,7 +66,7 @@ import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 import static io.awesome.app.View.Main.MainActivity.listTable;
-import static io.awesome.app.View.Main.MainActivity.onTableActivity;
+import static io.awesome.app.View.Main.MainActivity.onSubcribeTable;
 import static io.awesome.app.View.Main.MainActivity.receiptId;
 
 public class TableActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,TableView {
@@ -102,6 +105,11 @@ public class TableActivity extends AppCompatActivity implements NavigationView.O
 
     private ZoomLayout zoomLayout;
 
+    private static final String API_KEY = "aeadf645a84df411d55d";
+    private static final String APP_CLUSTER = "ap1";
+    private static final String CHANEL_NAME = "tables";
+    private static final String EVENT_NAME = "all-tables";
+
 
 
 
@@ -127,6 +135,7 @@ public class TableActivity extends AppCompatActivity implements NavigationView.O
 
 
         dialog = new ProgressDialog(this,R.style.AppTheme_Dark_Dialog);
+//        showProgress();
 
         //create default navigation drawer toggle
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar,
@@ -153,22 +162,50 @@ public class TableActivity extends AppCompatActivity implements NavigationView.O
         token = sharedPreferences.getString("token", null);
         tablePresenter = new TablePresenterImpl(getBaseContext(),this);
 
-        pusherTable = new PusherTable(this);
+        /*pusherTable = new PusherTable(this);*/
+        PusherOptions options = new PusherOptions();
+        options.setCluster(APP_CLUSTER);
 
-        showProgress();
 
-        if(onTableActivity == false){
-            pusherTable.subcribe();
-            // Nhờ TablePresenter để gọi đến API để load dữ liệu của bàn. Cần có token
-            tablePresenter.loadTable(token);
-        }else{
-            showTable();
+
+
+        if(onSubcribeTable){
+
+            Pusher pusher = new Pusher(API_KEY,options);
+
+            Channel channel = pusher.subscribe(CHANEL_NAME);
+            channel.bind(EVENT_NAME, new SubscriptionEventListener() {
+                @Override
+                public void onEvent(String channel, String event, final String data) {
+                    new Handler(Looper.getMainLooper()).post(new Runnable() {
+                        @Override
+                        public void run() {
+                        Gson gson = new Gson();
+                        TypeToken<List<Table>> token = new TypeToken<List<Table>>() {};
+                        listTable = gson.fromJson(data, token.getType());
+                        if(!onSubcribeTable){
+                            root.removeAllViews();
+                        }
+                        showTable();
+                        }
+                    });
+                }
+            });
+            pusher.connect();
         }
 
-        dialog.dismiss();
+        tablePresenter.loadTable(token);
+
+
+
+
+
+//        dialog.dismiss();
 
 
     }
+
+
 
 
 
@@ -176,8 +213,8 @@ public class TableActivity extends AppCompatActivity implements NavigationView.O
     // Gồm có 3 trạng thái của bàn: "Rỗng", "đã đặt món", "đã giao món".
     @Override
     public void showTable() {
-        onTableActivity = true;
 
+        Log.v("AAA", listTable.get(1).getName());
         for(int i = 0; i < listTable.size() ; i++){
 
             // Đối tượng của 1 bàn itemTable
@@ -292,7 +329,9 @@ public class TableActivity extends AppCompatActivity implements NavigationView.O
                 }
             });*/
         }
+        onSubcribeTable = false;
         dialog.dismiss();
+
 
     }
 
@@ -307,9 +346,10 @@ public class TableActivity extends AppCompatActivity implements NavigationView.O
                 .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
+                        onSubcribeTable = true;
                         SharedPreferences.Editor editor = sharedPreferences.edit();
                         editor.clear().commit();
-                        intent = new Intent(TableActivity.this, LoginActivity.class);
+                        intent = new Intent(TableActivity.this, MainActivity.class);
                         startActivity(intent);
                     }
                 })
@@ -499,7 +539,6 @@ public class TableActivity extends AppCompatActivity implements NavigationView.O
 
     @Override
     public void gotoMenu(String receipt, int statusMenu) {
-        onTableActivity = false;
         receiptId = receipt;
         intent = new Intent(this, MenuTabsActivity.class);
         intent.putExtra("statusReceipt",statusMenu);
@@ -587,6 +626,7 @@ public class TableActivity extends AppCompatActivity implements NavigationView.O
 
         @Override
         protected Void doInBackground(Void... voids) {
+
             return null;
         }
     }

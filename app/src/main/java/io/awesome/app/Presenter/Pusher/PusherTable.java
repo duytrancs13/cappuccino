@@ -17,7 +17,6 @@ import io.awesome.app.View.Table.TableActivity;
 import io.awesome.app.View.Table.TableView;
 
 import static io.awesome.app.View.Main.MainActivity.listTable;
-import static io.awesome.app.View.Main.MainActivity.onTableActivity;
 
 /**
  * Created by sung on 12/04/2018.
@@ -52,12 +51,6 @@ public class PusherTable {
                 Gson gson = new Gson();
                 TypeToken<List<Table>> token = new TypeToken<List<Table>>() {};
                 listTable = gson.fromJson(data, token.getType());
-                if(onTableActivity == true){
-                    Log.v("AAA", "TableActivity on");
-                    tableView.reloadTableActivity();
-                }else{
-                    Log.v("AAA", "TableActivity off");
-                }
             }
         });
         pusher.connect();

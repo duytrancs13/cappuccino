@@ -96,7 +96,6 @@ public class FragmentCategory extends Fragment implements FragmentCategoryView{
                     new Handler(Looper.getMainLooper()).post(new Runnable() {
                         @Override
                         public void run() {
-                            // this will run in the main thread
 
                             Gson gson = new Gson();
                             TypeToken<List<Category>> token = new TypeToken<List<Category>>() {};
@@ -104,15 +103,11 @@ public class FragmentCategory extends Fragment implements FragmentCategoryView{
                             categoryAdapter.realTimeCategory(listCategory);
                         }
                     });
-
-
                 }
             });
             pusher.connect();
-        }else{
-            categoryPresenter.loadMenuCategory(token);
         }
-
+        categoryPresenter.loadMenuCategory(token);
 
         return view;
     }
@@ -128,7 +123,6 @@ public class FragmentCategory extends Fragment implements FragmentCategoryView{
 
     @Override
     public void showMenuCategory() {
-
         categoryAdapter.realTimeCategory(listCategory);
         lvCategory.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

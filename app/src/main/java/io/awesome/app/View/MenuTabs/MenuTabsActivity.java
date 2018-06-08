@@ -159,7 +159,7 @@ public class MenuTabsActivity extends AppCompatActivity implements MenuTabsView 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
-            startActivity(new Intent(this, TableActivity.class));
+            /*startActivity(new Intent(this, TableActivity.class));*/
             finish();
         }
         return super.onOptionsItemSelected(item);
