@@ -1,41 +1,48 @@
 package io.awesome.app.View.Expense;
 
-import android.content.SharedPreferences;
-import android.graphics.drawable.Drawable;
+import android.content.Intent;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ListView;
 
-import io.awesome.app.General.SetFont;
+import java.util.List;
+
+import io.awesome.app.Presenter.Expense.ExpensePresenterImp;
 import io.awesome.app.R;
+import io.awesome.app.View.NewExpense.NewExpenseActivity;
 
-public class ExpenseActivity extends AppCompatActivity {
+public class ExpenseActivity extends AppCompatActivity implements ExpenseView{
+
+    private FloatingActionButton fab;
+    private ListView lvExpense;
+    private ExpensePresenterImp expensePresenterImp;
 
 
-    private Toolbar toolbar;
-    public static final String MyPREFERENCES = "capuccino" ;
-    private SharedPreferences sharedPreferences;
-    private String token;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_expense);
-        SetFont setFont = new SetFont("Roboto-Regular.ttf");
-        setFont.getFont();
+
+        lvExpense = (ListView) findViewById(R.id.lvExpense);
+        expensePresenterImp = new ExpensePresenterImp(this, this);
+        expensePresenterImp.getExpenseByAccount();
 
 
-        sharedPreferences = getSharedPreferences(MyPREFERENCES, MODE_PRIVATE);
-        token = sharedPreferences.getString("token", null);
+//        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, my_array);
+//        lvExpense.setAdapter(adapter);
 
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("Chi tiêu");
+        fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(ExpenseActivity.this, NewExpenseActivity.class);
+                startActivity(intent);
+            }
+        });
 
-        // Set ActionBar
-        final Drawable upArrow = getResources().getDrawable(R.drawable.ic_back);
-        getSupportActionBar().setHomeAsUpIndicator(upArrow);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     @Override
@@ -50,4 +57,10 @@ public class ExpenseActivity extends AppCompatActivity {
     public void onBackPressed() {
         finish();
     }
+
+    @Override
+    public void showExpense() {
+
+    }
+
 }

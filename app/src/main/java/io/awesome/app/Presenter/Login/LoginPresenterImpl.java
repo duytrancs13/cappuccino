@@ -39,7 +39,6 @@ public class LoginPresenterImpl implements LoginPresenter {
 
 
     // validate Email Gọi đến viewLoginActivity để thông báo lỗi
-    @Override
     public boolean validateEmail(String email){
         boolean valid = true;
         if(email.isEmpty()){
@@ -58,7 +57,6 @@ public class LoginPresenterImpl implements LoginPresenter {
 
 
     // validate Password Gọi đến viewLoginActivity để thông báo lỗi
-    @Override
     public boolean validatePW(String password){
         boolean valid = true;
         if(password.isEmpty() ){

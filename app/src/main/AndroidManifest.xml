@@ -53,7 +53,8 @@
         <activity
             android:name=".View.ChangePassword.ChangePasswordActivity"
             android:noHistory="true" />
-        <activity android:name=".View.Expense.ExpenseActivity"></activity>
+        <activity android:name=".View.Expense.ExpenseActivity" />
+        <activity android:name=".View.NewExpense.NewExpenseActivity" android:noHistory="true"></activity>
     </application>
 
 </manifest>

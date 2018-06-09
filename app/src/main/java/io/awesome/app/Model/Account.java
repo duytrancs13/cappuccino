@@ -8,11 +8,13 @@ public class Account {
     private String displayName;
     private String email;
     private String token;
+    private String userId;
 
-    public Account(String displayName, String email, String token) {
+    public Account(String displayName, String email, String token, String userId) {
         this.displayName = displayName;
         this.email = email;
         this.token = token;
+        this.userId = userId;
     }
 
     public String getDisplayName() {
@@ -37,5 +39,13 @@ public class Account {
 
     public void setToken(String token) {
         this.token = token;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 }
