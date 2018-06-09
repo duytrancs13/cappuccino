@@ -5,16 +5,26 @@ package io.awesome.app.Model;
  */
 
 public class Account {
+    private String avatarUrl;
     private String displayName;
     private String email;
     private String token;
     private String userId;
 
-    public Account(String displayName, String email, String token, String userId) {
+    public Account(String avatarUrl, String displayName, String email, String token, String userId) {
+        this.avatarUrl = avatarUrl;
         this.displayName = displayName;
         this.email = email;
         this.token = token;
         this.userId = userId;
+    }
+
+    public String getAvatarUrl() {
+        return avatarUrl;
+    }
+
+    public void setAvatarUrl(String avatarUrl) {
+        this.avatarUrl = avatarUrl;
     }
 
     public String getDisplayName() {

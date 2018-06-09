@@ -19,6 +19,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.squareup.picasso.Picasso;
+
 import io.awesome.app.General.SetFont;
 import io.awesome.app.R;
 import io.awesome.app.View.ChangePassword.ChangePasswordActivity;
@@ -70,7 +72,7 @@ public class AccountActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 
-        imageAccount.setBackgroundResource(R.drawable.ic_profile);
+        Picasso.with(this).load(account.getAvatarUrl()).into(imageAccount);
         btnAddImageAccount.setText(" Thay đổi ảnh");
 
 
