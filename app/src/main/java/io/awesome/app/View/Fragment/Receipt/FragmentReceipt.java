@@ -30,6 +30,10 @@ import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.IOException;
 import java.lang.reflect.Method;
 import java.text.NumberFormat;
@@ -87,7 +91,7 @@ public class FragmentReceipt extends Fragment implements FragmentReceiptView {
         intent = new Intent(getActivity(), TableActivity.class);
 
 
-        receiptPresenter = new ReceiptPresenterImpl(this.getContext(), this);
+        receiptPresenter = new ReceiptPresenterImpl(this.getContext(), this, token);
 
         if(listOrdered.size() != 0){
             checkClickPrintPay = true;
@@ -244,7 +248,7 @@ public class FragmentReceipt extends Fragment implements FragmentReceiptView {
         builder.setPositiveButton("Có", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                receiptPresenter.updateReceipt(token);
+            receiptPresenter.updateReceipt();
             }
         });
         builder.setNegativeButton("Không", new DialogInterface.OnClickListener() {

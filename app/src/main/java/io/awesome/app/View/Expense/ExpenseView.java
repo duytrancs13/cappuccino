@@ -1,5 +1,8 @@
 package io.awesome.app.View.Expense;
 
+import java.util.List;
+
+import io.awesome.app.Model.Expense;
 import io.awesome.app.View.InterfaceView.AlertMessage_IV;
 
 /**
@@ -7,5 +10,6 @@ import io.awesome.app.View.InterfaceView.AlertMessage_IV;
  */
 
 public interface ExpenseView {
+    void showProgressExpense();
     void showExpense();
 }

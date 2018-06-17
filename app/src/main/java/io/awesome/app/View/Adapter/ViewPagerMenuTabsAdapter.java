@@ -4,7 +4,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-import io.awesome.app.View.Fragment.FragmentChooseMenu;
+import io.awesome.app.View.Fragment.ChooseMenu.FragmentChooseMenu;
 import io.awesome.app.View.Fragment.Receipt.FragmentReceipt;
 
 

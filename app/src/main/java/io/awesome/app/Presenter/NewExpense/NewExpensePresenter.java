@@ -5,7 +5,7 @@ package io.awesome.app.Presenter.NewExpense;
  */
 
 public interface NewExpensePresenter {
-    void validateNewExpense(String name, String price, String quatity);
-    void createExpense(String name, String price, String quatity, final String createBy, String note, String token);
+    void validateNewExpense(String name, String price, String quatity, String unit);
+    void createExpense(String name, String price, String quatity, String unit, String createBy, String note, String token);
 
 }

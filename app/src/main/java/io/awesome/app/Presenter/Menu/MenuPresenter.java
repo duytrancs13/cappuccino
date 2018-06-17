@@ -6,6 +6,7 @@ import android.widget.ImageView;
 import java.util.List;
 
 import io.awesome.app.Model.Menu;
+import io.awesome.app.Model.Ordered;
 import io.awesome.app.View.Adapter.CustomMenuAdapter;
 
 /**
@@ -16,7 +17,7 @@ public interface MenuPresenter {
     void loadMenuOfFavorite(String token);
     void loadMenuOfCategory(String idCategory, String token);
     //void addItemForReceipt(String token,String note, String menuId, String quality);
-    void setTextPopupNoteAdd(String textNote, String menuId);
+    void setTextPopupNoteAdd(String textNote, Ordered ordered);
     void showPopupNoteAdd();
     void addNoteForReceipt(String textNote, String menuId, String token);
     void qualityForReceipt(String menuId, String token, String quatity);

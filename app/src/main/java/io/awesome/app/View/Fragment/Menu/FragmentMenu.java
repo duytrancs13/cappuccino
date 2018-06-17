@@ -23,6 +23,7 @@ import android.widget.Toast;
 import java.util.List;
 
 import io.awesome.app.General.SetFont;
+import io.awesome.app.Model.Ordered;
 import io.awesome.app.Presenter.Menu.MenuPresenterImpl;
 import io.awesome.app.View.Adapter.CustomMenuAdapter;
 import io.awesome.app.Model.Menu;
@@ -112,15 +113,6 @@ public class FragmentMenu extends Fragment implements FragmentMenuView {
         customMenuAdapter = new CustomMenuAdapter(getActivity(), listMenu, menuPresenterImpl, token);
 
         gvMenu.setAdapter(customMenuAdapter);
-        /*gvMenu.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                menuPresenterImpl.addReceipt(receiptId,token,"menuItemId",listMenu.get(position).get_id());
-                toast("Món đã được chọn!!!");
-
-
-            }
-        });*/
 
         dialog.dismiss();
     }
@@ -128,7 +120,7 @@ public class FragmentMenu extends Fragment implements FragmentMenuView {
 
 
     @Override
-    public void setTextPopupNodeAdd(final String textNote, final String menuId) {
+    public void setTextPopupNodeAdd(final String textNote, final Ordered ordered) {
         /*alert.setMessage(textNote);*/
         final EditText input = new EditText(getContext());
 
@@ -137,7 +129,8 @@ public class FragmentMenu extends Fragment implements FragmentMenuView {
 
         alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
-            menuPresenterImpl.addNoteForReceipt(input.getText().toString(),menuId, token);
+            //menuPresenterImpl.addNoteForReceipt(input.getText().toString(),menuId, token);
+                ordered.setNote(input.getText().toString());
             }
         });
 

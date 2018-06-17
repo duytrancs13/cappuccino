@@ -99,11 +99,13 @@ public class LoginPresenterImpl implements LoginPresenter {
             @Override
             public void onResponse(String response) {
                 try {
-                    /*JSONObject jsonObject = new JSONObject(response);
-                    String token = jsonObject.getString("token");
-                    Gson gson = new Gson();
-                    account = gson.fromJson(jsonObject.toString(), Account.class);*/
-                    viewLoginActivity.loginSuccessful(response);
+                    JSONObject jsonObject = new JSONObject(response);
+                    if(jsonObject.get("message").equals("Successful.")){
+                        viewLoginActivity.loginSuccessful(response);
+                    }else{
+                        viewLoginActivity.alertMessage("Thất bại", "Vui lòng thử lại !!!", 500);
+                    }
+
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

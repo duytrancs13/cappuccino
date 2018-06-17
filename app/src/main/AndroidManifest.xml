@@ -5,6 +5,8 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
@@ -53,8 +55,13 @@
         <activity
             android:name=".View.ChangePassword.ChangePasswordActivity"
             android:noHistory="true" />
-        <activity android:name=".View.Expense.ExpenseActivity" />
-        <activity android:name=".View.NewExpense.NewExpenseActivity" android:noHistory="true"></activity>
+        <activity
+            android:name=".View.Expense.ExpenseActivity" />
+        <activity
+            android:name=".View.NewExpense.NewExpenseActivity"
+            android:noHistory="true" />
+        <activity android:name=".View.DetailExpense.DetailExpenseActivity"
+            android:noHistory="true"></activity>
     </application>
 
 </manifest>

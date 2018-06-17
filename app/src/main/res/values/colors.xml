@@ -11,6 +11,7 @@
     <color name="black">#000000</color>
     <color name="white">#ffffff</color>
     <color name="red">#f30032</color>
+    <color name="yellow">#FFFF00</color>
 
 
     <color name="bgrEdittext">#eaeaea</color>
@@ -18,6 +19,8 @@
 
 
     <color name="green">#6AC249</color>
+    <color name="blue">#007bff</color>
+
 
 
     <color name="iron">#CCCCCC</color>

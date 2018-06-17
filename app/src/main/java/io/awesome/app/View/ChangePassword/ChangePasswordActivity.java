@@ -13,6 +13,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 
+import com.tapadoo.alerter.Alerter;
+
 import io.awesome.app.General.SetFont;
 import io.awesome.app.Presenter.ChangePassword.ChangePasswordPresenterImp;
 import io.awesome.app.R;
@@ -91,7 +93,19 @@ public class ChangePasswordActivity extends AppCompatActivity implements ChangeP
 
     @Override
     public void alertMessage(String titleError, String textError, int responseCode) {
-
+        if(responseCode == 500) {
+            Alerter.create(this)
+                    .setTitle(titleError)
+                    .setText(textError)
+                    .setBackgroundColorRes(R.color.red) // or setBackgroundColorInt(Color.CYAN)
+                    .show();
+        }else{
+            Alerter.create(this)
+                    .setTitle(titleError)
+                    .setText(textError)
+                    .setBackgroundColorRes(R.color.colorPrimary) // or setBackgroundColorInt(Color.CYAN)
+                    .show();
+        }
     }
 
     @Override
@@ -102,6 +116,13 @@ public class ChangePasswordActivity extends AppCompatActivity implements ChangeP
     @Override
     public void errorChangePW(String errorMessage) {
         editNewChangePW.setError(errorMessage);
+    }
+
+    @Override
+    public void changePwSuccessful() {
+        editOldChangePW.setText("");
+        editNewChangePW.setText("");
+        dialog.dismiss();
     }
 
     private class Progress extends AsyncTask<Void, Void, Void> {
@@ -119,7 +140,6 @@ public class ChangePasswordActivity extends AppCompatActivity implements ChangeP
             String oldPassword = editOldChangePW.getText().toString();
             String newPassword = editNewChangePW.getText().toString();
             changePasswordPresenterImp.change(oldPassword, newPassword,token);
-            dialog.dismiss();
             return null;
         }
 

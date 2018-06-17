@@ -135,13 +135,20 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     ////////// Thông Báo khi email chưa đăng kí, hoặc lỗi SERVER
     @Override
     public void alertMessage(String titleError, String textError, int responseCode){
+        if(responseCode == 500) {
+            Alerter.create(this)
+                    .setTitle(titleError)
+                    .setText(textError)
+                    .setBackgroundColorRes(R.color.red) // or setBackgroundColorInt(Color.CYAN)
+                    .show();
+        }else{
+            Alerter.create(this)
+                    .setTitle(titleError)
+                    .setText(textError)
+                    .setBackgroundColorRes(R.color.colorPrimary) // or setBackgroundColorInt(Color.CYAN)
+                    .show();
+        }
         dialog.dismiss();
-
-        Alerter.create(this)
-                .setTitle(titleError)
-                .setText(textError)
-                .setBackgroundColorRes(R.color.red) // or setBackgroundColorInt(Color.CYAN)
-                .show();
 
     }
 
@@ -149,25 +156,23 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     // Khi login thành công. Trả về token và gán vào biến token bằng SharedPreferences để sử dụng trong toàn bộ app.
     @Override
     public void loginSuccessful(String objectAccount){
-
-
         editEmailLogin.setText("");
         clearLogin.setVisibility(View.GONE);
 
         editPwLogin.setText("");
         visibilityLoginPW.setVisibility(View.GONE);
-
         try {
             JSONObject jsonObject = new JSONObject(objectAccount);
-            String token = jsonObject.getString("token");
+            JSONObject data = jsonObject.getJSONObject("data");
+            String token = data.getString("token");
             Gson gson = new Gson();
-            account = gson.fromJson(jsonObject.toString(), Account.class);
+            account = gson.fromJson(data.toString(), Account.class);
 
             sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
             SharedPreferences.Editor editor = sharedpreferences.edit();
 
             editor.putString("token", token);
-            editor.putString("objectAccount", objectAccount);
+            editor.putString("objectAccount", data.toString());
 
             editor.commit();
 
@@ -175,8 +180,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
-
 
 
         Intent intent = new Intent(LoginActivity.this, TableActivity.class);
@@ -212,7 +215,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
 
     // ĐỢi xử lý quá trình login
-    @Override
     public void showProgress() {
         new Progress().execute();
     }

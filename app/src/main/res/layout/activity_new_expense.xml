@@ -15,160 +15,217 @@
         app:titleTextColor="@android:color/white"
         android:layout_marginBottom="20dp"
         />
-
-    <android.support.v7.widget.CardView
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
-
         >
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:orientation="vertical"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
             >
-            <LinearLayout
+            <android.support.v7.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_marginBottom="20dp"
+                android:layout_marginBottom="10dp"
                 >
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Tên hàng"
-                    android:layout_marginBottom="5dp"
-                    />
-
-                <EditText
-                    android:id="@+id/etNameExpense"
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:hint="Nhập tên hàng"
-                    android:textSize="14dp"
-                    android:background="@color/bgrEdittext"
-                    android:paddingLeft="10dp"
-
-                    />
-
-            </LinearLayout>
-
-
-            <LinearLayout
-                android:weightSum="2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="20dp"
-                >
-
                 <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    >
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_marginBottom="10dp"
+                        >
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Tên hàng"
+                            android:layout_marginBottom="5dp"
+                            />
+
+                        <EditText
+                            android:id="@+id/etNameExpense"
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            android:hint="Nhập tên hàng"
+                            android:textSize="14dp"
+                            android:background="@color/bgrEdittext"
+                            android:paddingLeft="10dp"
+                            android:layout_marginBottom="10dp"
+                            />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Giá"
+                            android:layout_marginBottom="5dp"
+                            />
+
+
+                        <EditText
+                            android:id="@+id/etPriceExpense"
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            android:textSize="14dp"
+                            android:hint="Nhập giá"
+                            android:background="@color/bgrEdittext"
+                            android:digits="0123456789"
+                            android:inputType="phone"
+                            android:paddingLeft="10dp"
+                            />
+
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:weightSum="2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        >
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.9"
+                            android:orientation="vertical"
+                            >
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Số lượng"
+                                android:layout_marginBottom="5dp"
+                                />
+
+
+                            <EditText
+                                android:id="@+id/etQuantityExpense"
+                                android:layout_width="match_parent"
+                                android:layout_height="50dp"
+                                android:textSize="14dp"
+                                android:hint="Nhập số lượng"
+                                android:background="@color/bgrEdittext"
+                                android:digits="0123456789"
+                                android:inputType="phone"
+                                android:paddingLeft="10dp"
+                                />
+                        </LinearLayout>
+
+                        <View
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="0.2"
+                            >
+
+                        </View>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.9"
+                            android:orientation="vertical"
+                            >
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Đơn vị: kg/hộp..."
+                                android:layout_marginBottom="5dp"
+                                />
+
+
+                            <EditText
+                                android:id="@+id/etUnitExpense"
+                                android:layout_width="match_parent"
+                                android:layout_height="50dp"
+                                android:textSize="14dp"
+                                android:hint="Nhập đơn vị"
+                                android:background="@color/bgrEdittext"
+                                android:paddingLeft="10dp"
+                                />
+
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_marginBottom="10dp"
+                        >
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Ghi chú"
+                            android:layout_marginBottom="5dp"
+                            />
+
+                        <EditText
+                            android:id="@+id/etNoteExpense"
+                            android:layout_width="match_parent"
+                            android:layout_height="150dp"
+                            android:hint="Nhập ghi chú (nếu có)"
+                            android:textSize="14dp"
+                            android:background="@color/bgrEdittext"
+                            android:inputType="text|textMultiLine"
+                            android:paddingLeft="10dp"
+                            android:gravity="top"
+                            android:paddingTop="5dp"
+                            />
+                    </LinearLayout>
+                </LinearLayout>
+            </android.support.v7.widget.CardView>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:weightSum="1"
+                >
+                <Button
+                    android:id="@+id/btnCancelExpense"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="0.9"
-                    android:orientation="vertical"
-                    >
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Giá"
-                        android:layout_marginBottom="5dp"
-                        />
-
-
-                    <EditText
-                        android:id="@+id/etPriceExpense"
-                        android:layout_width="match_parent"
-                        android:layout_height="50dp"
-                        android:textSize="14dp"
-                        android:hint="Nhập giá"
-                        android:background="@color/bgrEdittext"
-                        android:digits="0123456789"
-                        android:inputType="phone"
-                        android:paddingLeft="10dp"
-                        />
-
-
-                </LinearLayout>
+                    android:layout_weight="0.45"
+                    android:text="Hủy"
+                    android:background="@color/colorPrimary"
+                    android:textColor="@color/white"
+                    android:layout_gravity="center"
+                    />
 
                 <View
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="0.2"
-                    >
+                    android:layout_weight="0.1"/>
 
-                </View>
-
-                <LinearLayout
+                <Button
+                    android:id="@+id/btnConfirmCreateExpense"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="0.9"
-                    android:orientation="vertical"
-                    >
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Số lượng"
-                        android:layout_marginBottom="5dp"
-                        />
-
-
-                    <EditText
-                        android:id="@+id/etQuatityExpense"
-                        android:layout_width="match_parent"
-                        android:layout_height="50dp"
-                        android:textSize="14dp"
-                        android:hint="Nhập số lượng"
-                        android:background="@color/bgrEdittext"
-                        android:digits="0123456789"
-                        android:inputType="phone"
-                        android:paddingLeft="10dp"
-                        />
-                </LinearLayout>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_marginBottom="20dp"
-                >
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Ghi chú"
-                    android:layout_marginBottom="5dp"
-                    />
-
-                <EditText
-                    android:id="@+id/etNoteExpense"
-                    android:layout_width="match_parent"
-                    android:layout_height="150dp"
-                    android:hint="Nhập ghi chú"
-                    android:textSize="14dp"
-                    android:background="@color/bgrEdittext"
-                    android:inputType="text|textMultiLine"
-                    android:paddingLeft="10dp"
-                    android:gravity="top"
-                    android:paddingTop="5dp"
+                    android:layout_weight="0.45"
+                    android:text="Xác nhận"
+                    android:background="@color/colorPrimary"
+                    android:textColor="@color/white"
+                    android:layout_gravity="center"
                     />
 
 
             </LinearLayout>
         </LinearLayout>
-    </android.support.v7.widget.CardView>
+
+    </ScrollView>
 
 
-    <Button
-        android:id="@+id/btnConfirmCreateExpense"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Xác nhận"
-        android:background="@color/colorPrimary"
-        android:textColor="@color/white"
-        android:layout_gravity="center"
-        />
+
+
 
 </LinearLayout>

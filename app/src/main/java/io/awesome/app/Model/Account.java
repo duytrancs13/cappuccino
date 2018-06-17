@@ -6,16 +6,18 @@ package io.awesome.app.Model;
 
 public class Account {
     private String avatarUrl;
+    private long createAt;
     private String displayName;
     private String email;
-    private String token;
+    private String role;
     private String userId;
 
-    public Account(String avatarUrl, String displayName, String email, String token, String userId) {
+    public Account(String avatarUrl, long createAt, String displayName, String email, String role, String userId) {
         this.avatarUrl = avatarUrl;
+        this.createAt = createAt;
         this.displayName = displayName;
         this.email = email;
-        this.token = token;
+        this.role = role;
         this.userId = userId;
     }
 
@@ -25,6 +27,14 @@ public class Account {
 
     public void setAvatarUrl(String avatarUrl) {
         this.avatarUrl = avatarUrl;
+    }
+
+    public long getCreateAt() {
+        return createAt;
+    }
+
+    public void setCreateAt(long createAt) {
+        this.createAt = createAt;
     }
 
     public String getDisplayName() {
@@ -43,12 +53,12 @@ public class Account {
         this.email = email;
     }
 
-    public String getToken() {
-        return token;
+    public String getRole() {
+        return role;
     }
 
-    public void setToken(String token) {
-        this.token = token;
+    public void setRole(String role) {
+        this.role = role;
     }
 
     public String getUserId() {

@@ -49,6 +49,7 @@ import java.util.Calendar;
 import java.util.List;
 
 import dalvik.annotation.TestTarget;
+import io.awesome.app.Model.Expense;
 import io.awesome.app.Model.Ordered;
 import io.awesome.app.Model.Table;
 import io.awesome.app.Presenter.Pusher.PusherTable;
@@ -94,9 +95,12 @@ public class TableActivity extends AppCompatActivity implements NavigationView.O
     public static List<Ordered> listOrdered = new ArrayList<Ordered>();
     public static List<Ordered> listToOrdered = new ArrayList<Ordered>();
 
+    public static List<Expense> listExpense = new ArrayList<Expense>();
+
     private PusherTable pusherTable;
 
     public static boolean onClickMoveOrdered = false;
+    public static boolean loadExpense = true;
 
     private ProgressDialog dialog ;
 

@@ -5,5 +5,5 @@ package io.awesome.app.Presenter.Expense;
  */
 
 public interface ExpensePresenter {
-    void getExpenseByAccount();
+    void getExpense();
 }

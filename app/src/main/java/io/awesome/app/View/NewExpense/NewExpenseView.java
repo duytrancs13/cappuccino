@@ -7,6 +7,6 @@ import io.awesome.app.View.InterfaceView.AlertMessage_IV;
  */
 
 public interface NewExpenseView extends AlertMessage_IV {
-    void showProgress();
+    void showProgressCreateExpense();
     void createExpenseSuccessful();
 }

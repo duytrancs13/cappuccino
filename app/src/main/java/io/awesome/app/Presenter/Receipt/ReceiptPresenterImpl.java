@@ -6,6 +6,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -44,6 +45,7 @@ public class ReceiptPresenterImpl implements ReceiptPresenter {
     private Receipt receipt;
     private Context context;
     private FragmentReceipt fragmentReceipt;
+    private String token;
 
     private InputStream inputStream;
     private OutputStream outputStream;
@@ -53,9 +55,10 @@ public class ReceiptPresenterImpl implements ReceiptPresenter {
     private Thread thread;
     private String BILL = "";
 
-    public ReceiptPresenterImpl(Context context, FragmentReceipt fragmentReceipt) {
+    public ReceiptPresenterImpl(Context context, FragmentReceipt fragmentReceipt, String token) {
         this.context = context;
         this.fragmentReceipt = fragmentReceipt;
+        this.token = token;
     }
 
     @Override
@@ -64,7 +67,7 @@ public class ReceiptPresenterImpl implements ReceiptPresenter {
     }
 
     @Override
-    public void updateReceipt(final String token) {
+    public void updateReceipt() {
         RequestQueue queue = Volley.newRequestQueue(context);
         String url="https://cafeteria-service.herokuapp.com/api/v1/receipts/"+receiptId;
         StringRequest stringRequest = new StringRequest(Request.Method.PATCH, url, new Response.Listener<String>() {

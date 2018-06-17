@@ -119,8 +119,8 @@ public class MenuPresenterImpl implements MenuPresenter {
 
 
     @Override
-    public void setTextPopupNoteAdd(String textNote, String menuId) {
-        fragmentMenu.setTextPopupNodeAdd(textNote, menuId);
+    public void setTextPopupNoteAdd(String textNote, Ordered ordered) {
+        fragmentMenu.setTextPopupNodeAdd(textNote, ordered);
     }
 
     @Override

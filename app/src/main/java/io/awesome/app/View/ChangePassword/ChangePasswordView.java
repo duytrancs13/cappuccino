@@ -10,4 +10,5 @@ import io.awesome.app.View.InterfaceView.Progress_IV;
 
 public interface ChangePasswordView extends ErrorPW_IV, Progress_IV, AlertMessage_IV {
     public void errorChangePW(String errorConfirmPW);
+    public void changePwSuccessful();
 }
