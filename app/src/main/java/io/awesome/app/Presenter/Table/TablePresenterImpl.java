@@ -45,30 +45,27 @@ import static io.awesome.app.View.Table.TableActivity.listOrdered;
 
 
 public class TablePresenterImpl implements TablePresenter {
-    private static final String API_KEY = "aeadf645a84df411d55d";
-    private static final String APP_CLUSTER = "ap1";
-    private static final String CHANEL_NAME = "tables";
-    private static final String EVENT_NAME = "all-tables";
-
     private Context context;
     private TableView tableView;
+    private String token;
 
 
-    public TablePresenterImpl(Context context, TableView tableView) {
+    public TablePresenterImpl(Context context, TableView tableView, String token) {
         this.context = context;
         this.tableView = tableView;
+        this.token = token;
     }
 
     // Gọi API của bàn, trả về list table rồi truyền vào hàm showTable()
     @Override
-    public void loadTable(final String token) {
+    public void loadTable() {
         RequestQueue queue = Volley.newRequestQueue(context);
         String url= "https://cafeteria-service.herokuapp.com/api/v1/tables";
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 Log.v("AAA", "Get table successfull "+response.toString());
-                /*tableView.showTable();*/
+                tableView.showTables();
             }
         }, new Response.ErrorListener() {
             @Override
@@ -87,7 +84,7 @@ public class TablePresenterImpl implements TablePresenter {
 
     @Override
     public void dragTable(LinearLayout linearLayout) {
-            linearLayout.setOnTouchListener(new OnDragTouchListener(linearLayout));
+        linearLayout.setOnTouchListener(new OnDragTouchListener(linearLayout));
     }
 
     // Gọi API cập nhật receipt cần có 2 param là idTable và token
@@ -167,7 +164,3 @@ public class TablePresenterImpl implements TablePresenter {
     }
 
 }
-
-
-
-

@@ -1,6 +1,9 @@
 package io.awesome.app.Presenter.Receipt;
 
+import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothDevice;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Handler;
 import android.util.Log;
 import android.widget.Toast;
@@ -23,19 +26,25 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
+import java.util.UUID;
 
 import io.awesome.app.Model.Ordered;
 import io.awesome.app.Model.Receipt;
 import io.awesome.app.View.Fragment.Receipt.FragmentReceipt;
 
+import static io.awesome.app.View.Main.MainActivity.account;
 import static io.awesome.app.View.Main.MainActivity.bluetoothSocket;
 import static io.awesome.app.View.Main.MainActivity.receiptId;
 import static io.awesome.app.View.Table.TableActivity.listOrdered;
+import static io.awesome.app.View.Table.TableActivity.nameTableMoveOrdered;
 
 /**
  * Created by sung on 26/11/2017.
@@ -101,33 +110,6 @@ public class ReceiptPresenterImpl implements ReceiptPresenter {
     }
 
     @Override
-    public void addReceipt(String receiptId, String token, final String key, final String value) {
-        String url = "https://cappuccino-hello.herokuapp.com/api/receipt/"+receiptId+"?token="+token;
-        RequestQueue queue = Volley.newRequestQueue(context);
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                Log.v("AAAA", response);
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.v("BBB","duy");
-                Log.v("AAAError:",error.toString());
-            }
-        }){
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String, String> params = new HashMap<>();
-                params.put(key,value);
-                return params;
-            }
-        };
-
-        queue.add(stringRequest);
-    }
-
-    @Override
     public void printReceipt() {
         try {
             inputStream = bluetoothSocket.getInputStream();
@@ -137,9 +119,8 @@ public class ReceiptPresenterImpl implements ReceiptPresenter {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-
     }
+
     void beginListener(){
         final Handler handler = new Handler() ;
         final byte delimiter = 10;
@@ -189,39 +170,73 @@ public class ReceiptPresenterImpl implements ReceiptPresenter {
     }
 
     public void printData() throws  IOException{
-        try{
-//            String msg = txtText.getText().toString();
-//            msg+="\n";
-            outputStream.write(stringBill().getBytes());
-        }catch (Exception ex){
-            ex.printStackTrace();
+
+            writeWithFormat("CAPPUCCINO COFFEE\n".getBytes(), new Formatter().bold().get(), Formatter.centerAlign());
+            writeWithFormat("Dai hoc bach khoa TP.HCM \n".getBytes(), new Formatter().get(), Formatter.centerAlign());
+            writeWithFormat("SDT: 0975331152\n".getBytes(), new Formatter().get(), Formatter.centerAlign());
+
+
+            writeWithFormat("\nBIEN LAI\n".getBytes(), new Formatter().bold().get(), Formatter.centerAlign());
+            writeWithFormat("--------------------------------\n".getBytes(), new Formatter().bold().get(), Formatter.centerAlign());
+
+
+            writeWithFormat(String.valueOf("Dung tai:"+countSpace(32,"Dung tai:", nameTableMoveOrdered)+nameTableMoveOrdered+"\n").getBytes(), new Formatter().get(), Formatter.rightAlign());
+            writeWithFormat(String.valueOf("Phuc vu boi:"+countSpace(32,"Phuc vu boi:", account.getDisplayName())+account.getDisplayName()+"\n").getBytes(), new Formatter().get(), Formatter.rightAlign());
+
+            String currentDate = new SimpleDateFormat("dd-MM-yyyy").format(new Date());
+            String currentTime = new SimpleDateFormat("HH:mm:ss").format(new Date());
+            writeWithFormat(String.valueOf("Vao ngay:"+countSpace(32,"Vao ngay:", currentDate)+currentDate+"\n").getBytes(), new Formatter().get(), Formatter.rightAlign());
+            writeWithFormat(String.valueOf("Thoi gian:"+countSpace(32,"Thoi gian:", currentTime)+currentTime+"\n").getBytes(), new Formatter().get(), Formatter.rightAlign());
+
+            writeWithFormat("--------------------------------\n".getBytes(), new Formatter().bold().get(), Formatter.centerAlign());
+
+            writeWithFormat("Mat hang            SL   So tien\n".getBytes(), new Formatter().bold().get(), Formatter.rightAlign());
+
+            int totalMoney = 0;
+            for (Ordered ordered : listOrdered){
+                String space1 = countSpace(21,ordered.getName(), String.valueOf(ordered.getQuantity()));
+                String space2 = countSpace(12,String.valueOf(ordered.getQuantity()), String.valueOf(ordered.getPrice()*ordered.getQuantity()+" "));
+
+                ;
+                String row = ordered.getName()+space1+ordered.getQuantity()+space2+NumberFormat.getNumberInstance(Locale.GERMAN).format(ordered.getPrice()*ordered.getQuantity());
+
+                writeWithFormat(String.valueOf(row+"\n").getBytes(), new Formatter().get(), Formatter.rightAlign());
+                totalMoney+=ordered.getPrice()*ordered.getQuantity();
+            }
+
+            writeWithFormat("--------------------------------\n".getBytes(), new Formatter().bold().get(), Formatter.centerAlign());
+
+            writeWithFormat(String.valueOf("Tong:"+countSpace(32,"Tong:", String.valueOf(totalMoney)+"  d")+NumberFormat.getNumberInstance(Locale.GERMAN).format(totalMoney)+" d\n").getBytes(), new Formatter().get(), Formatter.rightAlign());
+
+            writeWithFormat("Chuc ban mot ngay tuyet voi\n".getBytes(), new Formatter().bold().get(), Formatter.centerAlign());
+
+    }
+    private String countSpace(int size ,String left, String right){
+        String space="";
+        for(int i =0; i< size-left.length()-right.length();i++){
+            space+= " ";
         }
+        return space;
     }
 
-    public String stringBill(){
 
-        String currentDate = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
-        String currentTime = new SimpleDateFormat("HH:mm:ss").format(new Date());
 
-        BILL =   "\n"+"       CAPPUCCINO COFFEE \n";
-        BILL = BILL + "Chung cu mieu noi, phuong 2, quan Binh Thanh, TP.HCM \n \n";
-        BILL = BILL + "SDT: 0975331152 \n ";
-        BILL = BILL + "           Hoa don \n ";
-        BILL = BILL + "-------------------------------\n";
-        BILL = BILL + "Dung tai ban:             Ban 1\n";
-        BILL = BILL + "Thoi gian: "+currentDate+ " "+currentTime+"\n";
-        BILL = BILL + "-------------------------------\n";
-        BILL = BILL + "Ten mon:            SL  So tien\n";
-        int totalMoney = 0;
-        for (Ordered ordered : listOrdered){
-            totalMoney+=ordered.getPrice()*ordered.getQuantity();
-            BILL = BILL + ordered.getName()+"           "+ordered.getQuantity()+"  "+ordered.getPrice()*ordered.getQuantity()+"\n";
+    public boolean writeWithFormat(byte[] buffer, final byte[] pFormat, final byte[] pAlignment) {
+        try {
+            // Notify printer it should be printed with given alignment:
+            outputStream.write(pAlignment);
+            // Notify printer it should be printed in the given format:
+            outputStream.write(pFormat);
+            // Write the actual data:
+            outputStream.write(buffer, 0, buffer.length);
+
+            // Share the sent message back to the UI Activity
+            /*.getHandler().obtainMessage(MESSAGE_WRITE, buffer.length, -1, buffer).sendToTarget();*/
+            return true;
+        } catch (IOException e) {
+            Log.v("AAA", "Exception during write", e);
+            return false;
         }
-
-        BILL = BILL + "-------------------------------\n";
-        BILL = BILL + "Tong:                "+totalMoney+"\n";
-        BILL = BILL + "Cam on va chuc ban mot ngay tuyet voi\n";
-        return BILL;
     }
 
     public void toast(String msg) {

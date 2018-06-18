@@ -46,7 +46,7 @@
             <Button
                 android:id="@+id/btnConfirmOrdered"
                 android:layout_width="match_parent"
-                android:layout_height="25dp"
+                android:layout_height="wrap_content"
                 android:textColor="@color/white"
                 android:background="@drawable/button_login"
                 android:text="Xác nhận"

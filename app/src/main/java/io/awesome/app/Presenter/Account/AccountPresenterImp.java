@@ -10,7 +10,6 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.request.SimpleMultiPartRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.JsonObject;
@@ -130,23 +129,4 @@ public class AccountPresenterImp implements AccountPresenter {
         queue.add(stringRequest);
     }
 
-    @Override
-    public void uploadFile(String imagePath, String token) {
-        String url = "https://cafeteria-service.herokuapp.com/api/v1/users/profile/"+account.getUserId();
-
-        SimpleMultiPartRequest smr = new SimpleMultiPartRequest(Request.Method.POST, url, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                Log.v("AAA", response);
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.v("AAA", error.toString());
-            }
-        });
-        smr.addFile("image", imagePath);
-        RequestQueue mRequestQueue = Volley.newRequestQueue(context);
-        mRequestQueue.add(smr);
-    }
 }

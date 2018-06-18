@@ -1,6 +1,5 @@
-package io.awesome.app.View.Table;
 
-import android.view.ViewGroup;
+package io.awesome.app.View.Table;
 
 /**
  * Created by sung on 12/11/2017.
@@ -8,8 +7,7 @@ import android.view.ViewGroup;
 
 public interface TableView {
     public void alertLogout();
-    public void showTable();
+    public void showTables();
     public void gotoMenu(String receipt ,int statusMenu);
     public void gotoTransferOrdered();
-    public void reloadTableActivity();
 }

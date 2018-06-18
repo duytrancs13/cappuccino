@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import java.text.NumberFormat;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
@@ -59,8 +60,9 @@ public class CustomExpenseAdapter extends BaseAdapter {
             viewHolder = new ViewHolder();
             viewHolder.btnStatusExpense = (Button) convertView.findViewById(R.id.btnStatusExpense);
             viewHolder.tvNameExpense = (TextView) convertView.findViewById(R.id.tvNameExpense);
-            viewHolder.tvQuantityExpense = (TextView) convertView.findViewById(R.id.tvQuantityExpense);
-            viewHolder.tvUnitExpense = (TextView) convertView.findViewById(R.id.tvUnitExpense);
+            viewHolder.tvCreateAtExpense = (TextView) convertView.findViewById(R.id.tvCreateAtExpense);
+            viewHolder.btnQuantityExpense = (Button) convertView.findViewById(R.id.btnQuantityExpense);
+
             viewHolder.tvPriceExpense = (TextView) convertView.findViewById(R.id.tvPriceExpense);
             convertView.setTag(viewHolder);
 
@@ -81,11 +83,16 @@ public class CustomExpenseAdapter extends BaseAdapter {
         viewHolder.tvNameExpense.setText(expense.getName());
         viewHolder.tvNameExpense.setTypeface(mFont);
 
-        viewHolder.tvQuantityExpense.setText(String.valueOf(expense.getQuantity()));
-        viewHolder.tvQuantityExpense.setTypeface(mFont);
+        android.text.format.DateFormat df = new android.text.format.DateFormat();
+        Calendar calendar = Calendar.getInstance(Locale.ENGLISH);
+        calendar.setTimeInMillis(expense.getCreateAt() * 1000L);
+        viewHolder.tvCreateAtExpense.setText(df.format("dd-MM-yyyy",calendar).toString());
+        viewHolder.tvCreateAtExpense.setTypeface(mFont);
 
-        viewHolder.tvUnitExpense.setText(String.valueOf(expense.getUnit()));
-        viewHolder.tvUnitExpense.setTypeface(mFont);
+        viewHolder.btnQuantityExpense.setText(String.valueOf(expense.getQuantity()));
+        viewHolder.btnQuantityExpense.setTypeface(mFont);
+
+
 
         viewHolder.tvPriceExpense.setText(NumberFormat.getNumberInstance(Locale.GERMAN).format(expense.getPrice())+" đ");
         viewHolder.tvPriceExpense.setTypeface(mFont);
@@ -100,8 +107,8 @@ public class CustomExpenseAdapter extends BaseAdapter {
     static class ViewHolder extends FragmentActivity {
         Button btnStatusExpense;
         TextView tvNameExpense;
-        TextView tvQuantityExpense;
-        TextView tvUnitExpense;
+        TextView tvCreateAtExpense;
+        Button btnQuantityExpense;
         TextView tvPriceExpense;
     }
 }

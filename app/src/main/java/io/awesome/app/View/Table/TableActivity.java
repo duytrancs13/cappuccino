@@ -166,7 +166,7 @@ public class TableActivity extends AppCompatActivity implements NavigationView.O
         // Lấy biến token ra để sử dụng
         sharedPreferences = getSharedPreferences(MyPREFERENCES, MODE_PRIVATE);
         token = sharedPreferences.getString("token", null);
-        tablePresenter = new TablePresenterImpl(getBaseContext(),this);
+        tablePresenter = new TablePresenterImpl(getBaseContext(),this, token);
 
         /*pusherTable = new PusherTable(this);*/
         PusherOptions options = new PusherOptions();
@@ -177,6 +177,8 @@ public class TableActivity extends AppCompatActivity implements NavigationView.O
 
         if(onSubcribeTable){
 
+            Log.v("AAA", "ahihi");
+
             Pusher pusher = new Pusher(API_KEY,options);
 
             Channel channel = pusher.subscribe(CHANEL_NAME);
@@ -186,29 +188,22 @@ public class TableActivity extends AppCompatActivity implements NavigationView.O
                     new Handler(Looper.getMainLooper()).post(new Runnable() {
                         @Override
                         public void run() {
-                        Gson gson = new Gson();
-                        TypeToken<List<Table>> token = new TypeToken<List<Table>>() {};
-                        listTable = gson.fromJson(data, token.getType());
-                        if(!onSubcribeTable){
-                            root.removeAllViews();
-                        }
-                        showTable();
+                            Gson gson = new Gson();
+                            TypeToken<List<Table>> token = new TypeToken<List<Table>>() {};
+                            listTable = gson.fromJson(data, token.getType());
+                            if(!onSubcribeTable){
+                                root.removeAllViews();
+                                showTables();
+                            }
                         }
                     });
+
                 }
             });
             pusher.connect();
         }
 
-        tablePresenter.loadTable(token);
-
-
-
-
-
-//        dialog.dismiss();
-
-
+        tablePresenter.loadTable();
     }
 
 
@@ -218,11 +213,10 @@ public class TableActivity extends AppCompatActivity implements NavigationView.O
     // Dùng list table để hiển thị ra
     // Gồm có 3 trạng thái của bàn: "Rỗng", "đã đặt món", "đã giao món".
     @Override
-    public void showTable() {
-
-        Log.v("AAA", listTable.get(1).getName());
+    public void showTables() {
+        showProgress();
         for(int i = 0; i < listTable.size() ; i++){
-
+            Log.v("AAA", listTable.get(i).getName());
             // Đối tượng của 1 bàn itemTable
             final Table itemTable = listTable.get(i);
             final String receiptBusy = itemTable.getReceiptId();
@@ -307,38 +301,29 @@ public class TableActivity extends AppCompatActivity implements NavigationView.O
             /*table.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(final View v) {
-
                     popup = new PopupMenu(v.getContext(), table);
-
                     // Nếu bàn ở trạng thái "rỗng"
                     if( table.getBackground().getConstantState() ==
                             getResources().getDrawable(R.drawable.ic_table_idle).getConstantState() ){
-
                         // Hiển thị popup của bàn ở trạng thái rỗng
                         //popupTableFree(v,table,itemTable,timer);
                     }
                     // Bắt sự kiện khi bàn ở trạng thái "đợi".
                     else if(table.getBackground().getConstantState() ==
                             getResources().getDrawable(R.drawable.ic_table_waiting).getConstantState() ){
-
                         // Hiển thị popup của bàn ở trạng thái "đợi"
                         popupTableWaiting(v,table,itemTable.getReceiptId(),itemTable.getId(),timer);
-
                     // Bắt sự kiện khi bàn ở trạng thái đã giao món
                     }else if(table.getBackground().getConstantState() ==
                             getResources().getDrawable(R.drawable.ic_table_deliver).getConstantState()) {
-
                         // Hiển thị popup của bàn ở trạng thái "đã giao món"
                         popupTableDeliver(v,table);
-
                     }
                 }
             });*/
         }
         onSubcribeTable = false;
         dialog.dismiss();
-
-
     }
 
     // Hiển thị thông báo hỏi người dùng có muốn thoát ứng dụng không
@@ -362,6 +347,8 @@ public class TableActivity extends AppCompatActivity implements NavigationView.O
                 .create()
                 .show();
     }
+
+
 
     // Navigation gồm 2 phần là Profile và Logout
     @Override
@@ -404,9 +391,9 @@ public class TableActivity extends AppCompatActivity implements NavigationView.O
                 // Khi chọn vào item "đặt món".
 
                 // Cần sử lý 3 việc:
-                    // 1.cập nhật thanh toán
-                    // 2. Chuyển trạng thái bàn 1 bàn từ rỗng sang trạng thái đợi
-                    // 3. Đếm thời gian tăng lên
+                // 1.cập nhật thanh toán
+                // 2. Chuyển trạng thái bàn 1 bàn từ rỗng sang trạng thái đợi
+                // 3. Đếm thời gian tăng lên
                 if(item==0){
                     // Cập nhật receipt của bàn đó và đi đến màn hình menu
                     tablePresenter.createReceipt(idTable,token, position);
@@ -436,7 +423,6 @@ public class TableActivity extends AppCompatActivity implements NavigationView.O
                         public void onTick(long millisUntilFinished) {
                             table.setBackgroundResource(R.drawable.ic_table_busy);
                             table.setEnabled(false);
-
                             textTimer.setVisibility(View.VISIBLE);
                             textTimer.setTextColor(getResources().getColor(R.color.red));
                             textTimer.setText(formatMilliSecondsToTime(millisUntilFinished));
@@ -468,9 +454,10 @@ public class TableActivity extends AppCompatActivity implements NavigationView.O
                 // Khi chọn vào item "đặt thêm món"
                 if(position == 0){
                     // Đi đến màn hình menu.
+                    nameTableMoveOrdered = nameTable;
                     gotoMenu(receiptBusy,1);
 
-                // Khi chọn vào item "Chuyển bàn"
+                    // Khi chọn vào item "Chuyển bàn"
                 }else if(position == 1){
                     receiptId = receiptBusy;
                     nameTableMoveOrdered = nameTable;
@@ -484,7 +471,7 @@ public class TableActivity extends AppCompatActivity implements NavigationView.O
                     toast("Đặt chỗ");
 
 
-                // Khi chọn vào item "Thanh toán"
+                    // Khi chọn vào item "Thanh toán"
                 }else if(position == 3){
 //                    btnTable.setBackgroundResource(R.drawable.ic_table_idle);
 //                    countUp.stop();
@@ -494,7 +481,7 @@ public class TableActivity extends AppCompatActivity implements NavigationView.O
 //                    receiptId = receiptBusy;
 //                    intent.putExtra("statusReceipt",1);
 //                    startActivity(intent);
-
+                    nameTableMoveOrdered = nameTable;
                     gotoMenu(receiptBusy, 2);
                 }
             }
@@ -506,7 +493,6 @@ public class TableActivity extends AppCompatActivity implements NavigationView.O
     // Hàm xử lí sự kiện khi gọi bàn ở trạng thái đã đạt món.
     /*void popupTableDeliver(View v, final Button table){
         final CharSequence[] items = {"Đặt thêm món","Thanh toán"};
-
         AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
         builder.setIcon(R.drawable.ic_option);
         builder.setTitle("Tùy chọn");
@@ -515,7 +501,6 @@ public class TableActivity extends AppCompatActivity implements NavigationView.O
                 if(position == 0){
                     intent = new Intent(TableActivity.this, MenuTabsActivity.class);
                     startActivity(intent);
-
                     table.setBackgroundResource(R.drawable.ic_table_waiting);
                     countUp = new CountUp(1000) {
                         @Override
@@ -533,8 +518,6 @@ public class TableActivity extends AppCompatActivity implements NavigationView.O
                     countUp.stop();
                     TextView textTimer = (TextView) findViewById(R.id.timer);
                     textTimer.setVisibility(View.INVISIBLE);
-
-
                     intent = new Intent(TableActivity.this,MenuTabsActivity.class);
                     intent.putExtra("statusReceipt",1);
                     startActivity(intent);
@@ -562,13 +545,6 @@ public class TableActivity extends AppCompatActivity implements NavigationView.O
         intent = new Intent(TableActivity.this, MoveOrderActivity.class);
         startActivity(intent);
     }
-
-    @Override
-    public void reloadTableActivity() {
-        finish();
-        startActivity(getIntent());
-    }
-
 
     private String formatMilliSecondsToTime(long milliseconds) {
 
@@ -621,12 +597,12 @@ public class TableActivity extends AppCompatActivity implements NavigationView.O
         return super.onKeyDown(keyCode, event);
     }
 
+
     public void showProgress() {
         new Progress().execute();
     }
+
     private class Progress extends AsyncTask<Void, Void, Void> {
-
-
 
         protected void onPreExecute() {
             super.onPreExecute();
@@ -638,7 +614,6 @@ public class TableActivity extends AppCompatActivity implements NavigationView.O
 
         @Override
         protected Void doInBackground(Void... voids) {
-
             return null;
         }
     }

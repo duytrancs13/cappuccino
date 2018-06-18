@@ -13,7 +13,7 @@ import io.awesome.app.View.Table.TableView;
  */
 
 public interface TablePresenter {
-    void loadTable(String token);
+    void loadTable();
     void dragTable(LinearLayout linearLayout);
     void createReceipt(String idTable,String token, int position);
     void getMenuOrdered(String token);

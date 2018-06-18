@@ -9,6 +9,5 @@ import org.json.JSONObject;
 public interface ReceiptPresenter {
     void getMenuReceipt(String token);
     void updateReceipt();
-    void addReceipt(String receiptId, String token, String key, String value);
     void printReceipt();
 }

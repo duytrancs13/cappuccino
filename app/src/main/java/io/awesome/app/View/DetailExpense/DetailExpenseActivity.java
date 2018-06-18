@@ -3,6 +3,7 @@ package io.awesome.app.View.DetailExpense;
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.SharedPreferences;
+import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
@@ -21,6 +22,7 @@ import java.text.DateFormat;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
@@ -47,8 +49,10 @@ public class DetailExpenseActivity extends AppCompatActivity implements DetailEx
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail_expense);
-        SetFont setFont = new SetFont("Roboto-Regular.ttf");
-        setFont.getFont();
+        /*SetFont setFont = new SetFont("Roboto-Regular.ttf");
+        setFont.getFont();*/
+
+
 
 
         sharedPreferences = getSharedPreferences(MyPREFERENCES, MODE_PRIVATE);
@@ -133,25 +137,45 @@ public class DetailExpenseActivity extends AppCompatActivity implements DetailEx
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
+            Typeface mFont = Typeface.createFromAsset(getAssets(),"Roboto-Thin.ttf");
             tvDetailNameExpense.setText(expense.getName());
+            tvDetailNameExpense.setTypeface(mFont);
+
             tvDetailPriceExpense.setText(NumberFormat.getNumberInstance(Locale.GERMAN).format(expense.getPrice())+" đ");
+            tvDetailPriceExpense.setTypeface(mFont);
+
             tvDetailQuantityExpense.setText(expense.getQuantity()+"");
+            tvDetailQuantityExpense.setTypeface(mFont);
+
             tvDetailUnitExpense.setText(expense.getUnit());
+            tvDetailUnitExpense.setTypeface(mFont);
+
             tvDetailCreateByExpense.setText(expense.getCreateBy());
+            tvDetailCreateByExpense.setTypeface(mFont);
+
             android.text.format.DateFormat df = new android.text.format.DateFormat();
-            tvDetailDateCreateExpense.setText(df.format("dd-MM-yyyy", expense.getCreateAt()));
+            Calendar calendar = Calendar.getInstance(Locale.ENGLISH);
+            calendar.setTimeInMillis(expense.getCreateAt() * 1000L);
+            tvDetailDateCreateExpense.setText(df.format("dd-MM-yyyy",calendar).toString());
+            tvDetailDateCreateExpense.setTypeface(mFont);
 
 
             if(expense.getStatus().equals("Pending")){
                 tvDetailStatusExpense.setText("Đợi phê duyệt");
+                tvDetailStatusExpense.setTypeface(mFont);
             }else{
                 tvDetailStatusExpense.setText("Đã phê duyệt");
+                tvDetailStatusExpense.setTypeface(mFont);
 
                 llDetailApproveByExpense.setVisibility(View.VISIBLE);
                 tvDetailApproveByExpense.setText(expense.getApprovedBy());
+                tvDetailApproveByExpense.setTypeface(mFont);
 
                 llDetailApproveAtExpense.setVisibility(View.VISIBLE);
-                tvDetailApproveAtExpense.setText(df.format("dd-MM-yyyy", expense.getApprovedAt()));
+                calendar.setTimeInMillis(expense.getApprovedAt() * 1000L);
+                tvDetailApproveAtExpense.setText(df.format("dd-MM-yyyy",calendar).toString());
+                tvDetailApproveAtExpense.setTypeface(mFont);
+
 
             }
             tvDetailNoteExpense.setText(expense.getNote());

@@ -39,6 +39,8 @@ import java.lang.reflect.Method;
 import java.text.NumberFormat;
 import java.util.List;
 import java.util.Locale;
+import java.util.Set;
+import java.util.UUID;
 
 import io.awesome.app.Model.Ordered;
 import io.awesome.app.Presenter.Receipt.ReceiptPresenterImpl;
@@ -49,6 +51,8 @@ import static android.content.Context.MODE_PRIVATE;
 import static io.awesome.app.View.Main.MainActivity.bluetoothSocket;
 import static io.awesome.app.View.Main.MainActivity.receiptId;
 import static io.awesome.app.View.Table.TableActivity.listOrdered;
+
+
 
 public class FragmentReceipt extends Fragment implements FragmentReceiptView {
 
@@ -75,8 +79,8 @@ public class FragmentReceipt extends Fragment implements FragmentReceiptView {
 
     private boolean checkClickPrintPay = false;
 
-
-
+    private BluetoothAdapter bluetoothAdapter;
+    private BluetoothDevice bluetoothDevice;
 
 
     @Nullable
@@ -119,18 +123,21 @@ public class FragmentReceipt extends Fragment implements FragmentReceiptView {
                 @Override
                 public void onClick(View view) {
 
-                    /*try {
+                try {
+                    if(!isBluetoothEnabled()){
+                        toast("Vui long mo bluetooth!!!");
+                        bluetoothSocket = null;
+                    }else{
                         if(bluetoothSocket==null){
-                            toast("Vui long ket noi bluetooth");
-
-                        }else{
-                            receiptPresenter.printReceipt();
-                            receiptPresenter.printData();
+                            findBluetoothDevice();
+                            openBluetoothPrinter();
                         }
+                        confirmConnectBluetooth();
+                    }
 
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }*/
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
 
 
                 }
@@ -161,7 +168,12 @@ public class FragmentReceipt extends Fragment implements FragmentReceiptView {
             llReceipt.addView(v);
         }
     }
+    public boolean isBluetoothEnabled()
+    {
+        bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+        return bluetoothAdapter.isEnabled();
 
+    }
 
 
     @Override
@@ -240,6 +252,53 @@ public class FragmentReceipt extends Fragment implements FragmentReceiptView {
         viewHolder.tvMoneyReceipt.setText(""+money+" đ");
 
         return view;
+    }
+
+    private void confirmConnectBluetooth(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setMessage("Bạn có muốn kết nối bluetooth không?");
+        builder.setPositiveButton("Có", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                try {
+                    receiptPresenter.printReceipt();
+                    receiptPresenter.printData();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        builder.setNegativeButton("Không", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+            }
+        });
+        builder.show();
+    }
+
+
+    void findBluetoothDevice(){
+        Log.v("AAA", "ahihi");
+        Set<BluetoothDevice> pairDevice = bluetoothAdapter.getBondedDevices();
+        if(pairDevice.size()>0){
+            for (BluetoothDevice pairedDevice : pairDevice){
+                // bluetooth printer name is BTP_F09F1A
+                if(pairedDevice.getName().equals("BlueTooth Printer")){
+                    bluetoothDevice = pairedDevice;
+                    break;
+                }
+            }
+        }
+    }
+
+    public void openBluetoothPrinter(){
+        UUID uuid = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
+        try {
+            bluetoothSocket = bluetoothDevice.createRfcommSocketToServiceRecord(uuid);
+            bluetoothSocket.connect();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void confirmUpdateReceipt(){

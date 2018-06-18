@@ -35,5 +35,4 @@ dependencies {
     compile 'com.android.support:design:23.1.1'
     compile 'com.otaliastudios:zoomlayout:1.2.0'
     compile 'de.hdodenhof:circleimageview:2.1.0'
-    compile 'dev.dworks.libs:volleyplus:+'
 }

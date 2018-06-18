@@ -19,74 +19,16 @@
         android:layout_marginBottom="1dp"
         />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        >
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="2"
-            android:text="Trạng thái"
-            android:gravity="center"
-            android:layout_gravity="center_vertical"
-            android:textColor="@color/white"
-            android:background="@color/blue"
-            />
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="4"
-            android:text="Tên sản phẩm"
-            android:gravity="center"
-            android:layout_gravity="center_vertical"
-            android:textColor="@color/white"
-            android:background="@color/blue"
-            />
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="2"
-            android:text="Số lượng"
-            android:gravity="center"
-            android:layout_gravity="center_vertical"
-            android:textColor="@color/white"
-            android:background="@color/blue"
-            />
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="2"
-            android:text="Đơn vị"
-            android:gravity="center"
-            android:layout_gravity="center_vertical"
-            android:textColor="@color/white"
-            android:background="@color/blue"
-            />
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="2"
-            android:text="Giá"
-            android:gravity="center"
-            android:layout_gravity="center_vertical"
-            android:textColor="@color/white"
-            android:background="@color/blue"
-            />
-    </LinearLayout>
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         >
 
+
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1"
             >
             <ListView
                 android:id="@+id/lvExpense"
@@ -94,21 +36,38 @@
                 android:layout_height="match_parent"
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
-                android:layout_marginTop="5dp">
+                android:layout_marginTop="5dp"
+                android:paddingBottom="70dp"
+                android:clipToPadding="false"
+                android:scrollbarStyle="outsideOverlay"
+                >
             </ListView>
 
 
         </LinearLayout>
 
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/fab"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/fab_margin"
-            android:src="@drawable/ic_new_expense"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
             android:layout_alignParentBottom="true"
-            android:layout_alignParentRight="true"
-            app:backgroundTint="@color/green" />
+            android:translationY="-10dp"
+            android:orientation="horizontal"
+            >
+            <Button
+                android:id="@+id/btnNewExpense"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:background="@drawable/button_login"
+                android:text="Tạo mới"
+                />
+
+        </LinearLayout>
+
+
+
 
     </RelativeLayout>
 

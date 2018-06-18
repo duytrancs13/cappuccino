@@ -51,6 +51,7 @@ public class ExpensePresenterImp implements ExpensePresenter {
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
+                expenseView.showExpense();
             }
         }, new Response.ErrorListener() {
             @Override

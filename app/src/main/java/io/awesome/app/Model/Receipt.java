@@ -9,17 +9,19 @@ import java.util.List;
 public class Receipt {
     private String id;
     private String tableId;
-    private int totalPrice;
+    private String tableName;
     private List<Ordered> items;
-    private int createAt;
+    private long createAt;
+    private boolean isPay;
     private int payAt;
 
-    public Receipt(String id, String tableId, int totalPrice, List<Ordered> items, int createAt, int payAt) {
+    public Receipt(String id, String tableId, String tableName, List<Ordered> items, long createAt, boolean isPay, int payAt) {
         this.id = id;
         this.tableId = tableId;
-        this.totalPrice = totalPrice;
+        this.tableName = tableName;
         this.items = items;
         this.createAt = createAt;
+        this.isPay = isPay;
         this.payAt = payAt;
     }
 
@@ -39,12 +41,12 @@ public class Receipt {
         this.tableId = tableId;
     }
 
-    public int getTotalPrice() {
-        return totalPrice;
+    public String getTableName() {
+        return tableName;
     }
 
-    public void setTotalPrice(int totalPrice) {
-        this.totalPrice = totalPrice;
+    public void setTableName(String tableName) {
+        this.tableName = tableName;
     }
 
     public List<Ordered> getItems() {
@@ -55,12 +57,20 @@ public class Receipt {
         this.items = items;
     }
 
-    public int getCreateAt() {
+    public long getCreateAt() {
         return createAt;
     }
 
-    public void setCreateAt(int createAt) {
+    public void setCreateAt(long createAt) {
         this.createAt = createAt;
+    }
+
+    public boolean isPay() {
+        return isPay;
+    }
+
+    public void setPay(boolean pay) {
+        isPay = pay;
     }
 
     public int getPayAt() {
@@ -70,4 +80,6 @@ public class Receipt {
     public void setPayAt(int payAt) {
         this.payAt = payAt;
     }
+
+
 }

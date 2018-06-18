@@ -13,7 +13,11 @@
         android:layout_marginTop="10dp"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
-        android:divider="@null">
+        android:divider="@null"
+        android:paddingBottom="70dp"
+        android:clipToPadding="false"
+        android:scrollbarStyle="outsideOverlay"
+        >
     </ListView>
 
 </LinearLayout>

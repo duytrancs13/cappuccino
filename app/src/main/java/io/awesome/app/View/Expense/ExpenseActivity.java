@@ -15,6 +15,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -45,7 +46,7 @@ public class ExpenseActivity extends AppCompatActivity implements ExpenseView{
     private SharedPreferences sharedPreferences;
     private String token;
 
-    private FloatingActionButton fab;
+    private Button btnNewExpense;
     private ListView lvExpense;
     private ExpensePresenterImp expensePresenterImp;
     private CustomExpenseAdapter customExpenseAdapter;
@@ -85,9 +86,6 @@ public class ExpenseActivity extends AppCompatActivity implements ExpenseView{
 
         if(onSubcribeExpense){
 
-            onSubcribeExpense = false;
-
-
             PusherOptions options = new PusherOptions();
 
             options.setCluster(APP_CLUSTER);
@@ -108,8 +106,10 @@ public class ExpenseActivity extends AppCompatActivity implements ExpenseView{
                             Gson gson = new Gson();
                             TypeToken<List<Expense>> token = new TypeToken<List<Expense>>() {};
                             listExpense = gson.fromJson(data.toString(), token.getType());
-//                            customExpenseAdapter.realTimeExpense(listExpense);
-                            showExpense();
+                            if(!onSubcribeExpense){
+                                showExpense();
+                            }
+
                         }
                     });
                 }
@@ -119,10 +119,8 @@ public class ExpenseActivity extends AppCompatActivity implements ExpenseView{
 
         showProgressExpense();
 
-
-
-        fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+        btnNewExpense = (Button) findViewById(R.id.btnNewExpense);
+        btnNewExpense.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(ExpenseActivity.this, NewExpenseActivity.class);
@@ -187,6 +185,8 @@ public class ExpenseActivity extends AppCompatActivity implements ExpenseView{
             startActivity(intent);
             }
         });
+        onSubcribeExpense = false;
+
     }
 
     public void toast(String message) {
