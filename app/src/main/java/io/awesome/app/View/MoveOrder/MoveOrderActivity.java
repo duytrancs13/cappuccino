@@ -20,6 +20,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.tapadoo.alerter.Alerter;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -64,7 +66,7 @@ public class MoveOrderActivity extends AppCompatActivity implements MoveOrderedI
     private ProgressDialog dialog;
     private Button syncTransfer, undoTransfer;
 
-    private static final int TIME_DELAY = 2000;
+    /*private static final int TIME_DELAY = 2000;*/
     private static long back_pressed;
 
 
@@ -131,14 +133,13 @@ public class MoveOrderActivity extends AppCompatActivity implements MoveOrderedI
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
-            if (back_pressed + TIME_DELAY > System.currentTimeMillis()) {
+            /*if (back_pressed + TIME_DELAY > System.currentTimeMillis()) {
                 gotoBackTableActivity();
             } else {
                 toast("Chạm 2 lần liên tiếp để thoát");
             }
-            back_pressed = System.currentTimeMillis();
-
-
+            back_pressed = System.currentTimeMillis();*/
+            gotoBackTableActivity();
         }
 
         return super.onOptionsItemSelected(item);
@@ -147,13 +148,7 @@ public class MoveOrderActivity extends AppCompatActivity implements MoveOrderedI
 
     @Override
     public void onBackPressed() {
-        /*if (back_pressed + TIME_DELAY > System.currentTimeMillis()) {
-            finish();
-        } else {
-            toast("Chạm 2 lần liên tiếp để thoát");
-        }
-        back_pressed = System.currentTimeMillis();*/
-        finish();
+        gotoBackTableActivity();
     }
 
     public void toast(String message) {
@@ -245,6 +240,7 @@ public class MoveOrderActivity extends AppCompatActivity implements MoveOrderedI
         receiptToOrdered = "";
         listToOrdered = new ArrayList<Ordered>();
         lstChooseTable = new HashMap<String, List<Ordered>>();
+        dialog.dismiss();
 
         /*startActivity(new Intent(this, TableActivity.class));*/
         finish();
@@ -274,6 +270,24 @@ public class MoveOrderActivity extends AppCompatActivity implements MoveOrderedI
         new Progress().execute();
     }
 
+    @Override
+    public void alertMessage(String titleError, String textError, int responseCode) {
+        if(responseCode == 500) {
+            Alerter.create(this)
+                    .setTitle(titleError)
+                    .setText(textError)
+                    .setBackgroundColorRes(R.color.red) // or setBackgroundColorInt(Color.CYAN)
+                    .show();
+        }else{
+            Alerter.create(this)
+                    .setTitle(titleError)
+                    .setText(textError)
+                    .setBackgroundColorRes(R.color.colorPrimary) // or setBackgroundColorInt(Color.CYAN)
+                    .show();
+        }
+        dialog.dismiss();
+    }
+
     private class Progress extends AsyncTask<Void, Void, Void> {
 
 
@@ -284,7 +298,6 @@ public class MoveOrderActivity extends AppCompatActivity implements MoveOrderedI
             dialog.setIndeterminate(true);
             dialog.setCancelable(false);
             dialog.show();
-            Log.v("AAA", "Dang ket noi !!!");
         }
 
         @Override
@@ -300,7 +313,7 @@ public class MoveOrderActivity extends AppCompatActivity implements MoveOrderedI
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 try {
-                    //showProgress();
+                    showProgress();
                         /*Json Object Source*/
                     JSONObject jsonObjectItemsSource = new JSONObject();
                     JSONArray jsonArrayItemsSource = new JSONArray();

@@ -117,7 +117,7 @@ public class ExpenseActivity extends AppCompatActivity implements ExpenseView{
             pusher.connect();
         }
 
-        showProgressExpense();
+        showProgress();
 
         btnNewExpense = (Button) findViewById(R.id.btnNewExpense);
         btnNewExpense.setOnClickListener(new View.OnClickListener() {
@@ -143,11 +143,11 @@ public class ExpenseActivity extends AppCompatActivity implements ExpenseView{
     }
 
     @Override
-    public void showProgressExpense() {
-        new ProgressExpense().execute();
+    public void showProgress() {
+        new Progress().execute();
     }
 
-    private class ProgressExpense extends AsyncTask<Void, Void, Void> {
+    private class Progress extends AsyncTask<Void, Void, Void> {
 
 
         @Override

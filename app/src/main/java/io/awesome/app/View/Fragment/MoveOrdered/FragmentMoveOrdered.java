@@ -1,7 +1,6 @@
 package io.awesome.app.View.Fragment.MoveOrdered;
 
 
-import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -9,7 +8,6 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.CardView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,7 +25,7 @@ import java.util.Map;
 import io.awesome.app.Model.Ordered;
 import io.awesome.app.Model.Table;
 import io.awesome.app.R;
-import io.awesome.app.View.ChooseTableMoveActivity;
+import io.awesome.app.View.ChooseTableMove.ChooseTableMoveActivity;
 import io.awesome.app.View.MoveOrder.MoveOrderedView;
 
 ;
@@ -62,7 +60,7 @@ public class FragmentMoveOrdered extends Fragment {
 
         llButtonOrdered = (LinearLayout) view.findViewById(R.id.llButtonOrdered);
         moveOrderedI = (MoveOrderedI) getActivity();
-        int position = getActivity().getIntent().getIntExtra("positionTable", -1);
+        /*int position = getActivity().getIntent().getIntExtra("positionTable", -1);*/
 
         /*Lúc khởi tạo activity thì hiển thị "Chọn bàn muốn chuyển"*/
         if (lstChooseTable.size() == 0) {

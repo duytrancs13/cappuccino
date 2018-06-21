@@ -69,12 +69,11 @@ public class NewExpensePresenterImp implements NewExpensePresenter {
         if(!validate(name, price, quantity, unit)){
             return;
         }
-        newExpenseView.showProgressCreateExpense();
-
     }
 
     @Override
     public void createExpense(final String name, final String price, final String quantity, final String unit, final String createBy, final String note, final String token) {
+        validateNewExpense(name, price, quantity, unit);
         RequestQueue queue = Volley.newRequestQueue(context);
         String url = "https://cafeteria-service.herokuapp.com/api/v1/expenses";
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
@@ -83,6 +82,7 @@ public class NewExpensePresenterImp implements NewExpensePresenter {
                 try {
                     JSONObject jsonObject = new JSONObject(response);
                     if(jsonObject.getString("message").equals("Successful.")){
+                        newExpenseView.alertMessage("Thành công","Bạn đã tạo mới chi tiêu thành công", 200);
                     }else{
                         newExpenseView.alertMessage("Thất bại","Vui lòng thử lại", 500);
                     }

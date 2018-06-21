@@ -6,11 +6,6 @@
         android:title="Thông tin tài khoản" />
 
     <item
-        android:id="@+id/connectBluetooth"
-        android:icon="@drawable/ic_bluetooth"
-        android:title="Kết nối bluetooth" />
-
-    <item
         android:id="@+id/expense"
         android:icon="@drawable/ic_expense"
         android:title="Quản lý chi tiêu" />

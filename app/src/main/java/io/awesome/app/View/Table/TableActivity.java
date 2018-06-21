@@ -42,6 +42,7 @@ import com.pusher.client.Pusher;
 import com.pusher.client.PusherOptions;
 import com.pusher.client.channel.Channel;
 import com.pusher.client.channel.SubscriptionEventListener;
+import com.tapadoo.alerter.Alerter;
 
 import java.text.DateFormat;
 import java.util.ArrayList;
@@ -55,7 +56,6 @@ import io.awesome.app.Model.Table;
 import io.awesome.app.Presenter.Pusher.PusherTable;
 import io.awesome.app.Presenter.Table.TablePresenterImpl;
 import io.awesome.app.View.Account.AccountActivity;
-import io.awesome.app.View.Bluetooth.BluetoothActivity;
 import io.awesome.app.View.ChangePassword.ChangePasswordActivity;
 import io.awesome.app.View.Expense.ExpenseActivity;
 import io.awesome.app.View.Fragment.Menu.FragmentMenu;
@@ -115,6 +115,8 @@ public class TableActivity extends AppCompatActivity implements NavigationView.O
     private static final String APP_CLUSTER = "ap1";
     private static final String CHANEL_NAME = "tables";
     private static final String EVENT_NAME = "all-tables";
+
+    public static boolean checkConfirmChangedOrdered = true;
 
 
 
@@ -359,9 +361,6 @@ public class TableActivity extends AppCompatActivity implements NavigationView.O
             intent = new Intent(this, AccountActivity.class);
             startActivity(intent);
 
-        }else if(id == R.id.connectBluetooth){
-            intent = new Intent(TableActivity.this, BluetoothActivity.class);
-            startActivity(intent);
         }else if(id == R.id.expense) {
             intent = new Intent(TableActivity.this, ExpenseActivity.class);
             startActivity(intent);
@@ -600,6 +599,24 @@ public class TableActivity extends AppCompatActivity implements NavigationView.O
 
     public void showProgress() {
         new Progress().execute();
+    }
+
+    @Override
+    public void alertMessage(String titleError, String textError, int responseCode) {
+        if(responseCode == 500) {
+            Alerter.create(this)
+                    .setTitle(titleError)
+                    .setText(textError)
+                    .setBackgroundColorRes(R.color.red) // or setBackgroundColorInt(Color.CYAN)
+                    .show();
+        }else{
+            Alerter.create(this)
+                    .setTitle(titleError)
+                    .setText(textError)
+                    .setBackgroundColorRes(R.color.colorPrimary) // or setBackgroundColorInt(Color.CYAN)
+                    .show();
+        }
+        dialog.dismiss();
     }
 
     private class Progress extends AsyncTask<Void, Void, Void> {

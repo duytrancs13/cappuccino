@@ -1,7 +1,6 @@
 package io.awesome.app.Presenter.ChooseMenu;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
@@ -12,6 +11,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
@@ -45,12 +45,20 @@ public class ChooseMenuPresenterImp implements ChooseMenuPresenter {
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, object, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
-                Log.v("AAA", response.toString());
+                try {
+                    if(response.getString("message").equals("Successful.")){
+                        fragmentChooseMenu.alertMessage("Thành công", "Món đã được cập nhật", 200);
+                    }else{
+                        fragmentChooseMenu.alertMessage("Thất bại", "Vui lòng thử lại", 500);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.v("AAA", error.toString());
+                fragmentChooseMenu.alertMessage("Lỗi server", "Vui lòng thử lại", 500);
             }
         }){
             @Override

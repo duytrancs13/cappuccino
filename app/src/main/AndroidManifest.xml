@@ -15,7 +15,8 @@
         android:label="Capuccino"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".View.Main.MainActivity">
+        <activity android:name=".View.Main.MainActivity"
+            >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -42,12 +43,12 @@
                     android:scheme="https" />
             </intent-filter>
         </activity>
-        <activity android:name=".View.MoveOrderActivity" />
         <activity
             android:name=".View.MoveOrder.MoveOrderActivity"
-            android:noHistory="true" />
+            android:noHistory="true"
+            />
         <activity
-            android:name=".View.ChooseTableMoveActivity"
+            android:name=".View.ChooseTableMove.ChooseTableMoveActivity"
             android:noHistory="true" />
         <activity android:name=".View.Bluetooth.BluetoothActivity" />
         <activity android:name=".View.Reserve.ReserveActivity" />

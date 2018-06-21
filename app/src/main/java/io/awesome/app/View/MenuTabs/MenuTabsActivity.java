@@ -29,6 +29,8 @@ import io.awesome.app.R;
 
 import io.awesome.app.View.Table.TableActivity;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
+
+import static io.awesome.app.View.Table.TableActivity.checkConfirmChangedOrdered;
 import static io.awesome.app.View.Table.TableActivity.listOrdered;
 
 
@@ -160,6 +162,7 @@ public class MenuTabsActivity extends AppCompatActivity implements MenuTabsView 
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
             /*startActivity(new Intent(this, TableActivity.class));*/
+            checkConfirmChangedOrdered = true;
             finish();
         }
         return super.onOptionsItemSelected(item);
@@ -167,6 +170,7 @@ public class MenuTabsActivity extends AppCompatActivity implements MenuTabsView 
     // Quay về màn hình tableActivity bằng nút back của android
     @Override
     public void onBackPressed() {
+        checkConfirmChangedOrdered = true;
         finish();
     }
 

@@ -9,6 +9,6 @@ import java.io.File;
  */
 
 public interface AccountPresenter {
-    void uploadImage(Bitmap bitmap, String token);
+    /*void uploadImage(Bitmap bitmap, String token);*/
     void change(String name, String token);
 }

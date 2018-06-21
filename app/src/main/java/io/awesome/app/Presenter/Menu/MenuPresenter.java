@@ -19,7 +19,7 @@ public interface MenuPresenter {
     //void addItemForReceipt(String token,String note, String menuId, String quality);
     void setTextPopupNoteAdd(String textNote, Ordered ordered);
     void showPopupNoteAdd();
-    void addNoteForReceipt(String textNote, String menuId, String token);
-    void qualityForReceipt(String menuId, String token, String quatity);
+   /* void addNoteForReceipt(String textNote, String menuId, String token);
+    void qualityForReceipt(String menuId, String token, String quatity);*/
     void getMenuReceipt(String token);
 }

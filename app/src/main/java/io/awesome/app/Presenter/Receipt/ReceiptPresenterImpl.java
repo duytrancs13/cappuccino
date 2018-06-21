@@ -21,6 +21,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
@@ -64,6 +65,9 @@ public class ReceiptPresenterImpl implements ReceiptPresenter {
     private Thread thread;
     private String BILL = "";
 
+    private BluetoothAdapter bluetoothAdapter;
+    private BluetoothDevice bluetoothDevice;
+
     public ReceiptPresenterImpl(Context context, FragmentReceipt fragmentReceipt, String token) {
         this.context = context;
         this.fragmentReceipt = fragmentReceipt;
@@ -82,13 +86,23 @@ public class ReceiptPresenterImpl implements ReceiptPresenter {
         StringRequest stringRequest = new StringRequest(Request.Method.PATCH, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                Log.v("AAA", "Update pay receipt success: " +response);
-                fragmentReceipt.gotoTable();
+                try {
+                    JSONObject jsonObject = new JSONObject(response);
+                    if(jsonObject.getString("message").equals("Successful.")){
+                        fragmentReceipt.alertMessage("Thành công", "Bạn đã thanh toán thành công", 200);
+                    }else{
+                        fragmentReceipt.alertMessage("Thất bại", "Vui lòng thử lại", 500);
+                    }
+
+                } catch (JSONException e) {
+
+                }
+
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-
+                fragmentReceipt.alertMessage("Lỗi server", "Vui lòng thử lại", 500);
             }
         }){
             @Override
@@ -107,6 +121,38 @@ public class ReceiptPresenterImpl implements ReceiptPresenter {
             }
         };
         queue.add(stringRequest);
+    }
+
+    @Override
+    public boolean isBluetoothEnabled() {
+        bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+        return bluetoothAdapter.isEnabled();
+    }
+
+    @Override
+    public void findBluetoothDevice() {
+        Log.v("AAA", "ahihi");
+        Set<BluetoothDevice> pairDevice = bluetoothAdapter.getBondedDevices();
+        if(pairDevice.size()>0){
+            for (BluetoothDevice pairedDevice : pairDevice){
+                // bluetooth printer name is BTP_F09F1A
+                if(pairedDevice.getName().equals("BlueTooth Printer")){
+                    bluetoothDevice = pairedDevice;
+                    break;
+                }
+            }
+        }
+    }
+
+    @Override
+    public void openBluetoothPrinter() {
+        UUID uuid = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
+        try {
+            bluetoothSocket = bluetoothDevice.createRfcommSocketToServiceRecord(uuid);
+            bluetoothSocket.connect();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -206,7 +252,7 @@ public class ReceiptPresenterImpl implements ReceiptPresenter {
 
             writeWithFormat("--------------------------------\n".getBytes(), new Formatter().bold().get(), Formatter.centerAlign());
 
-            writeWithFormat(String.valueOf("Tong:"+countSpace(32,"Tong:", String.valueOf(totalMoney)+"  d")+NumberFormat.getNumberInstance(Locale.GERMAN).format(totalMoney)+" d\n").getBytes(), new Formatter().get(), Formatter.rightAlign());
+            writeWithFormat(String.valueOf("Tong:"+countSpace(32,"Tong:", String.valueOf(totalMoney)+"  d")+NumberFormat.getNumberInstance(Locale.GERMAN).format(totalMoney)+" d\n").getBytes(), new Formatter().bold().get(), Formatter.rightAlign());
 
             writeWithFormat("Chuc ban mot ngay tuyet voi\n".getBytes(), new Formatter().bold().get(), Formatter.centerAlign());
 

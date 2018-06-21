@@ -26,6 +26,7 @@ import io.awesome.app.Presenter.Menu.MenuPresenterImpl;
 import io.awesome.app.R;
 
 import static io.awesome.app.View.Main.MainActivity.receiptId;
+import static io.awesome.app.View.Table.TableActivity.checkConfirmChangedOrdered;
 import static io.awesome.app.View.Table.TableActivity.listOrdered;
 
 /**
@@ -155,6 +156,7 @@ public class CustomMenuAdapter extends BaseAdapter {
                         viewHolder.noteAdd.setVisibility(View.VISIBLE);
                         viewHolder.btnSubMenu.setVisibility(View.VISIBLE);
                         itemOrdered.setQuantity(qualityCurrent+1);
+                        checkConfirmChangedOrdered = false;
                     }
                 });
 
@@ -164,6 +166,7 @@ public class CustomMenuAdapter extends BaseAdapter {
                         //menuPresenterImpl.qualityForReceipt(itemOrdered.getItemId(), token, "-1");
                         int qualityCurrent = Integer.parseInt(viewHolder.btnQuatityMenu.getText().toString());
                         itemOrdered.setQuantity(qualityCurrent-1);
+                        checkConfirmChangedOrdered = false;
                         if (qualityCurrent == 1) {
                             viewHolder.btnQuatityMenu.setText((qualityCurrent - 1) + "");
                             //menuPresenterImpl.addNoteForReceipt(" ", itemOrdered.getItemId(), token);
@@ -196,6 +199,7 @@ public class CustomMenuAdapter extends BaseAdapter {
                         }else{
                             listOrdered.get(listOrdered.size()-1).setQuantity(qualityCurrent+1);
                         }
+                        checkConfirmChangedOrdered = false;
                         viewHolder.btnQuatityMenu.setText((qualityCurrent + 1) + "");
                         viewHolder.noteAdd.setVisibility(View.VISIBLE);
                         viewHolder.btnSubMenu.setVisibility(View.VISIBLE);
@@ -211,6 +215,7 @@ public class CustomMenuAdapter extends BaseAdapter {
                         //menuPresenterImpl.qualityForReceipt(menu.getId(), token, "-1");
                         int qualityCurrent = Integer.parseInt(viewHolder.btnQuatityMenu.getText().toString());
                         itemOrdered.setQuantity(qualityCurrent-1);
+                        checkConfirmChangedOrdered = false;
                         if (qualityCurrent == 1) {
                             //menuPresenterImpl.addNoteForReceipt(" ", menu.getId(), token);
                             viewHolder.btnQuatityMenu.setText((qualityCurrent - 1) + "");
@@ -258,6 +263,7 @@ public class CustomMenuAdapter extends BaseAdapter {
                     }else{
                         listOrdered.get(listOrdered.size()-1).setQuantity(qualityCurrent+1);
                     }
+                    checkConfirmChangedOrdered = false;
                     viewHolder.btnQuatityMenu.setText((qualityCurrent + 1) + "");
                     viewHolder.noteAdd.setVisibility(View.VISIBLE);
                     viewHolder.btnSubMenu.setVisibility(View.VISIBLE);
@@ -272,6 +278,7 @@ public class CustomMenuAdapter extends BaseAdapter {
                     //menuPresenterImpl.qualityForReceipt(menu.getId(), token, "-1");
                     int qualityCurrent = Integer.parseInt(viewHolder.btnQuatityMenu.getText().toString());
                     listOrdered.get(listOrdered.size()-1).setQuantity(qualityCurrent-1);
+                    checkConfirmChangedOrdered = false;
                     if (qualityCurrent == 1) {
                         viewHolder.btnQuatityMenu.setText((qualityCurrent - 1) + "");
                         //menuPresenterImpl.addNoteForReceipt(" ", menu.getId(), token);

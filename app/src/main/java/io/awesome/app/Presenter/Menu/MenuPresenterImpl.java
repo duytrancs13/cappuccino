@@ -56,7 +56,6 @@ public class MenuPresenterImpl implements MenuPresenter {
     public void loadMenuOfFavorite(final String token) {
         fragmentMenu.showProgress();
         String urlFavorite ="https://cafeteria-service.herokuapp.com/api/v1/menu";
-        //getAllMenu(urlFavorite, token);
         RequestQueue queue = Volley.newRequestQueue(context);
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, urlFavorite, null, new Response.Listener<JSONObject>() {
             @Override
@@ -128,7 +127,7 @@ public class MenuPresenterImpl implements MenuPresenter {
         fragmentMenu.showPopupNodeAdd();
     }
 
-    @Override
+    /*@Override
     public void addNoteForReceipt(final String textNote, String menuId, final String token) {
         String url = "https://cafeteria-service.herokuapp.com/api/v1/receipts/"+receiptId+"/items/"+menuId;
         RequestQueue queue = Volley.newRequestQueue(context);
@@ -162,11 +161,11 @@ public class MenuPresenterImpl implements MenuPresenter {
         };
 
         queue.add(stringRequest);
-    }
+    }*/
 
 
 
-    @Override
+    /*@Override
     public void qualityForReceipt(String menuId, final String token, final String quality) {
         String url = "https://cafeteria-service.herokuapp.com/api/v1/receipts/"+receiptId+"/items/"+menuId;
         RequestQueue queue = Volley.newRequestQueue(context);
@@ -199,7 +198,7 @@ public class MenuPresenterImpl implements MenuPresenter {
         };
 
         queue.add(stringRequest);
-    }
+    }*/
 
     @Override
     public void getMenuReceipt(final String token) {
@@ -236,7 +235,7 @@ public class MenuPresenterImpl implements MenuPresenter {
     }
 
 
-    public void addItemForReceipt(String url, final String token, final String quantity, final String note, final String menuId){
+    /*public void addItemForReceipt(String url, final String token, final String quantity, final String note, final String menuId){
 
         RequestQueue queue = Volley.newRequestQueue(context);
         StringRequest stringRequest = new StringRequest(Request.Method.PATCH, url, new Response.Listener<String>() {
@@ -270,7 +269,7 @@ public class MenuPresenterImpl implements MenuPresenter {
         };
 
         queue.add(stringRequest);
-    }
+    }*/
 
     public void toast(String message){
         Toast.makeText(context,message,Toast.LENGTH_SHORT).show();

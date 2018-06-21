@@ -9,5 +9,8 @@ import org.json.JSONObject;
 public interface ReceiptPresenter {
     void getMenuReceipt(String token);
     void updateReceipt();
+    boolean isBluetoothEnabled();
+    void findBluetoothDevice();
+    void openBluetoothPrinter();
     void printReceipt();
 }

@@ -20,6 +20,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -98,14 +99,21 @@ public class MoveOrderedPresenterImp implements MoveOrderedPresenter {
         JsonObjectRequest jsonObjectRequest =new JsonObjectRequest(Request.Method.POST, url, object, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
-                Log.v("AAA", response.toString());
-                //getMenuOrdered();
-                orderedView.gotoBackTableActivity();
+                try {
+                    if(response.getString("message").equals("Successful.")){
+                        orderedView.gotoBackTableActivity();
+                    }else{
+                        orderedView.alertMessage("Thất bại", "Vui lòng thử lại", 500);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.v("AAA", error.toString());
+                orderedView.alertMessage("Lỗi server", "Vui lòng thử lại", 500);
             }
         }){
             @Override

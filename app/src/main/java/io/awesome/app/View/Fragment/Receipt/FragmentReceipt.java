@@ -2,6 +2,7 @@ package io.awesome.app.View.Fragment.Receipt;
 
 import android.app.AlertDialog;
 import android.app.Application;
+import android.app.ProgressDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothHeadset;
@@ -13,6 +14,7 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.media.AudioDeviceInfo;
 import android.media.AudioManager;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -29,6 +31,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
+import com.tapadoo.alerter.Alerter;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -50,6 +53,7 @@ import io.awesome.app.View.Table.TableActivity;
 import static android.content.Context.MODE_PRIVATE;
 import static io.awesome.app.View.Main.MainActivity.bluetoothSocket;
 import static io.awesome.app.View.Main.MainActivity.receiptId;
+import static io.awesome.app.View.Table.TableActivity.checkConfirmChangedOrdered;
 import static io.awesome.app.View.Table.TableActivity.listOrdered;
 
 
@@ -77,10 +81,10 @@ public class FragmentReceipt extends Fragment implements FragmentReceiptView {
 
     private int tatalQuatityReceipt=0;
 
-    private boolean checkClickPrintPay = false;
-
     private BluetoothAdapter bluetoothAdapter;
     private BluetoothDevice bluetoothDevice;
+
+    private ProgressDialog dialog ;
 
 
     @Nullable
@@ -97,15 +101,13 @@ public class FragmentReceipt extends Fragment implements FragmentReceiptView {
 
         receiptPresenter = new ReceiptPresenterImpl(this.getContext(), this, token);
 
+        dialog = new ProgressDialog(view.getContext(), R.style.AppTheme_Dark_Dialog);
+
         if(listOrdered.size() != 0){
-            checkClickPrintPay = true;
             receiptPresenter.getMenuReceipt(token);
-        }else{
-            return view;
         }
 
         quatityMenuReceipt = (Button) view.findViewById(R.id.quatityMenuReceipt);
-        /*quatityMenuReceipt.setText(listOrdered.size()+"");*/
         quatityMenuReceipt.setText(tatalQuatityReceipt+"");
 
 
@@ -117,41 +119,44 @@ public class FragmentReceipt extends Fragment implements FragmentReceiptView {
         tatalQuatityReceipt=0;
 
 
-        if(checkClickPrintPay){
-            btnPrintReceipt = (Button) view.findViewById(R.id.btnPrintReceipt);
-            btnPrintReceipt.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-
-                try {
-                    if(!isBluetoothEnabled()){
-                        toast("Vui long mo bluetooth!!!");
+        btnPrintReceipt = (Button) view.findViewById(R.id.btnPrintReceipt);
+        btnPrintReceipt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(listOrdered.size()!=0 && checkConfirmChangedOrdered){
+                    if(!receiptPresenter.isBluetoothEnabled()){
+                        toast("Vui lòng mở bluetooth để kết nối!!!");
                         bluetoothSocket = null;
                     }else{
                         if(bluetoothSocket==null){
-                            findBluetoothDevice();
-                            openBluetoothPrinter();
+                            receiptPresenter.findBluetoothDevice();
+                            receiptPresenter.openBluetoothPrinter();
                         }
                         confirmConnectBluetooth();
                     }
-
-                } catch (Exception e) {
-                    e.printStackTrace();
                 }
-
-
+                else if(!checkConfirmChangedOrdered){
+                    toast("Vui lòng xác nhận món");
+                }else{
+                    toast("Vui lòng đặt món");
                 }
-            });
+            }
+        });
 
-            btnReceipt = (Button) view.findViewById(R.id.btnReceipt);
-            btnReceipt.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
+        btnReceipt = (Button) view.findViewById(R.id.btnReceipt);
+        btnReceipt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(listOrdered.size()!=0 && checkConfirmChangedOrdered){
                     confirmUpdateReceipt();
-
                 }
-            });
-        }
+                else if(!checkConfirmChangedOrdered){
+                    toast("Vui lòng xác nhận món");
+                }else{
+                    toast("Vui lòng đặt món");
+                }
+            }
+        });
 
 
         return view;
@@ -168,22 +173,51 @@ public class FragmentReceipt extends Fragment implements FragmentReceiptView {
             llReceipt.addView(v);
         }
     }
-    public boolean isBluetoothEnabled()
-    {
-        bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-        return bluetoothAdapter.isEnabled();
-
-    }
-
 
     @Override
-    public void gotoTable() {
-//        startActivity(intent);
-        getActivity().onBackPressed();
+    public void showProgress() {
+        new Progress().execute();
+    }
+
+    @Override
+    public void alertMessage(String titleError, String textError, int responseCode) {
+        if(responseCode == 500) {
+            Alerter.create(getActivity())
+                    .setTitle(titleError)
+                    .setText(textError)
+                    .setBackgroundColorRes(R.color.red) // or setBackgroundColorInt(Color.CYAN)
+                    .show();
+            dialog.dismiss();
+        }else{
+            Alerter.create(getActivity())
+                    .setTitle(titleError)
+                    .setText(textError)
+                    .setBackgroundColorRes(R.color.colorPrimary) // or setBackgroundColorInt(Color.CYAN)
+                    .show();
+            dialog.dismiss();
+            checkConfirmChangedOrdered = true;
+            getActivity().onBackPressed();
+        }
+    }
+
+    private class Progress extends AsyncTask<Void, Void, Void> {
+
+        protected void onPreExecute() {
+            super.onPreExecute();
+            dialog.setMessage("Đang xử lý...");
+            dialog.setIndeterminate(true);
+            dialog.setCancelable(false);
+            dialog.show();
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            return null;
+        }
     }
 
     public void toast(String msg) {
-        Toast.makeText(getContext(),msg,Toast.LENGTH_LONG).show();
+        Toast.makeText(getActivity(),msg,Toast.LENGTH_LONG).show();
     }
 
 
@@ -261,8 +295,15 @@ public class FragmentReceipt extends Fragment implements FragmentReceiptView {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 try {
+                    showProgress();
                     receiptPresenter.printReceipt();
                     receiptPresenter.printData();
+                    dialog.dismiss();
+                    Alerter.create(getActivity())
+                            .setTitle("Thành công")
+                            .setText("Bạn đã in hóa đơn thành công")
+                            .setBackgroundColorRes(R.color.colorPrimary) // or setBackgroundColorInt(Color.CYAN)
+                            .show();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -277,36 +318,13 @@ public class FragmentReceipt extends Fragment implements FragmentReceiptView {
     }
 
 
-    void findBluetoothDevice(){
-        Log.v("AAA", "ahihi");
-        Set<BluetoothDevice> pairDevice = bluetoothAdapter.getBondedDevices();
-        if(pairDevice.size()>0){
-            for (BluetoothDevice pairedDevice : pairDevice){
-                // bluetooth printer name is BTP_F09F1A
-                if(pairedDevice.getName().equals("BlueTooth Printer")){
-                    bluetoothDevice = pairedDevice;
-                    break;
-                }
-            }
-        }
-    }
-
-    public void openBluetoothPrinter(){
-        UUID uuid = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
-        try {
-            bluetoothSocket = bluetoothDevice.createRfcommSocketToServiceRecord(uuid);
-            bluetoothSocket.connect();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
     private void confirmUpdateReceipt(){
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setMessage("Bạn có muốn thanh toán hóa đơn này không?");
         builder.setPositiveButton("Có", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
+            showProgress();
             receiptPresenter.updateReceipt();
             }
         });

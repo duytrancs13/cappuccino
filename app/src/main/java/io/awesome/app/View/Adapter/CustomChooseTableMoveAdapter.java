@@ -63,7 +63,6 @@ public class CustomChooseTableMoveAdapter extends BaseAdapter {
             viewHolder.llItemChooseTableMove = (LinearLayout) convertView.findViewById(R.id.llItemChooseTableMove);
             viewHolder.btnStatusTable = (Button) convertView.findViewById(R.id.btnStatusTable);
             viewHolder.tvNameTable = (TextView) convertView.findViewById(R.id.tvNameTable);
-            viewHolder.tvTotalMoney = (TextView) convertView.findViewById(R.id.tvTotalMoney);
 
             convertView.setTag(viewHolder);
         }else{
@@ -89,7 +88,6 @@ public class CustomChooseTableMoveAdapter extends BaseAdapter {
             viewHolder.btnStatusTable.setBackgroundResource(R.drawable.ic_table_busy);
         }
         viewHolder.tvNameTable.setText(table.getName());
-        viewHolder.tvTotalMoney.setText("0");
         return convertView;
     }
 
@@ -106,6 +104,5 @@ public class CustomChooseTableMoveAdapter extends BaseAdapter {
         LinearLayout llItemChooseTableMove;
         Button btnStatusTable;
         TextView tvNameTable;
-        TextView tvTotalMoney;
     }
 }

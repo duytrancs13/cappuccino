@@ -20,6 +20,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
@@ -65,11 +66,21 @@ public class TablePresenterImpl implements TablePresenter {
             @Override
             public void onResponse(JSONObject response) {
                 Log.v("AAA", "Get table successfull "+response.toString());
-                tableView.showTables();
+                try {
+                    if(response.getString("message").equals("Successful.")){
+                        tableView.showTables();
+                    }else{
+                        tableView.alertMessage("Lỗi !!!", "Vui lòng thử lại", 500);
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+                tableView.alertMessage("Lỗi !!!", "Vui lòng thử lại", 500);
             }
         }){
             public Map<String, String> getHeaders() throws AuthFailureError {

@@ -1,4 +1,4 @@
-package io.awesome.app.View;
+package io.awesome.app.View.ChooseTableMove;
 
 
 import android.content.Intent;
@@ -75,7 +75,7 @@ public class ChooseTableMoveActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
                 Intent intent = new Intent(getBaseContext(), MoveOrderActivity.class);
-                intent.putExtra("positionTable", position);
+                /*intent.putExtra("positionTable", position);*/
 
                 receiptToOrdered = listTable.get(position).getId();
                 lstChooseTable.put(listTable.get(position).getId(), new ArrayList<Ordered>());
@@ -89,8 +89,8 @@ public class ChooseTableMoveActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
-//            startActivity(new Intent(this, MoveOrderActivity.class));
-            finish();
+            startActivity(new Intent(this, MoveOrderActivity.class));
+            /*finish();*/
         }
         return super.onOptionsItemSelected(item);
     }
@@ -98,7 +98,7 @@ public class ChooseTableMoveActivity extends AppCompatActivity {
     // Quay về màn hình tableActivity bằng nút back của android
     @Override
     public void onBackPressed() {
-        finish();
+        startActivity(new Intent(this, MoveOrderActivity.class));
     }
 
 

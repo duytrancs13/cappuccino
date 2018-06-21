@@ -10,6 +10,6 @@ import io.awesome.app.View.InterfaceView.AlertMessage_IV;
  */
 
 public interface ExpenseView {
-    void showProgressExpense();
+    void showProgress();
     void showExpense();
 }

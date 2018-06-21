@@ -7,8 +7,6 @@ import io.awesome.app.View.InterfaceView.AlertMessage_IV;
  */
 
 public interface AccountView extends AlertMessage_IV {
-    void uploadImageSuccessful();
-    void showProgressAccount();
-    void showProgressChangeAccount();
     void showConfirmChangeAccount();
+    void showProgress();
 }

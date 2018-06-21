@@ -69,7 +69,7 @@ public class NewExpenseActivity extends AppCompatActivity implements NewExpenseV
         btnCancelExpense.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                cancelExpens();
+                showConfirmCancelExpense();
             }
         });
 
@@ -78,7 +78,7 @@ public class NewExpenseActivity extends AppCompatActivity implements NewExpenseV
         btnConfirmCreateExpense.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-            confirmCreateExpense();
+                showConfirmCreateExpense();
             }
         });
 
@@ -101,33 +101,77 @@ public class NewExpenseActivity extends AppCompatActivity implements NewExpenseV
 
     @Override
     public void alertMessage(String titleError, String textError, int responseCode) {
+
         if(responseCode == 500) {
             Alerter.create(this)
                     .setTitle(titleError)
                     .setText(textError)
                     .setBackgroundColorRes(R.color.red) // or setBackgroundColorInt(Color.CYAN)
                     .show();
+            dialog.dismiss();
         }else{
             Alerter.create(this)
                     .setTitle(titleError)
                     .setText(textError)
                     .setBackgroundColorRes(R.color.colorPrimary) // or setBackgroundColorInt(Color.CYAN)
                     .show();
+            dialog.dismiss();
+            finish();
         }
-        dialog.dismiss();
     }
 
     @Override
-    public void showProgressCreateExpense() {
-        new ProgressCreateExpense().execute();
+    public void showProgress() {
+        new Progress().execute();
     }
 
     @Override
-    public void createExpenseSuccessful() {
-
+    public void showConfirmCreateExpense() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(NewExpenseActivity.this);
+        builder.setMessage("Chi tiêu sẽ được tạo mới");
+        builder.setPositiveButton("Có", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                /*String nameExpense = etNameExpense.getText().toString();
+                String priceExpense = etPriceExpense.getText().toString();
+                String quantityExpense = etQuantityExpense.getText().toString();
+                String unitExpense = etUnitExpense.getText().toString();
+                newExpensePresenterImp.validateNewExpense(nameExpense, priceExpense, quantityExpense, unitExpense);*/
+                showProgress();
+            }
+        });
+        builder.setNegativeButton("Không", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+            }
+        });
+        builder.show();
     }
 
-    private class ProgressCreateExpense extends AsyncTask<Void, Void, Void> {
+    @Override
+    public void showConfirmCancelExpense() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(NewExpenseActivity.this);
+        builder.setMessage("Hủy tạo mới chi tiêu");
+        builder.setPositiveButton("Có", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                etNameExpense.setText("");
+                etPriceExpense.setText("");
+                etQuantityExpense.setText("");
+                etUnitExpense.setText("");
+                etNoteExpense.setText("");
+            }
+        });
+        builder.setNegativeButton("Không", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+            }
+        });
+        builder.show();
+    }
+
+
+    private class Progress extends AsyncTask<Void, Void, Void> {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
@@ -149,55 +193,6 @@ public class NewExpenseActivity extends AppCompatActivity implements NewExpenseV
             newExpensePresenterImp.createExpense(name, price, quantity, unit, createBy, note, token);
             return null;
         }
-
-        @Override
-        protected void onPostExecute(Void aVoid) {
-            super.onPostExecute(aVoid);
-            dialog.dismiss();
-            finish();
-        }
-    }
-
-    private void confirmCreateExpense(){
-        AlertDialog.Builder builder = new AlertDialog.Builder(NewExpenseActivity.this);
-        builder.setMessage("Chi tiêu sẽ được tạo mới");
-        builder.setPositiveButton("Có", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                String nameExpense = etNameExpense.getText().toString();
-                String priceExpense = etPriceExpense.getText().toString();
-                String quantityExpense = etQuantityExpense.getText().toString();
-                String unitExpense = etUnitExpense.getText().toString();
-                newExpensePresenterImp.validateNewExpense(nameExpense, priceExpense, quantityExpense, unitExpense);
-            }
-        });
-        builder.setNegativeButton("Không", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-            }
-        });
-        builder.show();
-    }
-
-    private void cancelExpens(){
-        AlertDialog.Builder builder = new AlertDialog.Builder(NewExpenseActivity.this);
-        builder.setMessage("Hủy tạo mới chi tiêu");
-        builder.setPositiveButton("Có", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                etNameExpense.setText("");
-                etPriceExpense.setText("");
-                etQuantityExpense.setText("");
-                etUnitExpense.setText("");
-                etNoteExpense.setText("");
-            }
-        });
-        builder.setNegativeButton("Không", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-            }
-        });
-        builder.show();
     }
 
 }

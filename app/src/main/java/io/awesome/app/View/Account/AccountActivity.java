@@ -68,7 +68,7 @@ public class AccountActivity extends AppCompatActivity implements AccountView{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_account);
-        showProgressAccount();
+        showProgress();
         imageAccount = (ImageView) findViewById(R.id.imageAccount);
 //        btnAddImageAccount = (Button) findViewById(R.id.btnAddImageAccount);
         edNameAccount = (EditText) findViewById(R.id.edNameAccount);
@@ -91,7 +91,7 @@ public class AccountActivity extends AppCompatActivity implements AccountView{
         getSupportActionBar().setHomeAsUpIndicator(upArrow);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        accountPresenterImp = new AccountPresenterImp(this, this);
+        accountPresenterImp = new AccountPresenterImp(this, this, token);
 
 
         tvSaveAccount = (TextView) findViewById(R.id.tvSaveAccount);
@@ -182,8 +182,7 @@ public class AccountActivity extends AppCompatActivity implements AccountView{
                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
                 imageAccount.setImageBitmap(bitmap);
 
-                accountPresenterImp.uploadImage(bitmap, token);
-                /*accountPresenterImp.uploadFile(imagePath, token);*/
+                /*accountPresenterImp.uploadImage(bitmap, token);*/
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -193,79 +192,18 @@ public class AccountActivity extends AppCompatActivity implements AccountView{
 
 
 
-    @Override
-    public void uploadImageSuccessful() {
-
-    }
-    /////////////////////////////////// showProgressAccount //////////////////////////////
-    @Override
-    public void showProgressAccount() {
-        new ProgressAccount().execute();
-    }
-    private class ProgressAccount extends AsyncTask<Void, Void, Void> {
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            dialog = new ProgressDialog(AccountActivity.this,R.style.AppTheme_Dark_Dialog);
-            dialog.setMessage("Đang tải...");
-            dialog.setIndeterminate(true);
-            dialog.setCancelable(false);
-            dialog.show();
-        }
-
-        @Override
-        protected Void doInBackground(Void... voids) {
-            return null;
-        }
-    }
-    /////////////////////////////////// Finish showProgressAccount //////////////////////////////
-
-
-    /////////////////////////////////// showProgressChangeAccount //////////////////////////////
-    @Override
-    public void showProgressChangeAccount() {
-        new ProgressChangeAccount().execute();
-    }
-    private class ProgressChangeAccount extends AsyncTask<Void, Void, Void> {
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-
-            dialog.setMessage("Đang cập nhật...");
-            dialog.setIndeterminate(true);
-            dialog.setCancelable(false);
-            dialog.show();
-        }
-        @Override
-        protected Void doInBackground(Void... voids) {
-            String name = edNameAccount.getText().toString();
-            accountPresenterImp.change(name, token);
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void aVoid) {
-            super.onPostExecute(aVoid);
-            tvNameAccount.setText(account.getDisplayName());
-            edNameAccount.setText(account.getDisplayName());
-            tvSaveAccount.setClickable(false);
-            tvSaveAccount.setTextColor(getResources().getColor(R.color.colorPrimary));
-            dialog.dismiss();
-        }
-    }
-    /////////////////////////////////// Finish ProgressChangeAccount //////////////////////////////
-
-
-
     /////////////////////////////////// Confirm Change Account //////////////////////////////
     @Override
     public void showConfirmChangeAccount() {
         AlertDialog.Builder builder = new AlertDialog.Builder(AccountActivity.this);
-        builder.setMessage("Chi tiêu sẽ được tạo mới");
+        builder.setMessage("Bạn có muốn cập nhật thông tin không?");
         builder.setPositiveButton("Có", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                showProgressChangeAccount();
+                showProgress();
+//                showProgressChangeAccount();
+                String name = edNameAccount.getText().toString();
+                accountPresenterImp.change(name, token);
             }
         });
         builder.setNegativeButton("Không", new DialogInterface.OnClickListener() {
@@ -276,29 +214,38 @@ public class AccountActivity extends AppCompatActivity implements AccountView{
         builder.show();
     }
 
+    @Override
+    public void showProgress() {
+        new Progress().execute();
+    }
 
+    private class Progress extends AsyncTask<Void, Void, Void> {
 
-    public String getRealPathFromURI (Uri contentUri) {
-        String path = null;
-        String[] proj = { MediaStore.MediaColumns.DATA };
-        Cursor cursor = getContentResolver().query(contentUri, proj, null, null, null);
-        if (cursor.moveToFirst()) {
-            int column_index = cursor.getColumnIndexOrThrow(MediaStore.MediaColumns.DATA);
-            path = cursor.getString(column_index);
+        protected void onPreExecute() {
+            super.onPreExecute();
+            dialog = new ProgressDialog(AccountActivity.this,R.style.AppTheme_Dark_Dialog);
+            dialog.setMessage("Đang xử lý...");
+            dialog.setIndeterminate(true);
+            dialog.setCancelable(false);
+            dialog.show();
         }
-        cursor.close();
-        return path;
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            return null;
+        }
     }
 
     @Override
     public void alertMessage(String titleError, String textError, int responseCode) {
+        tvNameAccount.setText(account.getDisplayName());
+        edNameAccount.setText(account.getDisplayName());
         if(responseCode == 500) {
             Alerter.create(this)
                     .setTitle(titleError)
                     .setText(textError)
                     .setBackgroundColorRes(R.color.red) // or setBackgroundColorInt(Color.CYAN)
                     .show();
-            edNameAccount.setText(account.getDisplayName());
         }else{
             Alerter.create(this)
                     .setTitle(titleError)
@@ -307,6 +254,7 @@ public class AccountActivity extends AppCompatActivity implements AccountView{
                     .show();
 
         }
+
         dialog.dismiss();
     }
 
