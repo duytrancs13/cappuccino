@@ -126,7 +126,7 @@
                         android:id="@+id/btnQuantityExpense"
                         android:layout_width="25dp"
                         android:layout_height="match_parent"
-                        android:background="@drawable/buttonquality"
+                        android:background="@drawable/buttonquanlity"
                         android:text="1"
                         android:textColor="@color/colorPrimary"
                         android:clickable = "false"

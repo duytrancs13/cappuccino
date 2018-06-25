@@ -3,7 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:id="@+id/fragment_receipt"
+    >
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -57,7 +59,7 @@
                                 android:id="@+id/quatityMenuReceipt"
                                 android:layout_width="25dp"
                                 android:layout_height="25dp"
-                                android:background="@drawable/buttonquality"
+                                android:background="@drawable/buttonquanlity"
                                 android:textColor="#757575"
                                 android:clickable = "false"
                                 />
@@ -106,7 +108,7 @@
                 android:layout_weight="1"
                 android:textColor="@color/white"
                 android:background="@drawable/button_login"
-                android:text="in hóa đơn"
+                android:text="in tạm"
                 android:layout_marginRight="15dp"
                 />
             <Button
@@ -116,7 +118,7 @@
                 android:layout_weight="1"
                 android:textColor="@color/white"
                 android:background="@drawable/button_login"
-                android:text="thanh toán"
+                android:text="In thanh toán"
                 android:layout_marginLeft="15dp"
                 />
 

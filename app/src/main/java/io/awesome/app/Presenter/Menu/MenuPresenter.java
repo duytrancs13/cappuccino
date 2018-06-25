@@ -22,4 +22,5 @@ public interface MenuPresenter {
    /* void addNoteForReceipt(String textNote, String menuId, String token);
     void qualityForReceipt(String menuId, String token, String quatity);*/
     void getMenuReceipt(String token);
+
 }

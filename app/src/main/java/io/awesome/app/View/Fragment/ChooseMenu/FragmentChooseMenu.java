@@ -1,9 +1,7 @@
 package io.awesome.app.View.Fragment.ChooseMenu;
 
-import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -16,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.tapadoo.alerter.Alerter;
@@ -29,12 +28,21 @@ import io.awesome.app.Model.Ordered;
 import io.awesome.app.Presenter.ChooseMenu.ChooseMenuPresenterImp;
 import io.awesome.app.View.Adapter.ViewPagerFragmentChooseMenuAdapter;
 import io.awesome.app.R;
-import io.awesome.app.View.Table.TableActivity;
+import io.awesome.app.View.Fragment.Category.FragmentCategory;
+import io.awesome.app.View.Fragment.Menu.FragmentMenu;
+import io.awesome.app.View.Fragment.Receipt.FragmentReceipt;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 import static android.content.Context.MODE_PRIVATE;
+import static io.awesome.app.View.Main.MainActivity.receiptId;
 import static io.awesome.app.View.Table.TableActivity.checkConfirmChangedOrdered;
-import static io.awesome.app.View.Table.TableActivity.listOrdered;
+import static io.awesome.app.View.Table.TableActivity.listMoreOrdered;
+import static io.awesome.app.View.Table.TableActivity.listOldOrdered;
+import static io.awesome.app.View.Table.TableActivity.listPtemOrdered;
+
+import android.widget.RemoteViews;
+
+import java.util.ArrayList;
 
 public class FragmentChooseMenu extends Fragment implements FragmentChooseMenuView {
     private TabLayout tab_layout_fragment;
@@ -63,6 +71,7 @@ public class FragmentChooseMenu extends Fragment implements FragmentChooseMenuVi
         view_pager_fragment = (ViewPager)view.findViewById(R.id.view_pager_fragment);
 
 
+
         for (int i = 0; i < 2; i++) {
             tab_layout_fragment.addTab(tab_layout_fragment.newTab().setText(pageTitle[i]));
         }
@@ -78,11 +87,8 @@ public class FragmentChooseMenu extends Fragment implements FragmentChooseMenuVi
         tab_layout_fragment.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-
                 view_pager_fragment.setCurrentItem(tab.getPosition());
                 pagerAdapter.notifyDataSetChanged();
-
-
             }
 
             @Override
@@ -101,6 +107,12 @@ public class FragmentChooseMenu extends Fragment implements FragmentChooseMenuVi
 
         chooseMenuPresenterImp = new ChooseMenuPresenterImp(view.getContext(),this, token);
 
+
+
+
+
+
+
         btnConfirmOrdered = (Button) view.findViewById(R.id.btnConfirmOrdered);
         btnConfirmOrdered.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -108,8 +120,16 @@ public class FragmentChooseMenu extends Fragment implements FragmentChooseMenuVi
                 if(!checkConfirmChangedOrdered){
                     showProgress();
                     try {
+                        for (Ordered moreOrdered: listMoreOrdered){
+                            int position = positionInListOldOrdered(moreOrdered.getItemId());
+                            if(position != -1){
+                                listOldOrdered.get(position).setQuantity(moreOrdered.getQuantity() + listOldOrdered.get(position).getQuantity());
+                            }else{
+                                listOldOrdered.add(moreOrdered);
+                            }
+                        }
                         JSONArray jsonArrayItems = new JSONArray();
-                        for (Ordered ordered : listOrdered) {
+                        for (Ordered ordered : listOldOrdered) {
 
                             JSONObject jsonObject = new JSONObject()
                                     .put("itemId", ordered.getItemId())
@@ -121,7 +141,8 @@ public class FragmentChooseMenu extends Fragment implements FragmentChooseMenuVi
                         JSONObject object = new JSONObject().put("items",jsonArrayItems);
                         Log.v("AAA", object.toString());
                         chooseMenuPresenterImp.confirmOrdered(object);
-                    }catch (JSONException e) {
+
+                    }catch (Exception e) {
                         e.printStackTrace();
                     }
                 }else{
@@ -134,6 +155,17 @@ public class FragmentChooseMenu extends Fragment implements FragmentChooseMenuVi
 
 
         return view;
+    }
+
+    private int positionInListOldOrdered(String idMoreOrdered){
+        for(int i = 0; i<listOldOrdered.size(); i++){
+            if(idMoreOrdered.equals(listOldOrdered.get(i).getItemId())){
+                return i;
+            }else{
+                continue;
+            }
+        }
+            return -1;
     }
 
     protected void attachBaseContext(Context newBase) {
@@ -155,21 +187,32 @@ public class FragmentChooseMenu extends Fragment implements FragmentChooseMenuVi
                     .setText(textError)
                     .setBackgroundColorRes(R.color.red) // or setBackgroundColorInt(Color.CYAN)
                     .show();
+            listOldOrdered = listPtemOrdered;
+            dialog.dismiss();
         }else{
             Alerter.create(getActivity())
                     .setTitle(titleError)
                     .setText(textError)
                     .setBackgroundColorRes(R.color.colorPrimary) // or setBackgroundColorInt(Color.CYAN)
                     .show();
+
+            listPtemOrdered = listOldOrdered;
+            listMoreOrdered = new ArrayList<Ordered>();
+
+            getFragmentManager().beginTransaction().replace(R.id.fragment_receipt, new FragmentReceipt()).commit();
+            pagerAdapter.notifyDataSetChanged();
             checkConfirmChangedOrdered = true;
+            dialog.dismiss();
         }
-        dialog.dismiss();
+
     }
 
     @Override
     public void showProgress() {
         new Progress().execute();
     }
+
+
     private class Progress extends AsyncTask<Void, Void, Void> {
 
         protected void onPreExecute() {
@@ -185,5 +228,6 @@ public class FragmentChooseMenu extends Fragment implements FragmentChooseMenuVi
             return null;
         }
     }
+
 }
 

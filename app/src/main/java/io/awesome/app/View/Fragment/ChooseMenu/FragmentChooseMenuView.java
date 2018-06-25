@@ -8,4 +8,5 @@ import io.awesome.app.View.InterfaceView.AlertMessage_IV;
 
 public interface FragmentChooseMenuView extends AlertMessage_IV {
     void showProgress();
+
 }

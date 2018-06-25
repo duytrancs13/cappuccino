@@ -23,8 +23,10 @@ import java.util.Map;
 import io.awesome.app.Model.Ordered;
 import io.awesome.app.View.MenuTabs.MenuTabsView;
 
+import static io.awesome.app.View.Table.TableActivity.listOldOrdered;
 import static io.awesome.app.View.Table.TableActivity.listOrdered;
 import static io.awesome.app.View.Main.MainActivity.receiptId;
+import static io.awesome.app.View.Table.TableActivity.listPtemOrdered;
 
 /**
  * Created by sung on 18/04/2018.
@@ -54,7 +56,8 @@ public class MenuTabsPresenterImp implements MenuTabsPresenter {
                     JSONObject data = obj.getJSONObject("data");
                     JSONArray items = data.getJSONArray("items");
                     TypeToken<List<Ordered>> token = new TypeToken<List<Ordered>>() {};
-                    listOrdered = gson.fromJson(items.toString(), token.getType());
+                    listOldOrdered = gson.fromJson(items.toString(), token.getType());
+                    listPtemOrdered = gson.fromJson(items.toString(), token.getType());
                     tabsView.goToMenu(statusReceipt);
                 } catch (Exception e) {
                     e.printStackTrace();

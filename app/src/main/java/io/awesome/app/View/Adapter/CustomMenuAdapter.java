@@ -27,7 +27,10 @@ import io.awesome.app.R;
 
 import static io.awesome.app.View.Main.MainActivity.receiptId;
 import static io.awesome.app.View.Table.TableActivity.checkConfirmChangedOrdered;
+import static io.awesome.app.View.Table.TableActivity.listMoreOrdered;
+import static io.awesome.app.View.Table.TableActivity.listOldOrdered;
 import static io.awesome.app.View.Table.TableActivity.listOrdered;
+
 
 /**
  * Created by sung on 30/08/2017.
@@ -90,8 +93,6 @@ public class CustomMenuAdapter extends BaseAdapter {
 
             viewHolder.tvPriceMenu = (TextView) view.findViewById(R.id.tvPriceMenu);
 
-            viewHolder.btnSubMenu = (Button) view.findViewById(R.id.btnSubMenu);
-
             viewHolder.btnQuatityMenu = (Button) view.findViewById(R.id.btnQuatityMenu);
 
             viewHolder.btnPlusMenu = (Button) view.findViewById(R.id.btnPlusMenu);
@@ -117,17 +118,16 @@ public class CustomMenuAdapter extends BaseAdapter {
         viewHolder.tvPriceMenu.setText("" + price + " đ");
 
 
-        for (final Ordered itemOrdered : listOrdered) {
+        for (final Ordered itemOrdered: listMoreOrdered) {
             if (itemOrdered.getItemId().equals(menu.getId())) {
                 viewHolder.noteAdd.setVisibility(View.VISIBLE);
                 viewHolder.btnQuatityMenu.setText(itemOrdered.getQuantity() + "");
                 if(itemOrdered.getQuantity() == 0){
                     viewHolder.btnQuatityMenu.setVisibility(View.INVISIBLE);
-                    viewHolder.btnSubMenu.setVisibility(View.INVISIBLE);
                     viewHolder.noteAdd.setVisibility(View.INVISIBLE);
                 }else{
                     viewHolder.btnQuatityMenu.setVisibility(View.VISIBLE);
-                    viewHolder.btnSubMenu.setVisibility(View.VISIBLE);
+                    /*viewHolder.btnSubMenu.setVisibility(View.VISIBLE);*/
                     viewHolder.noteAdd.setVisibility(View.VISIBLE);
                 }
 
@@ -149,40 +149,19 @@ public class CustomMenuAdapter extends BaseAdapter {
                 viewHolder.btnPlusMenu.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        //menuPresenterImpl.qualityForReceipt(itemOrdered.getItemId(), token, "1");
                         int qualityCurrent = Integer.parseInt(viewHolder.btnQuatityMenu.getText().toString());
                         viewHolder.btnQuatityMenu.setText((qualityCurrent + 1) + "");
                         viewHolder.btnQuatityMenu.setVisibility(View.VISIBLE);
                         viewHolder.noteAdd.setVisibility(View.VISIBLE);
-                        viewHolder.btnSubMenu.setVisibility(View.VISIBLE);
-                        itemOrdered.setQuantity(qualityCurrent+1);
+                        itemOrdered.setQuantity(itemOrdered.getQuantity()+1);
                         checkConfirmChangedOrdered = false;
-                    }
-                });
-
-                viewHolder.btnSubMenu.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        //menuPresenterImpl.qualityForReceipt(itemOrdered.getItemId(), token, "-1");
-                        int qualityCurrent = Integer.parseInt(viewHolder.btnQuatityMenu.getText().toString());
-                        itemOrdered.setQuantity(qualityCurrent-1);
-                        checkConfirmChangedOrdered = false;
-                        if (qualityCurrent == 1) {
-                            viewHolder.btnQuatityMenu.setText((qualityCurrent - 1) + "");
-                            //menuPresenterImpl.addNoteForReceipt(" ", itemOrdered.getItemId(), token);
-                            viewHolder.noteAdd.setVisibility(View.INVISIBLE);
-                            viewHolder.btnQuatityMenu.setVisibility(View.INVISIBLE);
-                            viewHolder.btnSubMenu.setVisibility(View.INVISIBLE);
-                        } else {
-                            viewHolder.btnQuatityMenu.setText((qualityCurrent - 1) + "");
-                        }
                     }
                 });
 
                 break;
             } else {
                 viewHolder.noteAdd.setVisibility(View.INVISIBLE);
-                viewHolder.btnSubMenu.setVisibility(View.INVISIBLE);
+                /*viewHolder.btnSubMenu.setVisibility(View.INVISIBLE);*/
                 viewHolder.btnQuatityMenu.setVisibility(View.INVISIBLE);
                 viewHolder.btnQuatityMenu.setText("0");
 
@@ -195,38 +174,20 @@ public class CustomMenuAdapter extends BaseAdapter {
 
                         if(qualityCurrent == 0){
                             Ordered newOrdered = new Ordered(menu.getId(),menu.getName(),menu.getPrice(),menu.getUrlImage(),qualityCurrent+1,"");
-                            listOrdered.add(newOrdered);
+                            listMoreOrdered.add(newOrdered);
                         }else{
-                            listOrdered.get(listOrdered.size()-1).setQuantity(qualityCurrent+1);
+                            listMoreOrdered.get(listMoreOrdered.size()-1).setQuantity(qualityCurrent+1);
                         }
                         checkConfirmChangedOrdered = false;
                         viewHolder.btnQuatityMenu.setText((qualityCurrent + 1) + "");
                         viewHolder.noteAdd.setVisibility(View.VISIBLE);
-                        viewHolder.btnSubMenu.setVisibility(View.VISIBLE);
                         viewHolder.btnQuatityMenu.setVisibility(View.VISIBLE);
 
 
                     }
                 });
 
-                viewHolder.btnSubMenu.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        //menuPresenterImpl.qualityForReceipt(menu.getId(), token, "-1");
-                        int qualityCurrent = Integer.parseInt(viewHolder.btnQuatityMenu.getText().toString());
-                        itemOrdered.setQuantity(qualityCurrent-1);
-                        checkConfirmChangedOrdered = false;
-                        if (qualityCurrent == 1) {
-                            //menuPresenterImpl.addNoteForReceipt(" ", menu.getId(), token);
-                            viewHolder.btnQuatityMenu.setText((qualityCurrent - 1) + "");
-                            viewHolder.btnQuatityMenu.setVisibility(View.INVISIBLE);
-                            viewHolder.noteAdd.setVisibility(View.INVISIBLE);
-                            viewHolder.btnSubMenu.setVisibility(View.INVISIBLE);
-                        } else {
-                            viewHolder.btnQuatityMenu.setText((qualityCurrent - 1) + "");
-                        }
-                    }
-                });
+
 
 
                 viewHolder.noteAdd.setOnClickListener(new View.OnClickListener() {
@@ -246,48 +207,25 @@ public class CustomMenuAdapter extends BaseAdapter {
                 });
             }
         }
-        if (listOrdered.size() == 0) {
+        if (listMoreOrdered.size() == 0) {
             viewHolder.noteAdd.setVisibility(View.INVISIBLE);
-            viewHolder.btnSubMenu.setVisibility(View.INVISIBLE);
             viewHolder.btnQuatityMenu.setVisibility(View.INVISIBLE);
             viewHolder.btnQuatityMenu.setText("0");
 
             viewHolder.btnPlusMenu.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    //menuPresenterImpl.qualityForReceipt(menu.getId(), token, "1");
                     int qualityCurrent = Integer.parseInt(viewHolder.btnQuatityMenu.getText().toString());
                     if(qualityCurrent == 0){
                         Ordered newOrdered = new Ordered(menu.getId(),menu.getName(),menu.getPrice(),menu.getUrlImage(),qualityCurrent+1,"");
-                        listOrdered.add(newOrdered);
+                        listMoreOrdered.add(newOrdered);
                     }else{
-                        listOrdered.get(listOrdered.size()-1).setQuantity(qualityCurrent+1);
+                        listMoreOrdered.get(listMoreOrdered.size()-1).setQuantity(qualityCurrent+1);
                     }
                     checkConfirmChangedOrdered = false;
                     viewHolder.btnQuatityMenu.setText((qualityCurrent + 1) + "");
                     viewHolder.noteAdd.setVisibility(View.VISIBLE);
-                    viewHolder.btnSubMenu.setVisibility(View.VISIBLE);
                     viewHolder.btnQuatityMenu.setVisibility(View.VISIBLE);
-                }
-            });
-
-            viewHolder.btnSubMenu.setOnClickListener(new View.OnClickListener() {
-
-                @Override
-                public void onClick(View view) {
-                    //menuPresenterImpl.qualityForReceipt(menu.getId(), token, "-1");
-                    int qualityCurrent = Integer.parseInt(viewHolder.btnQuatityMenu.getText().toString());
-                    listOrdered.get(listOrdered.size()-1).setQuantity(qualityCurrent-1);
-                    checkConfirmChangedOrdered = false;
-                    if (qualityCurrent == 1) {
-                        viewHolder.btnQuatityMenu.setText((qualityCurrent - 1) + "");
-                        //menuPresenterImpl.addNoteForReceipt(" ", menu.getId(), token);
-                        viewHolder.btnQuatityMenu.setVisibility(View.INVISIBLE);
-                        viewHolder.noteAdd.setVisibility(View.INVISIBLE);
-                        viewHolder.btnSubMenu.setVisibility(View.INVISIBLE);
-                    } else {
-                        viewHolder.btnQuatityMenu.setText((qualityCurrent - 1) + "");
-                    }
                 }
             });
 
@@ -322,7 +260,6 @@ public class CustomMenuAdapter extends BaseAdapter {
         TextView tvNameMenu;
         ImageView noteAdd;
         TextView tvPriceMenu;
-        Button btnSubMenu;
         Button btnQuatityMenu;
         Button btnPlusMenu;
 

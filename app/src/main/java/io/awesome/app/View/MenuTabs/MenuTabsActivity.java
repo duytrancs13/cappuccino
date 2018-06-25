@@ -1,7 +1,6 @@
 package io.awesome.app.View.MenuTabs;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.support.design.widget.TabLayout;
@@ -11,27 +10,24 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 
-import android.util.Log;
 import android.view.MenuItem;
-import android.view.Window;
 import android.widget.Toast;
 
 
 import java.util.ArrayList;
-import java.util.List;
 
 import io.awesome.app.Model.Ordered;
 import io.awesome.app.Presenter.MenuTabs.MenuTabsPresenterImp;
-import io.awesome.app.Presenter.Pusher.PusherReceipt;
 import io.awesome.app.View.Adapter.ViewPagerMenuTabsAdapter;
 import io.awesome.app.General.SetFont;
 import io.awesome.app.R;
 
-import io.awesome.app.View.Table.TableActivity;
+import io.awesome.app.View.Fragment.ChooseMenu.FragmentChooseMenu;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 import static io.awesome.app.View.Table.TableActivity.checkConfirmChangedOrdered;
-import static io.awesome.app.View.Table.TableActivity.listOrdered;
+import static io.awesome.app.View.Table.TableActivity.listMoreOrdered;
+import static io.awesome.app.View.Table.TableActivity.listOldOrdered;
 
 
 
@@ -161,7 +157,7 @@ public class MenuTabsActivity extends AppCompatActivity implements MenuTabsView 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
-            /*startActivity(new Intent(this, TableActivity.class));*/
+            listMoreOrdered = new ArrayList<Ordered>();
             checkConfirmChangedOrdered = true;
             finish();
         }
@@ -170,6 +166,7 @@ public class MenuTabsActivity extends AppCompatActivity implements MenuTabsView 
     // Quay về màn hình tableActivity bằng nút back của android
     @Override
     public void onBackPressed() {
+        listOldOrdered = new ArrayList<Ordered>();
         checkConfirmChangedOrdered = true;
         finish();
     }
@@ -183,7 +180,7 @@ public class MenuTabsActivity extends AppCompatActivity implements MenuTabsView 
     @Override
     public void goToMenu(int statusReceipt) {
         if(statusReceipt == 0){
-             listOrdered = new ArrayList<Ordered>();
+             listOldOrdered = new ArrayList<Ordered>();
             viewPager.setCurrentItem(0);
         }else if(statusReceipt == 1){
             viewPager.setCurrentItem(0);

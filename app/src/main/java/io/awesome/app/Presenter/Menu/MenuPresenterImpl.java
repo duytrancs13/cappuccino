@@ -234,7 +234,6 @@ public class MenuPresenterImpl implements MenuPresenter {
         queue.add(jsonObjectRequest);
     }
 
-
     /*public void addItemForReceipt(String url, final String token, final String quantity, final String note, final String menuId){
 
         RequestQueue queue = Volley.newRequestQueue(context);

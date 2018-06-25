@@ -4,6 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@color/bgrEdittext"
+    android:id="@+id/fragment_category"
     >
 
     <ListView

@@ -104,22 +104,10 @@
                 >
 
                 <Button
-                    android:id="@+id/btnSubMenu"
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
-                    android:background="@drawable/buttonminus"
-                    android:drawableLeft="@drawable/ic_minus"
-                    android:shadowColor="@color/white"
-                    android:layout_alignParentLeft="true"
-                    android:visibility="visible"
-                    android:shadowRadius="@color/red"
-                    />
-
-                <Button
                     android:id="@+id/btnQuatityMenu"
                     android:layout_width="25dp"
                     android:layout_height="25dp"
-                    android:background="@drawable/buttonquality"
+                    android:background="@drawable/buttonquanlity"
                     android:layout_centerHorizontal="true"
                     android:textColor="#757575"
                     android:clickable = "false"
@@ -157,7 +145,7 @@
                     android:id="@+id/btnQualityReceipt"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
-                    android:background="@drawable/buttonquality"
+                    android:background="@drawabuttonquanlitylity"
                     android:text="1"
                     android:textColor="@color/colorPrimary"
                     android:clickable = "false"

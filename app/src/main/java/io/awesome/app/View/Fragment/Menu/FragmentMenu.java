@@ -32,6 +32,7 @@ import io.awesome.app.R;
 
 
 import static android.content.Context.MODE_PRIVATE;
+import static io.awesome.app.View.Table.TableActivity.checkConfirmChangedOrdered;
 
 @SuppressLint("ValidFragment")
 public class FragmentMenu extends Fragment implements FragmentMenuView {
@@ -131,6 +132,7 @@ public class FragmentMenu extends Fragment implements FragmentMenuView {
             public void onClick(DialogInterface dialog, int whichButton) {
             //menuPresenterImpl.addNoteForReceipt(input.getText().toString(),menuId, token);
                 ordered.setNote(input.getText().toString());
+                checkConfirmChangedOrdered = false;
             }
         });
 

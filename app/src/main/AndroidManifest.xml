@@ -3,7 +3,7 @@
     package="io.awesome.app">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.BLUETOOTH"/>
+    <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -15,8 +15,7 @@
         android:label="Capuccino"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".View.Main.MainActivity"
-            >
+        <activity android:name=".View.Main.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -45,8 +44,7 @@
         </activity>
         <activity
             android:name=".View.MoveOrder.MoveOrderActivity"
-            android:noHistory="true"
-            />
+            android:noHistory="true" />
         <activity
             android:name=".View.ChooseTableMove.ChooseTableMoveActivity"
             android:noHistory="true" />
@@ -56,13 +54,14 @@
         <activity
             android:name=".View.ChangePassword.ChangePasswordActivity"
             android:noHistory="true" />
-        <activity
-            android:name=".View.Expense.ExpenseActivity" />
+        <activity android:name=".View.Expense.ExpenseActivity" />
         <activity
             android:name=".View.NewExpense.NewExpenseActivity"
             android:noHistory="true" />
-        <activity android:name=".View.DetailExpense.DetailExpenseActivity"
-            android:noHistory="true"></activity>
+        <activity
+            android:name=".View.DetailExpense.DetailExpenseActivity"
+            android:noHistory="true" />
+        <activity android:name=".View.ImageRequest.ImageRequestActivity"></activity>
     </application>
 
 </manifest>

@@ -44,6 +44,7 @@ import io.awesome.app.View.Fragment.Receipt.FragmentReceipt;
 import static io.awesome.app.View.Main.MainActivity.account;
 import static io.awesome.app.View.Main.MainActivity.bluetoothSocket;
 import static io.awesome.app.View.Main.MainActivity.receiptId;
+import static io.awesome.app.View.Table.TableActivity.listOldOrdered;
 import static io.awesome.app.View.Table.TableActivity.listOrdered;
 import static io.awesome.app.View.Table.TableActivity.nameTableMoveOrdered;
 
@@ -76,7 +77,7 @@ public class ReceiptPresenterImpl implements ReceiptPresenter {
 
     @Override
     public void getMenuReceipt(final String token) {
-        fragmentReceipt.loadMenuReceipt(listOrdered);
+        fragmentReceipt.loadMenuReceipt(listOldOrdered);
     }
 
     @Override
@@ -239,7 +240,7 @@ public class ReceiptPresenterImpl implements ReceiptPresenter {
             writeWithFormat("Mat hang            SL   So tien\n".getBytes(), new Formatter().bold().get(), Formatter.rightAlign());
 
             int totalMoney = 0;
-            for (Ordered ordered : listOrdered){
+            for (Ordered ordered : listOldOrdered){
                 String space1 = countSpace(21,ordered.getName(), String.valueOf(ordered.getQuantity()));
                 String space2 = countSpace(12,String.valueOf(ordered.getQuantity()), String.valueOf(ordered.getPrice()*ordered.getQuantity()+" "));
 

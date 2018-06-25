@@ -54,7 +54,7 @@ import static android.content.Context.MODE_PRIVATE;
 import static io.awesome.app.View.Main.MainActivity.bluetoothSocket;
 import static io.awesome.app.View.Main.MainActivity.receiptId;
 import static io.awesome.app.View.Table.TableActivity.checkConfirmChangedOrdered;
-import static io.awesome.app.View.Table.TableActivity.listOrdered;
+import static io.awesome.app.View.Table.TableActivity.listOldOrdered;
 
 
 
@@ -103,7 +103,7 @@ public class FragmentReceipt extends Fragment implements FragmentReceiptView {
 
         dialog = new ProgressDialog(view.getContext(), R.style.AppTheme_Dark_Dialog);
 
-        if(listOrdered.size() != 0){
+        if(listOldOrdered.size() != 0){
             receiptPresenter.getMenuReceipt(token);
         }
 
@@ -123,7 +123,7 @@ public class FragmentReceipt extends Fragment implements FragmentReceiptView {
         btnPrintReceipt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(listOrdered.size()!=0 && checkConfirmChangedOrdered){
+                if(listOldOrdered.size()!=0 && checkConfirmChangedOrdered){
                     if(!receiptPresenter.isBluetoothEnabled()){
                         toast("Vui lòng mở bluetooth để kết nối!!!");
                         bluetoothSocket = null;
@@ -147,14 +147,20 @@ public class FragmentReceipt extends Fragment implements FragmentReceiptView {
         btnReceipt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(listOrdered.size()!=0 && checkConfirmChangedOrdered){
-                    confirmUpdateReceipt();
-                }
-                else if(!checkConfirmChangedOrdered){
-                    toast("Vui lòng xác nhận món");
+                if(!receiptPresenter.isBluetoothEnabled()){
+                    toast("Vui lòng mở bluetooth để kết nối!!!");
+                    bluetoothSocket = null;
                 }else{
-                    toast("Vui lòng đặt món");
+                    if(listOldOrdered.size()!=0 && checkConfirmChangedOrdered){
+                        confirmUpdateReceipt();
+                    }
+                    else if(!checkConfirmChangedOrdered){
+                        toast("Vui lòng xác nhận món");
+                    }else{
+                        toast("Vui lòng đặt món");
+                    }
                 }
+
             }
         });
 
@@ -194,6 +200,16 @@ public class FragmentReceipt extends Fragment implements FragmentReceiptView {
                     .setText(textError)
                     .setBackgroundColorRes(R.color.colorPrimary) // or setBackgroundColorInt(Color.CYAN)
                     .show();
+            if(bluetoothSocket==null){
+                receiptPresenter.findBluetoothDevice();
+                receiptPresenter.openBluetoothPrinter();
+            }
+            try {
+                receiptPresenter.printReceipt();
+                receiptPresenter.printData();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             dialog.dismiss();
             checkConfirmChangedOrdered = true;
             getActivity().onBackPressed();
@@ -320,7 +336,7 @@ public class FragmentReceipt extends Fragment implements FragmentReceiptView {
 
     private void confirmUpdateReceipt(){
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        builder.setMessage("Bạn có muốn thanh toán hóa đơn này không?");
+        builder.setMessage("Bạn có muốn in và thanh toán hóa đơn này không?");
         builder.setPositiveButton("Có", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {

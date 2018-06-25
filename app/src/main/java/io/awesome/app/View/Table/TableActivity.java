@@ -92,8 +92,15 @@ public class TableActivity extends AppCompatActivity implements NavigationView.O
 
     private String token;
 
+
+
     public static List<Ordered> listOrdered = new ArrayList<Ordered>();
     public static List<Ordered> listToOrdered = new ArrayList<Ordered>();
+
+    public static List<Ordered> listOldOrdered = new ArrayList<Ordered>();
+    public static List<Ordered> listMoreOrdered = new ArrayList<Ordered>();
+    public static List<Ordered> listPtemOrdered = new ArrayList<Ordered>();
+
 
     public static List<Expense> listExpense = new ArrayList<Expense>();
 
