@@ -45,13 +45,15 @@ public class CategoryPresenterImpl implements CategoryPresenter {
             @Override
             public void onResponse(JSONObject response) {
 
-               fragmentCategory.showMenuCategory();
+                fragmentCategory.showMenuCategory();
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+
             }
         }){
+            @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String, String> headers = new HashMap<String, String>();
                 headers.put("Authorization", token);

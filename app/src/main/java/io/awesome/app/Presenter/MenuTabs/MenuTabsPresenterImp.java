@@ -55,7 +55,8 @@ public class MenuTabsPresenterImp implements MenuTabsPresenter {
                     JSONObject obj = new JSONObject(response.toString());
                     JSONObject data = obj.getJSONObject("data");
                     JSONArray items = data.getJSONArray("items");
-                    TypeToken<List<Ordered>> token = new TypeToken<List<Ordered>>() {};
+                    TypeToken<List<Ordered>> token = new TypeToken<List<Ordered>>() {
+                    };
                     listOldOrdered = gson.fromJson(items.toString(), token.getType());
                     listPtemOrdered = gson.fromJson(items.toString(), token.getType());
                     tabsView.goToMenu(statusReceipt);
@@ -66,6 +67,7 @@ public class MenuTabsPresenterImp implements MenuTabsPresenter {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+
             }
         }){
             @Override

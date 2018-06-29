@@ -14,7 +14,6 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
@@ -89,9 +88,9 @@ public class ReceiptPresenterImpl implements ReceiptPresenter {
             public void onResponse(String response) {
                 try {
                     JSONObject jsonObject = new JSONObject(response);
-                    if(jsonObject.getString("message").equals("Successful.")){
+                    if (jsonObject.getString("message").equals("Successful.")) {
                         fragmentReceipt.alertMessage("Thành công", "Bạn đã thanh toán thành công", 200);
-                    }else{
+                    } else {
                         fragmentReceipt.alertMessage("Thất bại", "Vui lòng thử lại", 500);
                     }
 

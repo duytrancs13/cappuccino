@@ -3,11 +3,14 @@ package io.awesome.app.View.Account;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.CursorLoader;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -28,13 +31,22 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.pusher.java_websocket.util.Base64;
 import com.squareup.picasso.Picasso;
 import com.tapadoo.alerter.Alerter;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.HashMap;
+import java.util.Map;
 
 import io.awesome.app.General.SetFont;
 import io.awesome.app.Presenter.Account.AccountPresenterImp;
@@ -47,7 +59,7 @@ import static io.awesome.app.View.Main.MainActivity.account;
 
 public class AccountActivity extends AppCompatActivity implements AccountView{
 
-    private static final int RESULT_LOAD_IMAGE = 1;
+    static final int PICK_IMAGE_REQUEST = 1;
     private Toolbar toolbar;
 
     private ImageView imageAccount;
@@ -57,12 +69,17 @@ public class AccountActivity extends AppCompatActivity implements AccountView{
     private TextView tvNameAccount, tvEmailAccount, tvSaveAccount;
 
 
+
     public static final String MyPREFERENCES = "capuccino" ;
     private SharedPreferences sharedPreferences;
     private String token;
 
     private AccountPresenterImp accountPresenterImp;
     private ProgressDialog dialog ;
+
+    String filePath;
+
+    public static String BASE_URL = "https://cafeteria-service.herokuapp.com/api/v1/users/profile/5b120ad0fd5d30000480d57e";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,7 +120,7 @@ public class AccountActivity extends AppCompatActivity implements AccountView{
             @Override
             public void onClick(View view) {
                 Intent galleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                startActivityForResult(galleryIntent,RESULT_LOAD_IMAGE);
+                startActivityForResult(galleryIntent,PICK_IMAGE_REQUEST);
             }
         });
         Typeface mFont = Typeface.createFromAsset(getAssets(), "Roboto-ThinItalic.ttf");
@@ -170,11 +187,10 @@ public class AccountActivity extends AppCompatActivity implements AccountView{
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == RESULT_LOAD_IMAGE && resultCode == RESULT_OK && data != null){
+        if(requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null){
             try {
                 Uri uri = data.getData();
                 /*String realPath = getRealPathFromURI(uri);
-
                 File file = new File(realPath);
                 String imagePath = file.getAbsolutePath();*/
 
@@ -189,6 +205,20 @@ public class AccountActivity extends AppCompatActivity implements AccountView{
 
         }
     }
+
+
+
+    private String getPath(Uri contentUri) {
+        String[] proj = { MediaStore.Images.Media.DATA };
+        CursorLoader loader = new CursorLoader(getApplicationContext(), contentUri, proj, null, null, null);
+        Cursor cursor = loader.loadInBackground();
+        int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+        cursor.moveToFirst();
+        String result = cursor.getString(column_index);
+        cursor.close();
+        return result;
+    }
+
 
 
 

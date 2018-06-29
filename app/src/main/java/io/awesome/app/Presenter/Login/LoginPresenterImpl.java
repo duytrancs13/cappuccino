@@ -100,9 +100,9 @@ public class LoginPresenterImpl implements LoginPresenter {
             public void onResponse(String response) {
                 try {
                     JSONObject jsonObject = new JSONObject(response);
-                    if(jsonObject.get("message").equals("Successful.")){
+                    if (jsonObject.get("message").equals("Successful.")) {
                         viewLoginActivity.loginSuccessful(response);
-                    }else{
+                    } else {
                         viewLoginActivity.alertMessage("Thất bại", "Vui lòng thử lại !!!", 500);
                     }
 

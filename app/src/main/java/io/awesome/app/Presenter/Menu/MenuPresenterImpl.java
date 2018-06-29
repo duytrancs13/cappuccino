@@ -12,7 +12,6 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
@@ -60,7 +59,7 @@ public class MenuPresenterImpl implements MenuPresenter {
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, urlFavorite, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
-                Log.v("AAA","Get menu successfull "+response.toString());
+                Log.v("AAA", "Get menu successfull " + response.toString());
                 fragmentMenu.showMenu(listMenu);
             }
         }, new Response.ErrorListener() {
@@ -212,7 +211,8 @@ public class MenuPresenterImpl implements MenuPresenter {
                     JSONObject obj = new JSONObject(response.toString());
                     JSONObject data = obj.getJSONObject("data");
                     JSONArray items = data.getJSONArray("items");
-                    TypeToken<List<Ordered>> token = new TypeToken<List<Ordered>>() {};
+                    TypeToken<List<Ordered>> token = new TypeToken<List<Ordered>>() {
+                    };
                     listOrdered = gson.fromJson(items.toString(), token.getType());
 
                 } catch (Exception e) {
@@ -222,6 +222,7 @@ public class MenuPresenterImpl implements MenuPresenter {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+
             }
         }){
             @Override

@@ -20,6 +20,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.CardView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -85,6 +86,7 @@ public class FragmentReceipt extends Fragment implements FragmentReceiptView {
     private BluetoothDevice bluetoothDevice;
 
     private ProgressDialog dialog ;
+    private CardView cVTotalMoneyReceipt;
 
 
     @Nullable
@@ -103,7 +105,10 @@ public class FragmentReceipt extends Fragment implements FragmentReceiptView {
 
         dialog = new ProgressDialog(view.getContext(), R.style.AppTheme_Dark_Dialog);
 
+        cVTotalMoneyReceipt = (CardView) view.findViewById(R.id.cVTotalMoneyReceipt);
+
         if(listOldOrdered.size() != 0){
+            cVTotalMoneyReceipt.setVisibility(View.VISIBLE);
             receiptPresenter.getMenuReceipt(token);
         }
 

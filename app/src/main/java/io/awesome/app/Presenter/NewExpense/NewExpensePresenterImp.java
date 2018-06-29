@@ -81,10 +81,10 @@ public class NewExpensePresenterImp implements NewExpensePresenter {
             public void onResponse(String response) {
                 try {
                     JSONObject jsonObject = new JSONObject(response);
-                    if(jsonObject.getString("message").equals("Successful.")){
-                        newExpenseView.alertMessage("Thành công","Bạn đã tạo mới chi tiêu thành công", 200);
-                    }else{
-                        newExpenseView.alertMessage("Thất bại","Vui lòng thử lại", 500);
+                    if (jsonObject.getString("message").equals("Successful.")) {
+                        newExpenseView.alertMessage("Thành công", "Bạn đã tạo mới chi tiêu thành công", 200);
+                    } else {
+                        newExpenseView.alertMessage("Thất bại", "Vui lòng thử lại", 500);
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();

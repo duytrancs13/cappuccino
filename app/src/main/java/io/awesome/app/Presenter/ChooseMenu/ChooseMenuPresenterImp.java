@@ -46,9 +46,9 @@ public class ChooseMenuPresenterImp implements ChooseMenuPresenter {
             @Override
             public void onResponse(JSONObject response) {
                 try {
-                    if(response.getString("message").equals("Successful.")){
+                    if (response.getString("message").equals("Successful.")) {
                         fragmentChooseMenu.alertMessage("Thành công", "Món đã được cập nhật", 200);
-                    }else{
+                    } else {
                         fragmentChooseMenu.alertMessage("Thất bại", "Vui lòng thử lại", 500);
                     }
                 } catch (JSONException e) {

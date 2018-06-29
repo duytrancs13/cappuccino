@@ -41,52 +41,6 @@ public class AccountPresenterImp implements AccountPresenter {
         this.token = token;
     }
 
-    /*public String getStringImage(Bitmap bmp){
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        bmp.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-        byte[] imageBytes = baos.toByteArray();
-        String encodedImage = Base64.encodeToString(imageBytes, Base64.DEFAULT);
-        return encodedImage;
-    }*/
-
-    /*@Override
-    public void uploadImage(final Bitmap bitmap, final String token) {
-        RequestQueue queue = Volley.newRequestQueue(context);
-        String url = "https://cafeteria-service.herokuapp.com/api/v1/users/profile/"+account.getUserId();
-
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                Log.v("AAA", response);
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.v("AAA", error.toString());
-            }
-        }){
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                Map<String, String> headers = new HashMap<String, String>();
-                headers.put("Authorization", token);
-                headers.put("Content-Type", "application/x-www-form-urlencoded");
-                return headers;
-            }
-
-            @Override
-            protected Map<String, String> getParams() {
-                Map<String, String> params = new HashMap<String, String>();
-                String image = getStringImage(bitmap);
-                params.put("image", image);
-                return params;
-            }
-        };
-
-        queue.add(stringRequest);
-
-
-
-    }*/
 
     @Override
     public void change(final String name, final String token) {
@@ -97,12 +51,12 @@ public class AccountPresenterImp implements AccountPresenter {
             public void onResponse(String response) {
                 try {
                     JSONObject jsonObject = new JSONObject(response);
-                    if(jsonObject.get("message").equals("Successful.")){
+                    if (jsonObject.get("message").equals("Successful.")) {
                         account.setDisplayName(jsonObject.getJSONObject("data").getString("displayName"));
-                        accountView.alertMessage("Thành công","Thông tin đã được cập nhật thành công", 200);
+                        accountView.alertMessage("Thành công", "Thông tin đã được cập nhật thành công", 200);
 
-                    }else{
-                        accountView.alertMessage("Thất bại","Vui lòng thử lại", 500);
+                    } else {
+                        accountView.alertMessage("Thất bại", "Vui lòng thử lại", 500);
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();

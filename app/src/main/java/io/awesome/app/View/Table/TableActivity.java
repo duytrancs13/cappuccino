@@ -384,7 +384,8 @@ public class TableActivity extends AppCompatActivity implements NavigationView.O
     // Hàm xử lí sự kiện khi gọi bàn ở trạng thái rỗng.
     /*void popupTableFree(View v,final Button btnTable, final Table table, final TextView timer)*/
     void popupTableFree(View v, final String idTable, final int position, final Button table){
-        final CharSequence[] items = {"Đặt món", "Đặt chỗ"};
+        final CharSequence[] items = {"Đặt món"};
+        /*final CharSequence[] items = {"Đặt món", "Đặt chỗ"};*/
 
         AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
         builder.setIcon(R.drawable.ic_table_idle);
@@ -418,12 +419,12 @@ public class TableActivity extends AppCompatActivity implements NavigationView.O
                 }
 
                 // Khi chọn vào item "đặt chỗ".
-                else if(item == 1){
+                /*else if(item == 1){
                     intent = new Intent(getBaseContext(), ReserveActivity.class);
                     startActivity(intent);
 
 
-                    /*new CountDownTimer(3000, 1000) {
+                    *//*new CountDownTimer(3000, 1000) {
                         //TextView textTimer = (TextView) findViewById(R.id.timer);
                         TextView textTimer = (TextView) findViewById(position);
                         public void onTick(long millisUntilFinished) {
@@ -438,8 +439,8 @@ public class TableActivity extends AppCompatActivity implements NavigationView.O
                             textTimer.setVisibility(View.INVISIBLE);
                             table.setEnabled(true);
                         }
-                    }.start();*/
-                }
+                    }.start();*//*
+                }*/
             }
         });
         AlertDialog alert = builder.create();
@@ -449,7 +450,7 @@ public class TableActivity extends AppCompatActivity implements NavigationView.O
 
     // Hàm xử lí sự kiện khi gọi bàn ở trạng thái bận.
     void popupTableBusy(View v,final String receiptBusy, final String nameTable){
-        final CharSequence[] items = {"Đặt thêm món","Chuyển bàn", "Đặt chỗ","Thanh toán"};
+        final CharSequence[] items = {"Đặt thêm món","Chuyển bàn", "Thanh toán"};
 
         AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
         builder.setIcon(R.drawable.ic_table_busy);
@@ -469,16 +470,18 @@ public class TableActivity extends AppCompatActivity implements NavigationView.O
                     nameTableMoveOrdered = nameTable;
                     tablePresenter.getMenuOrdered(token);
                     // Khi chọn vào item "Đặt chỗ"
-                }else if(position == 2){
-                    /*table.setBackgroundResource(R.drawable.ic_table_deliver);
+                }
+                /*else if(position == 2){
+                    *//*table.setBackgroundResource(R.drawable.ic_table_deliver);
                     countUp.stop();
                     timer.setVisibility(View.VISIBLE);
-                    timer.setText("00:00:00");*/
+                    timer.setText("00:00:00");*//*
                     toast("Đặt chỗ");
 
 
                     // Khi chọn vào item "Thanh toán"
-                }else if(position == 3){
+                }*/
+                else if(position == 2){
 //                    btnTable.setBackgroundResource(R.drawable.ic_table_idle);
 //                    countUp.stop();
 //                    TextView textTimer = (TextView) findViewById(R.id.timer);

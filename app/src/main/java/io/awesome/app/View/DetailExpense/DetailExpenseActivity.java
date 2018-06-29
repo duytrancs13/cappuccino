@@ -29,7 +29,6 @@ import java.util.Locale;
 
 import io.awesome.app.General.SetFont;
 import io.awesome.app.Model.Expense;
-import io.awesome.app.Presenter.UpdateExpense.UpdateExpensePresenterImp;
 import io.awesome.app.R;
 
 public class DetailExpenseActivity extends AppCompatActivity implements DetailExpenseView {

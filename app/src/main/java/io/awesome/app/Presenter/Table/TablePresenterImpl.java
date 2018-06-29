@@ -12,7 +12,9 @@ import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
+
 import com.android.volley.VolleyError;
+
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
@@ -65,11 +67,11 @@ public class TablePresenterImpl implements TablePresenter {
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
-                Log.v("AAA", "Get table successfull "+response.toString());
+                Log.v("AAA", "Get table successfull " + response.toString());
                 try {
-                    if(response.getString("message").equals("Successful.")){
+                    if (response.getString("message").equals("Successful.")) {
                         tableView.showTables();
-                    }else{
+                    } else {
                         tableView.alertMessage("Lỗi !!!", "Vui lòng thử lại", 500);
                     }
 
@@ -83,6 +85,7 @@ public class TablePresenterImpl implements TablePresenter {
                 tableView.alertMessage("Lỗi !!!", "Vui lòng thử lại", 500);
             }
         }){
+            @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String, String> headers = new HashMap<String, String>();
                 headers.put("Authorization", token);
@@ -104,6 +107,7 @@ public class TablePresenterImpl implements TablePresenter {
 
         RequestQueue queue = Volley.newRequestQueue(context);
         String url = "https://cafeteria-service.herokuapp.com/api/v1/receipts";
+
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {

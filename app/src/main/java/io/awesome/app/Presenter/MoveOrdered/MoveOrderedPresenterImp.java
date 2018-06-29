@@ -14,7 +14,6 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.HurlStack;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -70,7 +69,8 @@ public class MoveOrderedPresenterImp implements MoveOrderedPresenter {
                     JSONObject obj = new JSONObject(response.toString());
                     JSONObject data = obj.getJSONObject("data");
                     JSONArray items = data.getJSONArray("items");
-                    TypeToken<List<Ordered>> token = new TypeToken<List<Ordered>>() {};
+                    TypeToken<List<Ordered>> token = new TypeToken<List<Ordered>>() {
+                    };
                     listOrdered = gson.fromJson(items.toString(), token.getType());
                     orderedView.undoAllFragment();
                 } catch (Exception e) {
@@ -80,6 +80,7 @@ public class MoveOrderedPresenterImp implements MoveOrderedPresenter {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+
             }
         }){
             @Override

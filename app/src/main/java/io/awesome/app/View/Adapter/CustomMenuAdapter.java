@@ -135,7 +135,7 @@ public class CustomMenuAdapter extends BaseAdapter {
                     @Override
                     public void onClick(View view) {
                         String textNote = "";
-                        for (Ordered newOrdered : listOrdered) {
+                        for (Ordered newOrdered : listOldOrdered) {
                             if (newOrdered.getItemId().equals(menu.getId())) {
                                 textNote = newOrdered.getNote();
                                 //menuPresenterImpl.setTextPopupNoteAdd(textNote, menu.getId());
@@ -194,7 +194,7 @@ public class CustomMenuAdapter extends BaseAdapter {
                     @Override
                     public void onClick(View view) {
                         String textNote = "";
-                        for (Ordered newOrdered : listOrdered) {
+                        for (Ordered newOrdered : listOldOrdered) {
                             if (newOrdered.getItemId().equals(menu.getId())) {
                                 textNote = newOrdered.getNote();
 //                                menuPresenterImpl.setTextPopupNoteAdd(textNote, menu.getId());
@@ -234,7 +234,7 @@ public class CustomMenuAdapter extends BaseAdapter {
                 @Override
                 public void onClick(View view) {
                     String textNote = "";
-                    for (Ordered newOrdered : listOrdered) {
+                    for (Ordered newOrdered : listOldOrdered) {
                         if (newOrdered.getItemId().equals(menu.getId())) {
                             textNote = newOrdered.getNote();
                             menuPresenterImpl.setTextPopupNoteAdd(textNote, newOrdered);

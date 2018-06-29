@@ -28,7 +28,7 @@ import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 import static io.awesome.app.View.Table.TableActivity.checkConfirmChangedOrdered;
 import static io.awesome.app.View.Table.TableActivity.listMoreOrdered;
 import static io.awesome.app.View.Table.TableActivity.listOldOrdered;
-
+import static io.awesome.app.View.Table.TableActivity.listPtemOrdered;
 
 
 public class MenuTabsActivity extends AppCompatActivity implements MenuTabsView {
@@ -167,6 +167,7 @@ public class MenuTabsActivity extends AppCompatActivity implements MenuTabsView 
     @Override
     public void onBackPressed() {
         listOldOrdered = new ArrayList<Ordered>();
+        listPtemOrdered = new ArrayList<Ordered>();
         checkConfirmChangedOrdered = true;
         finish();
     }

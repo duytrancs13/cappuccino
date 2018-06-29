@@ -37,10 +37,13 @@
                 </android.support.v7.widget.CardView>
 
                 <android.support.v7.widget.CardView
+                    android:id="@+id/cVTotalMoneyReceipt"
                     android:layout_marginTop="30dp"
                     android:layout_marginBottom="75dp"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    >
                     <LinearLayout
                         android:weightSum="3"
                         android:layout_width="match_parent"
@@ -108,7 +111,7 @@
                 android:layout_weight="1"
                 android:textColor="@color/white"
                 android:background="@drawable/button_login"
-                android:text="in tạm"
+                android:text="in hóa đơn"
                 android:layout_marginRight="15dp"
                 />
             <Button
@@ -118,7 +121,7 @@
                 android:layout_weight="1"
                 android:textColor="@color/white"
                 android:background="@drawable/button_login"
-                android:text="In thanh toán"
+                android:text="thanh toán"
                 android:layout_marginLeft="15dp"
                 />
 

@@ -7,7 +7,9 @@ import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
+
 import com.android.volley.VolleyError;
+
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
@@ -92,10 +94,10 @@ public class ResetPasswordPresenterImpl implements ResetPasswordPresenter {
                 try {
                     JSONObject jsonObject = new JSONObject(response);
                     String mgs = jsonObject.getString("message");
-                    if(mgs.equals("Successful.")){
-                        resetPasswordView.alertMessage("Thành công","Vui lòng đăng nhập!!!", 200);
-                    }else{
-                        resetPasswordView.alertMessage("Lỗi","Email không chưa đăng kí!!!", 500);
+                    if (mgs.equals("Successful.")) {
+                        resetPasswordView.alertMessage("Thành công", "Vui lòng đăng nhập!!!", 200);
+                    } else {
+                        resetPasswordView.alertMessage("Lỗi", "Email không chưa đăng kí!!!", 500);
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -114,6 +116,7 @@ public class ResetPasswordPresenterImpl implements ResetPasswordPresenter {
                 headers.put("Content-Type", "application/x-www-form-urlencoded");
                 return headers;
             }
+
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String,String> params = new HashMap<>();

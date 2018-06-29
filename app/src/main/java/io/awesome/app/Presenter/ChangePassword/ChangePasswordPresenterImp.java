@@ -84,11 +84,11 @@ public class ChangePasswordPresenterImp implements ChangePasswordPresenter{
             public void onResponse(String response) {
                 try {
                     JSONObject jsonObject = new JSONObject(response);
-                    if(jsonObject.get("message").equals("Successful.")){
-                        changePasswordView.alertMessage("Thành công","Đổi mật khẩu thành công", 200);
+                    if (jsonObject.get("message").equals("Successful.")) {
+                        changePasswordView.alertMessage("Thành công", "Đổi mật khẩu thành công", 200);
                         changePasswordView.changePwSuccessful();
-                    }else{
-                        changePasswordView.alertMessage("Thất bại","Đổi mật khẩu thất bại", 500);
+                    } else {
+                        changePasswordView.alertMessage("Thất bại", "Đổi mật khẩu thất bại", 500);
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
